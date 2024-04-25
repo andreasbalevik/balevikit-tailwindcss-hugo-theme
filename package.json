@@ -1,0 +1,16 @@
+{
+  "name": "balevikit-tailwindcss-hugo-theme",
+  "version": "1.0.0",
+  "description": "## Features",
+  "main": "index.js",
+  "scripts": {
+    "build-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css",
+    "watch-tw": "npx tailwindcss -i ./assets/css/main.css -o ./assets/css/style.css -w --minify"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.3"
+  }
+}

@@ -1,0 +1,66 @@
+<!-- PAGE METADATA -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="content-type" content="text/html; charset=utf-8">
+<meta name="robots" content="index,follow">
+<meta http-equiv="content-language" content="{{ .Site.Language }}">
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:locale" content="{{ .Site.Language }}">
+<meta property="og:site_name" content="{{ .Site.BaseURL }}">
+
+<!-- PAGE TITLE -->
+<title itemprop="name">{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+{{ partialCached "head/css.html" . }}
+{{ partialCached "head/js.html" . }}
+
+<!-- PAGE DESCRIPTION -->
+{{ if .Params.description }}
+<meta name="description" content="{{ .Params.description }}" />
+<meta name="og:description" content="{{ .Params.description }}" />
+{{ else }}
+<meta name="description" content="{{ substr (.Content | plainify) 0 120 }}" />
+<meta name="og:description" content="{{ substr (.Content | plainify) 0 120 }}" />
+{{ end }}
+
+<!-- IMAGE META -->
+{{ with .Params.image }}
+<meta itemprop="image" content="{{ . | absURL }}" />
+<meta property="og:image" content="{{ . | absURL }}" />
+{{ else }}
+<meta itemprop="image" content="{{ .Site.Params.ogimage | absURL }}" />
+<meta property="og:image" content="{{ .Site.Params.ogimage | absURL }}" />
+{{ end }}
+
+<!-- MOBILE META -->
+<meta name="apple-mobile-web-app-title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}">
+<meta name="theme-color" content="#FFFFFF">
+<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+
+<!-- PAGE LINKS -->
+<link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
+{{ range .AllTranslations }}
+<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
+{{ end }}
+
+<link rel="canonical" href="{{ .Permalink }}" itemprop="url" />
+<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml" />
+<link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
+
+<!-- SCHEMA -->
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "name": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}",
+        "url": "{{ .Site.BaseURL }}",
+        "description": "{{ .Page.Params.description }}",
+        "thumbnailUrl": "{{ with .Page.Params.image }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
+        "image": "{{ with .Page.Params.ogImage }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
+        "keywords": "{{ with .Site.Params.keywords }}{{ delimit . ", "}}{{ end }}, {{ with .Params.keywords }}{{ delimit . ", "}}{{ end }}",
+        "headline": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}"
+    }
+</script>

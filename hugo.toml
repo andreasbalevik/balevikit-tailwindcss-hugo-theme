@@ -1,0 +1,26 @@
+[[menus.main]]
+name = 'Home'
+pageRef = '/'
+weight = 10
+
+[module]
+  [module.hugoVersion]
+    extended = false
+    min = "0.116.0"
+
+canonifyURLs = true
+enableRobotsTXT = true
+
+[minify]
+  minifyOutput = true
+
+[sitemap]
+  changefreq = 'monthly'
+  filename = 'sitemap.xml'
+  priority = 0.5
+
+[imaging]
+  anchor = 'Smart'
+  hint = 'photo'
+  quality = 90
+  resampleFilter = 'MitchellNetravali'
