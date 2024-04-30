@@ -1,6 +1,10 @@
 <footer class="bg-black text-white">
-    <div class="container pt-12 pb-16">
-        <p>Copyright {{ now.Year }}. All rights reserved.</p>    
+    <div class="container pt-9 pb-16">
+        <h3 class="text-xl">{{.Site.Title}}</h3>
+        
+        {{ with .Site.Params.email}}
+            <span class="block mt-3">E-post: {{.}}</span>
+        {{ end }}
     </div>
 </footer>
 
