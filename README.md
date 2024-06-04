@@ -1,7 +1,1 @@
-# Theme Name
-
-## Features
-
-## Installation
-
-## Configuration
+Hugo Theme for private websites created using TailwindCSS
