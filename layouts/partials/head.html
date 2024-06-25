@@ -4,7 +4,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="robots" content="index,follow">
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
-<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}" />
+<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf " %s | %s" .Title site.Title }}{{end}}" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:locale" content="{{ .Site.Language }}">
@@ -19,10 +19,16 @@
 {{ if .Params.description }}
 <meta name="description" content="{{ .Params.description }}" />
 <meta name="og:description" content="{{ .Params.description }}" />
-{{ else }}
+{{ else if .Content }}
 <meta name="description" content="{{ substr (.Content | plainify) 0 120 }}" />
 <meta name="og:description" content="{{ substr (.Content | plainify) 0 120 }}" />
+{{ else }}
+<meta name="description" content="{{ .Site.Params.description }}" />
+<meta name="og:description" content="{{ .Site.Params.description }}" />
 {{ end }}
+
+<!-- PAGE KEYWORDS -->
+<meta name="keywords" content="{{ with .Site.Params.keywords }}{{ delimit . ", "}}{{ end }}, {{ with .Params.keywords }}{{ delimit . " , "}}{{ end }}" />
 
 <!-- IMAGE META -->
 {{ with .Params.image }}
@@ -34,7 +40,7 @@
 {{ end }}
 
 <!-- MOBILE META -->
-<meta name="apple-mobile-web-app-title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}">
+<meta name="apple-mobile-web-app-title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf " %s | %s" .Title site.Title }}{{ end }}">
 <meta name="theme-color" content="#FFFFFF">
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 
@@ -54,13 +60,25 @@
 <script type="application/ld+json">
     {
         "@context": "http://schema.org",
-        "@type": "WebSite",
-        "name": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}",
-        "url": "{{ .Site.BaseURL }}",
-        "description": "{{ .Page.Params.description }}",
-        "thumbnailUrl": "{{ with .Page.Params.image }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
-        "image": "{{ with .Page.Params.ogImage }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
-        "keywords": "{{ with .Site.Params.keywords }}{{ delimit . ", "}}{{ end }}, {{ with .Params.keywords }}{{ delimit . ", "}}{{ end }}",
+        "@type": "Article",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.example.com/article"
+        },
+
         "headline": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}"
+        "description": "{{ .Page.Params.description }}",
+        "image": "{{ with .Page.Params.ogImage }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
+        
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ .Site.Title }}",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{ .Site.Params.ogimage | absURL }}"
+            }
+        },
+
+        "url": "{{ .Site.BaseURL }}",
     }
 </script>

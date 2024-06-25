@@ -1,11 +1,11 @@
-{{ if .Site.Menus.navigation }}
+{{ if .Site.Menus.main }}
   <!-- DESKTOP MENU -->
   <nav class="hidden md:block">
 
     {{ $currentPage := . }}
     {{ $section := .Site.GetPage $currentPage.Section }}
     <ul class="block sm:flex gap-5 justify-end">
-      {{ range .Site.Menus.navigation.Sort }}
+      {{ range .Site.Menus.main.Sort }}
       <li class="nav-item">
         <a class="nav-link {{if $section.IsMenuCurrent "main" . }}
         text-blue-600{{end}}" aria-current="page" href="{{ .URL }}">
@@ -30,7 +30,7 @@
         class="fixed top-0 right-0 z-40 h-full w-full translate-x-full overflow-y-auto overscroll-y-none transition duration-500 peer-checked:translate-x-0">
         <div class="float-right min-h-full w-[85%] bg-white px-6 pt-12 shadow-2xl text-xl">
           <ul class="block sm:flex gap-5 justify-start">
-            {{ range .Site.Menus.navigation.Sort }}
+            {{ range .Site.Menus.main.Sort }}
             <li class="nav-item">
               <a class="nav-link {{if $section.IsMenuCurrent "main" . }}
               text-blue-600{{end}}" aria-current="page" href="{{ .URL }}">
