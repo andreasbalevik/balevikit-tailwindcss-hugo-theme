@@ -1,0 +1,25 @@
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.example.com/article"
+        },
+
+        "headline": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}"
+        "description": "{{ .Page.Params.description }}",
+        "image": "{{ with .Page.Params.ogImage }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
+        
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ .Site.Title }}",
+            "logo": {
+              "@type": "ImageObject",
+              "url": "{{ .Site.Params.ogimage | absURL }}"
+            }
+        },
+
+        "url": "{{ .Site.BaseURL }}",
+    }
+</script>

@@ -2,13 +2,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="robots" content="index,follow">
+<meta name="robots" content="follow, index, max-image-preview: large">
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
+
 <meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf " %s | %s" .Title site.Title }}{{end}}" />
 <meta property="og:type" content="website" />
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:locale" content="{{ .Site.Language }}">
 <meta property="og:site_name" content="{{ .Site.BaseURL }}">
+<meta property="og:updated_time" content="{{ time.Now }}">
+
+<meta property="article:published_time" content="{{.PublishDate}}">
+<meta property="article:modified_time" content="{{.Lastmod}}">
 
 <!-- PAGE TITLE -->
 <title itemprop="name">{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
@@ -45,7 +50,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 
 <!-- PAGE LINKS -->
-<link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
+<link rel="alternate" href="{{ .Permalink }}">
 {{ range .AllTranslations }}
 <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
 {{ end }}
@@ -57,28 +62,4 @@
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
 
 <!-- SCHEMA -->
-<script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "Article",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.example.com/article"
-        },
-
-        "headline": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}"
-        "description": "{{ .Page.Params.description }}",
-        "image": "{{ with .Page.Params.ogImage }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
-        
-        "publisher": {
-            "@type": "Organization",
-            "name": "{{ .Site.Title }}",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "{{ .Site.Params.ogimage | absURL }}"
-            }
-        },
-
-        "url": "{{ .Site.BaseURL }}",
-    }
-</script>
+{{ partial "seo/schema.html" . }}
