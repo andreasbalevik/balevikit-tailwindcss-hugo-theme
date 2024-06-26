@@ -33,7 +33,7 @@
 {{ end }}
 
 <!-- PAGE KEYWORDS -->
-<meta name="keywords" content="{{ with .Site.Params.keywords }}{{ delimit . ", "}}{{ end }}, {{ with .Params.keywords }}{{ delimit . " , "}}{{ end }}" />
+<meta name="keywords" content="{{ with .Params.keywords }}, {{.}} {{else}} {{ with .Site.Params.keywords }}{{.}}{{end}} {{ end }}" />
 
 <!-- IMAGE META -->
 {{ with .Params.image }}

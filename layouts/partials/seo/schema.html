@@ -1,3 +1,43 @@
+<!-- BREADCRUMB -->
+ {{ if not .IsHome }}
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "{{ .Site.Title }}",
+          "item": "{{ .Site.BaseURL }}"
+        },
+        {{ if .IsSection }}
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "{{ .Section }}",
+            "item": "{{ .Permalink }}"
+          }
+        {{ else }}
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "{{ .Section }}",
+            "item": "{{ .Site.BaseURL }}{{ .Section }}"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "{{ .Title }}",
+            "item": "{{ .Permalink }}"
+          }
+        {{ end }}
+      ]
+    }
+</script>
+{{ end }}
+
+<!-- ARTICLE -->
 <script type="application/ld+json">
     {
         "@context": "http://schema.org",
@@ -16,10 +56,35 @@
             "name": "{{ .Site.Title }}",
             "logo": {
               "@type": "ImageObject",
-              "url": "{{ .Site.Params.ogimage | absURL }}"
+              "url": "{{ .Site.Params.logo | absURL }}"
             }
         },
 
-        "url": "{{ .Site.BaseURL }}",
+        "url": "{{ .Permalink }}",
     }
 </script>
+
+<!-- WEBSITE -->
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "WebSite",
+        "url": "{{ .Site.BaseURL }}",
+        "name": "{{ .Site.Title }}"
+    }
+</script>
+
+<!-- ORGANIZATION -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "{{ .Site.BaseURL }}",
+      "name": "{{ .Site.Title }}",
+      "logo": "{{ .Site.Params.logo | absURL }}",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "{{ .Site.Params.email }}",
+      }
+    }
+    </script>
