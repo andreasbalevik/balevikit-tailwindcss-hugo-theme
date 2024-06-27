@@ -50,7 +50,7 @@
 <link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
 
 <!-- PAGE LINKS -->
-<link rel="alternate" href="{{ .Permalink }}">
+<link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
 {{ range .AllTranslations }}
 <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
 {{ end }}

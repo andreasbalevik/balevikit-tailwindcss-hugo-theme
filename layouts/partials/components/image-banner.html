@@ -11,5 +11,5 @@
 {{ $image := resources.GetMatch .src }}
 {{ $image_medium := $image.Fill "1313x600" }}
 <picture>
-    <img {{ with .alt }}alt="{{ . }}"{{ end }} loading="lazy" src="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
+    <img itemprop="image" {{ with .alt }}alt="{{ . }}"{{ end }} loading="lazy" src="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
 </picture>

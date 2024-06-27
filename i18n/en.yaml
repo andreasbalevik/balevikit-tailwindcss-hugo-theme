@@ -1,0 +1,18 @@
+- id: contact-us
+  translation: "Contact us"
+- id: image
+  translation: "Image"
+- id: menu
+  translation: "Menu"
+- id: home
+  translation: "Home"
+- id: language
+  translation: "Language"
+- id: navigation
+  translation: "Navigation"
+- id: open-menu
+  translation: "Open menu"
+- id: next
+  translation: "Next"
+- id: previous
+  translation: "Previous"
