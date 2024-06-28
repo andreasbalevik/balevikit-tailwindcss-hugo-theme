@@ -16,3 +16,7 @@
   translation: "Next"
 - id: previous
   translation: "Previous"
+- id: tilbake
+  translation: "Go back"
+- id: page-not-found
+  translation: "Page not found"

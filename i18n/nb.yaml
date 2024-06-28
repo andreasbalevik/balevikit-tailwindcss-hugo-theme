@@ -16,3 +16,7 @@
   translation: "Neste"
 - id: previous
   translation: "Forrige"
+- id: tilbake
+  translation: "Tilbake"
+- id: page-not-found
+  translation: "Siden ble ikke funnet"

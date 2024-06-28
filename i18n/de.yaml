@@ -12,3 +12,7 @@
   translation: "Nächste"
 - id: previous
   translation: "Vorherige"
+- id: tilbake
+  translation: "Geh zurück"
+- id: page-not-found
+  translation: "Seite nicht gefunden"
