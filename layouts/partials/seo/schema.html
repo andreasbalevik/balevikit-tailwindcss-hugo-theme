@@ -67,7 +67,8 @@
         "@context": "http://schema.org",
         "@type": "WebSite",
         "url": "{{ .Site.BaseURL }}",
-        "name": "{{ .Site.Title }}"
+        "name": "{{ .Page.Title | default .Site.Title }}",
+        "description" : {{ .Page.Params.description | default .Site.Params.description }}
     }
 </script>
 
