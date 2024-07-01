@@ -17,14 +17,18 @@
 <meta property="og:site_name" content="{{ .Site.Title }}">
 <meta property="og:updated_time" content="{{ time.Now.Format $ISO8601 | safeHTML  }}">
 
-{{- with $.Param "images" -}}
+{{- with .Page.Params.images -}}
   {{- range first 6 . -}}
-    <meta property="og:image" content="{{ . | absURL }}" />
+    <meta property="og:image" content="{{ .src | absURL }}" />
     {{- if in $.Site.BaseURL "https://" -}}
-    <meta property="og:image:secure" content="{{ (. | replace "http://" "https://") | absURL }}" />
+    <meta property="og:image:secure" content="{{ (.src | replace "http://" "https://") | absURL }}" />
     {{- end -}}
-    <meta property="og:image:alt" content="{{- with $.Description }}{{ . }}{{ else }}{{- if $.IsPage }}{{ $.Summary }}{{ else }}{{- with $.Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}" />
-  {{- end -}}
+
+    {{ with .alt}}
+    <meta property="og:image:alt" content="{{ . }}" />
+    {{ end }}
+  
+    {{- end -}}
 {{- end -}}
 
 {{- if not .PublishDate.IsZero -}}
