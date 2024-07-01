@@ -9,13 +9,13 @@
         },
         "headline": "{{ .Title }}",
         "description": "{{ .Page.Params.description }}",
-        "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.image }}{{ end }}",
+        "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}",
         "publisher": {
             "@type": "Organization",
             "name": "{{ .Site.Title }}",
             "logo": {
                 "@type": "ImageObject",
-                "url": "{{ .Site.Params.logo | absURL }}"
+                "url": "{{ .Site.Params.brand_image | absURL }}"
             }
         },
         "url": "{{ .Permalink }}"
