@@ -1,0 +1,35 @@
+<button onclick="scrollToTop()" id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4
+                       rounded-full bg-white 
+                       transition duration-300 hover:bg-gray-100 
+                       p-2 border-solid border-4 border-gray-700 ">
+    <svg class="w-10 h-10 lg:w-12 lg:h-12 text-gray-950" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+        fill="none" viewBox="0 0 24 24">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M12 6v13m0-13 4 4m-4-4-4 4" />
+    </svg>
+
+    </svg>
+
+</button>
+
+
+<script>
+    const scrollToTopButton =
+        document.getElementById('scroll-to-top');
+    scrollToTopButton.style.display = 'none';
+
+    window.addEventListener('scroll', () => {
+        if (window.pageYOffset > 100) {
+            scrollToTopButton.style.display = 'block';
+        } else {
+            scrollToTopButton.style.display = 'none';
+        }
+    });
+
+    function scrollToTop() {
+        window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+        });
+    }              
+</script>
