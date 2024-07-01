@@ -1,0 +1,36 @@
+{{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
+
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ .Permalink }}">
+
+{{- with .Site.Language -}}
+  <meta property="og:locale" content="{{ . }}" />
+{{- end -}}
+{{- if .IsTranslated -}}
+  {{ range .Translations -}}
+    <meta property="og:locale:alternate" content="{{ .Lang }}" />
+  {{- end -}}
+{{- end -}}
+
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:updated_time" content="{{ time.Now.Format $ISO8601 | safeHTML  }}">
+
+{{- with $.Param "images" -}}
+  {{- range first 6 . -}}
+    <meta property="og:image" content="{{ . | absURL }}" />
+    {{- if in $.Site.BaseURL "https://" -}}
+    <meta property="og:image:secure" content="{{ (. | replace "http://" "https://") | absURL }}" />
+    {{- end -}}
+    <meta property="og:image:alt" content="{{- with $.Description }}{{ . }}{{ else }}{{- if $.IsPage }}{{ $.Summary }}{{ else }}{{- with $.Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}" />
+  {{- end -}}
+{{- end -}}
+
+{{- if not .PublishDate.IsZero -}}
+<meta property="article:published_time" content="{{.PublishDate.Format $ISO8601 | safeHTML }}">
+{{- end -}}
+{{- if not .Date.IsZero -}}
+<meta property="article:modified_time" content="{{.Lastmod.Format $ISO8601 | safeHTML }}">
+{{- end -}}
+

@@ -7,15 +7,13 @@
 
 <body class="bg-[#f5f5f5]">
 
-    {{ partial "header.html" . }}
+    {{ partial "components/header.html" . }}
 
     <main>
         {{ block "main" . }}{{ end }}
     </main>
 
-    {{ partial "footer.html" . }}
-
-    {{ partial "components/to-top-button.html" . }}
+    {{ partial "components/footer.html" . }}
 
 </body>
 
