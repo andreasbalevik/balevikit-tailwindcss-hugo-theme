@@ -14,9 +14,6 @@
 {{- with .Page.Params.images -}}
   {{- range first 6 . -}}
     <meta property="og:image" content="{{ .src | absURL }}" />
-    {{- if in $.Site.BaseURL "https://" -}}
-    <meta property="og:image:secure" content="{{ (.src | replace "http://" "https://") | absURL }}" />
-    {{- end -}}
 
     {{ with .alt}}
     <meta property="og:image:alt" content="{{ . }}" />
