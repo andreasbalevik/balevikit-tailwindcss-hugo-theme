@@ -9,6 +9,9 @@
             {{ with .Site.Params.orgnr}}
             <span class="block mt-3 text-sm">Org.nr: {{.}}</span>
             {{ end }}
+            {{ with .Site.Params.address}}
+            <span class="block mt-3 text-sm">{{.}}</span>
+            {{ end }}
         </div>
 
         <div class="flex-1">
