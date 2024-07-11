@@ -4,10 +4,14 @@
         <div class="flex-1">
             <h3 class="text-xl">{{.Site.Title}}</h3>
             {{ with .Site.Params.email}}
-            <span class="block mt-3 text-sm">E-post: {{.}}</span>
+            <a href="mailto:{{.}}" class="block mt-3 text-sm">{{ i18n "email"}}: {{.}}</a>
             {{ end }}
+            {{ with .Site.Params.phone}}
+            <a href="tel:{{.}}" class="block mt-3 text-sm">{{ i18n "phone" }}: {{.}}</a>
+            {{ end }}
+            <br>
             {{ with .Site.Params.orgnr}}
-            <span class="block mt-3 text-sm">Org.nr: {{.}}</span>
+            <span class="block mt-3 text-sm">Orgnr: {{.}}</span>
             {{ end }}
             {{ with .Site.Params.address}}
             <span class="block mt-3 text-sm">{{.}}</span>

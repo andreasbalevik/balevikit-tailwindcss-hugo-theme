@@ -20,3 +20,5 @@
   translation: "Go back"
 - id: page-not-found
   translation: "Page not found"
+- id: phone
+  translation: "Phone"
