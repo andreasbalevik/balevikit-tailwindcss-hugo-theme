@@ -1,5 +1,5 @@
 <nav class="bg-inherit fixed w-full z-50 top-0 start-0 shadow min-h-[89.15px] lg:min-h-[59.5px] item-center flex">
-    <div class="container flex flex-wrap items-center justify-between mx-auto px-4 py-2 bg-inherit">
+    <div class="container block lg:flex lg:flex-wrap items-center justify-between mx-auto px-4 py-2 bg-inherit">
         <a href="{{ .Site.Home.Permalink }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <!--<img src="" class="h-8" alt="" />-->
             <span class="self-center text-base md:text-lg font-semibold whitespace-nowrap">
@@ -55,7 +55,7 @@
             <!-- MENY MOBILE BUTTON -->
             <button data-collapse-toggle="navbar-language" type="button"
                 class="inline-flex items-center justify-center border w-10 h-10 text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100"
-                aria-controls="navbar-language" aria-expanded="false">
+                aria-controls="navbar-language">
                 <span class="sr-only">{{ i18n "open-menu" }}</span>
                 <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
                     viewBox="0 0 17 14">
@@ -71,7 +71,7 @@
             {{ $currentPage := . }}
             {{ $section := .Site.GetPage $currentPage.Section }}
             <ul
-                class="flex flex-col font-medium p-4 lg:p-0 mt-4 bg-inherit lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 list-disc lg:list-none">
+                class="flex flex-col font-medium p-4 lg:p-0 bg-inherit lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 list-disc lg:list-none">
 
                 {{ range .Site.Menus.main.Sort }}
                 <li>
