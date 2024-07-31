@@ -22,3 +22,5 @@
   translation: "Siden ble ikke funnet"
 - id: phone
   translation: "Telefon"
+- id: email
+  translation: "E-post"

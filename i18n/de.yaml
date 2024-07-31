@@ -16,3 +16,5 @@
   translation: "Geh zurück"
 - id: page-not-found
   translation: "Seite nicht gefunden"
+- id: email
+  translation: "Email"

@@ -22,3 +22,5 @@
   translation: "Page not found"
 - id: phone
   translation: "Phone"
+- id: email
+  translation: "Email"
