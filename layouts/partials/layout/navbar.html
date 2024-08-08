@@ -1,8 +1,8 @@
-<nav class="bg-inherit fixed w-full z-50 top-0 start-0 shadow min-h-[89.15px] lg:min-h-[59.5px] item-center flex">
+<nav class="bg-inherit fixed w-full z-50 top-0 start-0 min-h-[89.15px] lg:min-h-[59.5px] item-center flex">
     <div class="container block lg:flex lg:flex-wrap items-center justify-between mx-auto px-4 py-2 bg-inherit">
         <a href="{{ .Site.Home.Permalink }}" class="flex items-center space-x-3 rtl:space-x-reverse">
             <!--<img src="" class="h-8" alt="" />-->
-            <span class="self-center text-base md:text-lg font-semibold whitespace-nowrap">
+            <span class="self-center text-base md:text-lg whitespace-nowrap">
                 {{.Site.Title}}
             </span>
         </a>
@@ -13,7 +13,7 @@
             {{ with .Translations }}
                 <!-- SELECT TRANSLATION BUTTON -->
                 <button type="button" data-dropdown-toggle="language-dropdown-menu"
-                    class="inline-flex items-center font-medium justify-center py-2 text-sm text-inherit rounded-lg cursor-pointer">
+                    class="inline-flex items-center justify-center py-2 text-sm text-inherit rounded-lg cursor-pointer">
                     <svg class="w-6 h-6 text-inherit cursor-pointer" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
                         height="24" fill="currentColor" viewBox="0 0 24 24">
                         <path fill-rule="evenodd"
@@ -71,7 +71,7 @@
             {{ $currentPage := . }}
             {{ $section := .Site.GetPage $currentPage.Section }}
             <ul
-                class="flex flex-col font-medium p-4 lg:p-0 bg-inherit lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 list-disc lg:list-none">
+                class="flex flex-col p-4 lg:p-0 bg-inherit lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 list-disc lg:list-none">
 
                 {{ range .Site.Menus.main.Sort }}
                 <li>
