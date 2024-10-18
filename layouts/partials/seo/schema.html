@@ -1,25 +1,25 @@
-<script type="application/ld+json">
-    {
-        "@context": "http://schema.org",
-        "@type": "Article",
-        "mainEntityOfPage": {
-            "@type": "WebPage",
-            "@id": "https://www.example.com/article"
-        },
+{{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
 
-        "headline": "{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}"
-        "description": "{{ .Page.Params.description }}",
-        "image": "{{ with .Page.Params.ogImage }} {{ . | absURL}} {{else}} {{.Site.Params.ogImage}} {{end}}",
-        
-        "publisher": {
-            "@type": "Organization",
-            "name": "{{ .Site.Title }}",
-            "logo": {
-              "@type": "ImageObject",
-              "url": "{{ .Site.Params.ogimage | absURL }}"
-            }
-        },
+<meta itemprop="name" content="{{ .Title }}">
+<meta itemprop="description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
+<meta itemprops="keywords" name="keywords" content="{{ with .Params.keywords }}, {{.}} {{else}} {{ with .Site.Params.keywords }}{{.}}{{end}} {{ end }}">
 
-        "url": "{{ .Site.BaseURL }}",
-    }
-</script>
+{{- if not .PublishDate.IsZero -}}
+<meta itemprop="datePublished" content="{{ .PublishDate.Format $ISO8601 | safeHTML }}">
+{{- end -}}
+{{- if not .Date.IsZero -}}
+<meta itemprop="dateModified" content="{{ .Date.Format $ISO8601 | safeHTML }}">
+{{- end -}}
+
+{{- with .Page.Params.images -}}
+  {{- range first 6 . -}}
+    <meta property="og:image" content="{{ .src | absURL }}" />
+
+    {{ with .alt}}
+    <meta property="og:image:alt" content="{{ . }}" />
+    {{ end }}
+      
+    {{- end -}}
+{{ else }}
+<meta property="og:image" content="{{ .Site.Params.brand_image | absURL }}" />
+{{- end -}}

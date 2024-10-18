@@ -1,0 +1,23 @@
+<!-- ARTICLE -->
+<script type="application/ld+json">
+    {
+        "@context": "http://schema.org",
+        "@type": "Article",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://www.example.com/article"
+        },
+        "headline": "{{ .Title }}",
+        "description": "{{ .Page.Params.description }}",
+        "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}",
+        "publisher": {
+            "@type": "Organization",
+            "name": "{{ .Site.Title }}",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "{{ .Site.Params.brand_image | absURL }}"
+            }
+        },
+        "url": "{{ .Permalink }}"
+    }
+    </script>

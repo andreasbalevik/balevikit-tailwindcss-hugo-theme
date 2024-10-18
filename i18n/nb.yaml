@@ -1,0 +1,26 @@
+- id: contact-us
+  translation: "Kontakt oss"
+- id: image
+  translation: "Bilde"
+- id: menu
+  translation: "Meny"
+- id: home
+  translation: "Hjem"
+- id: language
+  translation: "Språk"
+- id: navigation
+  translation: "Navigasjon"
+- id: open-menu
+  translation: "Åpne hovedmeny"
+- id: next
+  translation: "Neste"
+- id: previous
+  translation: "Forrige"
+- id: tilbake
+  translation: "Tilbake"
+- id: page-not-found
+  translation: "Siden ble ikke funnet"
+- id: phone
+  translation: "Telefon"
+- id: email
+  translation: "E-post"

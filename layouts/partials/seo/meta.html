@@ -1,54 +1,31 @@
+{{- $title := cond (isset . "Title") .Title $.Site.Title -}}
+
 <!-- PAGE METADATA -->
 <meta charset="utf-8">
+<title itemprop="name">{{ $title }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="robots" content="follow, index, max-image-preview: large">
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
+<meta name="description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
 
-<meta property="og:title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf " %s | %s" .Title site.Title }}{{end}}" />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="{{ .Permalink }}">
-<meta property="og:locale" content="{{ .Site.Language }}">
-<meta property="og:site_name" content="{{ .Site.BaseURL }}">
-<meta property="og:updated_time" content="{{ time.Now }}">
+{{- with .Keywords -}}
+<meta name="keywords" content="{{ . }}" />
+{{- end -}}
 
-<meta property="article:published_time" content="{{.PublishDate}}">
-<meta property="article:modified_time" content="{{.Lastmod}}">
+{{ hugo.Generator }}
 
-<!-- PAGE TITLE -->
-<title itemprop="name">{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf "%s | %s" .Title site.Title }}{{ end }}</title>
+<meta name="apple-mobile-web-app-title" content="{{ $title }}" />
+<meta name="application-name" content="{{ $title }}" />
 
-<!-- PAGE DESCRIPTION -->
-{{ if .Params.description }}
-<meta name="description" content="{{ .Params.description }}" />
-<meta name="og:description" content="{{ .Params.description }}" />
-{{ else if .Content }}
-<meta name="description" content="{{ substr (.Content | plainify) 0 120 }}" />
-<meta name="og:description" content="{{ substr (.Content | plainify) 0 120 }}" />
-{{ else }}
-<meta name="description" content="{{ .Site.Params.description }}" />
-<meta name="og:description" content="{{ .Site.Params.description }}" />
-{{ end }}
+<!-- PAGE SCHEMA -->
+{{ partial "seo/schema.html" . }}
 
-<!-- PAGE KEYWORDS -->
-<meta name="keywords" content="{{ with .Site.Params.keywords }}{{ delimit . ", "}}{{ end }}, {{ with .Params.keywords }}{{ delimit . " , "}}{{ end }}" />
-
-<!-- IMAGE META -->
-{{ with .Params.image }}
-<meta itemprop="image" content="{{ . | absURL }}" />
-<meta property="og:image" content="{{ . | absURL }}" />
-{{ else }}
-<meta itemprop="image" content="{{ .Site.Params.ogimage | absURL }}" />
-<meta property="og:image" content="{{ .Site.Params.ogimage | absURL }}" />
-{{ end }}
-
-<!-- MOBILE META -->
-<meta name="apple-mobile-web-app-title" content="{{ if .IsHome }}{{ site.Title }}{{ else }}{{ printf " %s | %s" .Title site.Title }}{{ end }}">
-<meta name="theme-color" content="#FFFFFF">
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
+<!-- OPENGRAPH -->
+{{ partial "seo/opengraph.html" .}}
 
 <!-- PAGE LINKS -->
-<link rel="alternate" href="{{ .Permalink }}">
+<link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
 {{ range .AllTranslations }}
 <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
 {{ end }}
@@ -59,5 +36,7 @@
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
 
-<!-- SCHEMA -->
-{{ partial "seo/schema.html" . }}
+{{ partialCached "utils/css.html" . }}
+{{ partialCached "utils/js.html" . }}
+
+{{ partial "seo/json-ld/json-ld.html" . }}

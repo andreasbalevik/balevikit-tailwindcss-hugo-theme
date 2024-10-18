@@ -1,0 +1,25 @@
+{{ define "main" }}
+
+<div class="container my-medium flex">
+
+    <div class="bg-white rounded-lg p-8 flex-col mx-auto">
+        <h1 class="text-xl mb-2">404 - Siden ble ikke funnet</h1>
+        <p>
+
+            <label>
+                <a class="text-blue-700 flex items-center" href="{{.Site.Home.Permalink}}">
+                    <svg class="w-6 h-6" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M5 12h14M5 12l4-4m-4 4 4 4" />
+                    </svg>
+                    {{ i18n "tilbake" }}
+                </a>
+            </label>
+
+        </p>
+    </div>
+
+</div>
+
+{{ end }}

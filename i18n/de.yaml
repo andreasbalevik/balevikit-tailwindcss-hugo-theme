@@ -1,0 +1,20 @@
+- id: contact-us
+  translation: "Kontakt"
+- id: image
+  translation: "Bild"
+- id: home
+  translation: "Heimat"
+- id: language
+  translation: "Sprache"
+- id: open-menu
+  translation: "Menü öffnen"
+- id: next
+  translation: "Nächste"
+- id: previous
+  translation: "Vorherige"
+- id: tilbake
+  translation: "Geh zurück"
+- id: page-not-found
+  translation: "Seite nicht gefunden"
+- id: email
+  translation: "Email"

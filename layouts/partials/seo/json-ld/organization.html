@@ -1,0 +1,14 @@
+<!-- ORGANIZATION -->
+<script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "url": "{{ .Site.BaseURL }}",
+      "name": "{{ .Site.Title }}",
+      "logo": "{{ .Site.Params.logo | absURL }}",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "email": "{{ .Site.Params.email }}",
+      }
+    }
+</script>
