@@ -11,24 +11,12 @@ module.exports = {
         center: true,
         padding: '1rem',
         screens: {
-          lg: "1280px",
+          lg: "1180px",
        }
       },
 
       colors: {
         primary : '#243c5a'
-      },
-
-      margin: {
-        small: "1rem",
-        medium : "1.5rem",
-        large: "2.5rem"
-      },
-
-      padding: {
-        small: "0.5rem",
-        medium : "1.5rem",
-        large: "2.5rem"
       },
     },
   },

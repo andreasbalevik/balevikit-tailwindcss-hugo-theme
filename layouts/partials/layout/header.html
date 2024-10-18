@@ -1,17 +1,21 @@
 <header class="mb-[46.75px]">
-    <nav class="h-[46.75px] bg-white fixed w-full z-20 top-0 start-0 ">
+    <nav class="h-[46.75px] z-50 bg-white fixed w-full top-0 start-0 ">
         <div class="container flex flex-wrap items-center justify-between mx-auto py-2 bg-white">
-            
+
             <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <span class="self-center text-xl tracking-wide font-semibold whitespace-nowrap dark:text-white">
                     {{.Site.Title}}
                 </span>
             </a>
 
-            <button data-collapse-toggle="navbar-sticky" type="button" class="inline-flex items-center w-5 h-5 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600" aria-controls="navbar-sticky" aria-expanded="false">
+            <button data-collapse-toggle="navbar-sticky" type="button"
+                class="inline-flex items-center w-5 h-5 justify-center text-sm text-gray-500 rounded-lg lg:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 dark:focus:ring-gray-600"
+                aria-controls="navbar-sticky" aria-expanded="false">
                 <span class="sr-only">Open main menu</span>
-                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 17 14">
-                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h15M1 7h15M1 13h15"/>
+                <svg class="w-5 h-5" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                    viewBox="0 0 17 14">
+                    <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M1 1h15M1 7h15M1 13h15" />
                 </svg>
             </button>
 
@@ -19,14 +23,21 @@
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
                 {{ $currentPage := . }}
                 {{ $section := .Site.GetPage $currentPage.Section }}
-                <div class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-white">
+                <div
+                    class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-white">
                     <ul class="block md:grid md:grid-cols-2 lg:flex gap-8 justify-end text-xl lg:text-base">
                         {{ range .Site.Menus.main.Sort }}
                         <li>
-                            <a href="#" class="block tracking-wide py-2 px-3 text-gray-800 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:hover:text-blue-600 lg:p-0" aria-current="page">
+                            <a href="{{.URL}}"
+                                class="block tracking-wide py-2 px-3 text-gray-800 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:hover:text-blue-600 lg:p-0"
+                                aria-current="page">
                                 {{ .Name }}
                             </a>
                         </li>
+                        {{ end }}
+
+                        {{ with .Translations }}
+                            <li class="ml-0 mt-6 lg:ml-6 lg:mt-0">{{ partial "layout/language.html" . }}</li>
                         {{ end }}
                     </ul>
                 </div>
