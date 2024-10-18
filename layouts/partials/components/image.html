@@ -11,6 +11,6 @@
 {{ $image := resources.GetMatch .src }}
 {{ $image_small := $image.Fill "648x390" }}
 <picture>
-    <img {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy" fetchpriority="low" src="{{ $image_small.RelPermalink }}" 
+    <img class="w-full h-full object-cover" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy" fetchpriority="low" src="{{ $image_small.RelPermalink }}" 
     width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
 </picture>

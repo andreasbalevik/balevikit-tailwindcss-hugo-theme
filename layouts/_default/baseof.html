@@ -2,7 +2,11 @@
 <html lang="{{ site.LanguageCode }}">
 
 <head>
-  {{ partial "head.html" . }}
+
+  {{ partial "seo/meta.html" . }}
+  {{ partialCached "utils/css.html" . }}
+  {{ partialCached "utils/js.html" . }}
+  
 </head>
 
 <body class="bg-[#f5f5f5]">
