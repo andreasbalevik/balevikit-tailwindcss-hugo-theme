@@ -1,9 +1,12 @@
 <header class="mb-[48px] bg-white text-gray-500">
     <nav class="h-[48px] z-50 bg-inherit fixed w-full top-0 start-0 border-b border-gray-200">
+        {{ $currentPage := . }}
+        {{ $section := .Site.GetPage $currentPage.Section }}
+        
         <div class="container flex flex-wrap items-center justify-between mx-auto py-2 bg-inherit border-b border-gray-200">
-
-            <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
-                <span class="text-inherit self-center text-xl tracking-wide font-semibold whitespace-nowrap">
+            
+            <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+                <span class="{{if eq $section.RelPermalink .Site.Home.RelPermalink }}text-gray-900{{else}}text-inherit{{end}} self-center text-xl tracking-wide font-semibold whitespace-nowrap">
                     {{.Site.Title}}
                 </span>
             </a>
@@ -18,9 +21,6 @@
                         d="M1 1h15M1 7h15M1 13h15" />
                 </svg>
             </button>
-
-            {{ $currentPage := . }}
-            {{ $section := .Site.GetPage $currentPage.Section }}
             
             {{ if .Site.Menus.main }}
             <div class="items-center justify-between hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
@@ -30,7 +30,7 @@
                         {{ range .Site.Menus.main.Sort }}
                         <li>
                             <a href="{{.URL}}"
-                                class="{{if eq $section.RelPermalink .URL }}text-blue-700{{else}}text-inherit{{end}} block tracking-wide py-2 px-3 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:hover:text-blue-600 lg:p-0"
+                                class="{{if eq $section.RelPermalink .URL }}text-gray-900{{else}}text-inherit{{end}} block tracking-wide py-2 px-3 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:hover:text-blue-600 lg:p-0"
                                 aria-current="page">
                                 {{ .Name }}
                             </a>
