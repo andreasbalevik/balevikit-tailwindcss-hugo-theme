@@ -1,9 +1,9 @@
-<header class="mb-[48px] bg-white text-gray-500">
-    <nav class="h-[48px] z-50 bg-inherit fixed w-full top-0 start-0 border-b border-gray-200">
+<header class="mb-[56.25px] bg-white text-gray-500">
+    <nav class="h-[56.25px] z-50 bg-inherit fixed w-full top-0 start-0 border-b border-gray-200">
         {{ $currentPage := . }}
         {{ $section := .Site.GetPage $currentPage.Section }}
         
-        <div class="container flex flex-wrap items-center justify-between mx-auto py-2 bg-inherit border-b border-gray-200">
+        <div class="container flex flex-wrap items-center justify-between mx-auto py-3 bg-inherit border-b border-gray-200">
             
             <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <span class="{{if eq $section.RelPermalink .Site.Home.RelPermalink }}text-gray-900{{else}}text-inherit{{end}} self-center text-xl tracking-wide font-semibold whitespace-nowrap">
@@ -23,26 +23,26 @@
             </button>
             
             {{ if .Site.Menus.main }}
-            <div class="items-center justify-between hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
-                <div
-                    class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-gray-100 rounded-lg bg-gray-50 lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-inherit">
-                    <ul class="block md:grid md:grid-cols-2 lg:flex gap-8 justify-end text-xl lg:text-base">
-                        {{ range .Site.Menus.main.Sort }}
-                        <li>
-                            <a href="{{.URL}}"
-                                class="{{if eq $section.RelPermalink .URL }}text-gray-900{{else}}text-inherit{{end}} block tracking-wide py-2 px-3 rounded hover:bg-gray-100 lg:hover:bg-transparent lg:hover:text-blue-600 lg:p-0"
-                                aria-current="page">
-                                {{ .Name }}
-                            </a>
-                        </li>
-                        {{ end }}
+                <div class="items-center justify-between hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
+                    <div
+                        class="flex flex-col p-4 lg:p-0 mt-4 font-medium border border-gray-400 rounded-lg bg-white lg:space-x-8 rtl:space-x-reverse lg:flex-row lg:mt-0 lg:border-0 lg:bg-inherit">
+                        <ul class="block md:grid md:grid-cols-2 lg:flex gap-4 justify-end text-xl lg:text-base">
+                            {{ range .Site.Menus.main.Sort }}
+                            <li>
+                                <a href="{{.URL}}"
+                                    class="{{if eq $section.RelPermalink .URL }}text-gray-900{{else}}text-inherit{{end}} block tracking-wide py-2 px-3 rounded hover:text-black lg:p-0"
+                                    aria-current="page">
+                                    {{ .Name }}
+                                </a>
+                            </li>
+                            {{ end }}
 
-                        {{ with .Translations }}
-                            <li class="ml-0 mt-6 lg:ml-6 lg:mt-0">{{ partial "layout/language.html" . }}</li>
-                        {{ end }}
-                    </ul>
+                            {{ with .Translations }}
+                                <li class="ml-0 mt-6 lg:ml-6 lg:mt-0">{{ partial "layout/language.html" . }}</li>
+                            {{ end }}
+                        </ul>
+                    </div>
                 </div>
-            </div>
             {{ end }}
 
         </div>
