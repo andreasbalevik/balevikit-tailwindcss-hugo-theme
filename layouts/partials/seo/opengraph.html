@@ -15,7 +15,7 @@
 {{- end -}}
 
 <meta property="og:site_name" content="{{ .Site.Title }}">
-<meta property="og:updated_time" content="{{ time.Now.Format $ISO8601 | safeHTML  }}">
+<meta property="og:updated_time" content="{{ time.Now.Format $ISO8601 | safeHTML }}">
 
 {{- with .Page.Params.images -}}
   {{- range first 6 . -}}
