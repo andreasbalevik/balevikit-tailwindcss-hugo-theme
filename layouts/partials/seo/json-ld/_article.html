@@ -9,7 +9,7 @@
         },
         "headline": "{{ .Title }}",
         "description": "{{ .Page.Params.description }}",
-        "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}",
+        "image": "{{ with .Params.images }}{{ index . 0 | absURL }}{{ else }}{{ .Site.Params.brand_image | absURL }}{{ end }}",
         "publisher": {
             "@type": "Organization",
             "name": "{{ .Site.Title }}",
