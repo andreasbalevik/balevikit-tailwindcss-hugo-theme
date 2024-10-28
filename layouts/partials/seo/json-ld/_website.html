@@ -7,6 +7,5 @@
         "name": "{{ .Site.Title }}",
         "description" : {{ .Page.Params.description | default .Site.Params.description }},
         "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}"
-
     }
 </script>
