@@ -6,7 +6,7 @@
         "url": "{{ .Site.BaseURL }}",
         "name": "{{ .Site.Title }}",
         "description" : {{ .Page.Params.description | default .Site.Params.description }},
-        "image": "{{ with .Params.images }}{{ index . 0 | absURL }}{{ else }}{{ .Site.Params.brand_image | absURL }}{{ end }}"
+        "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}"
 
     }
 </script>
