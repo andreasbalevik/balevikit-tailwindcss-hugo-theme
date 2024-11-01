@@ -19,6 +19,7 @@ module.exports = {
       colors: {
         'primary': 'rgb(var(--color-primary,26,86,219),1)',
         'primary--hover': 'rgb(var(--color-primary,26,86,219),.9)',
+        'primary--heading': 'rgb(var(--color-primary,26,86,219),.9)',
         'primary--light': 'rgb(var(--color-primary,26,86,219),.05)'
       },
     },
