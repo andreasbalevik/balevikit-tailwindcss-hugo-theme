@@ -6,6 +6,8 @@
         <div class="container flex flex-wrap items-center justify-between mx-auto py-3 bg-inherit border-b border-gray-200">
             
             <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center space-x-3 rtl:space-x-reverse">
+                
+                <div class="w-4 h-4 bg-primary mt-0.5 rounded-full"></div>
                 <span class="{{if eq $section.RelPermalink .Site.Home.RelPermalink }}text-gray-900{{else}}text-inherit{{end}} self-center text-xl tracking-wide font-semibold whitespace-nowrap">
                     {{.Site.Title}}
                 </span>
