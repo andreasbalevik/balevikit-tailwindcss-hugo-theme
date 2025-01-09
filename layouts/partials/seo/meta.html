@@ -5,7 +5,7 @@
 <title itemprop="name">{{ $title }}</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<meta name="robots" content="follow, index, max-image-preview: large">
+<meta name="robots" content="follow, index">
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
 <meta name="description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
 

@@ -10,16 +10,3 @@
 {{- if not .Date.IsZero -}}
 <meta itemprop="dateModified" content="{{ .Date.Format $ISO8601 | safeHTML }}">
 {{- end -}}
-
-{{- with .Page.Params.images -}}
-  {{- range first 6 . -}}
-    <meta property="og:image" content="{{ .src | absURL }}" />
-
-    {{ with .alt}}
-    <meta property="og:image:alt" content="{{ . }}" />
-    {{ end }}
-      
-    {{- end -}}
-{{ else }}
-<meta property="og:image" content="{{ .Site.Params.brand_image | absURL }}" />
-{{- end -}}

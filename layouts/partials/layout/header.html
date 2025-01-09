@@ -4,6 +4,7 @@
 
             <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
                 <span class="text-inherit self-center text-xl tracking-wide whitespace-nowrap">
+
                     {{.Site.Title}}
                 </span>
             </a>
@@ -78,7 +79,13 @@
                         {{ end }}
                     </ul>
                 </div>
-            </div>
+
+            {{ else }}
+                {{ with .Translations }}
+                    <div class="inline-flex">
+                        {{ partial "layout/language.html" . }}
+                    </div>
+                {{ end }}    
             {{ end }}
 
         </div>

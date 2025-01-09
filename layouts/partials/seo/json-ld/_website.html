@@ -6,10 +6,5 @@
         "url": "{{ .Site.BaseURL }}",
         "name": "{{ .Site.Title }}",
         "description" : {{ .Page.Params.description | default .Site.Params.description }},
-        {{- with .Page.Params.images -}}
-        {{- range first 6 . -}}
-        "image": "{{- .url | relURL -}}",
-        {{- end -}}
-        {{- end -}}
     }
 </script>

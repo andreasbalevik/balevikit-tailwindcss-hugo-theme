@@ -1,0 +1,19 @@
+{{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
+
+{{ if not .IsHome }}
+<!-- ARTICLE -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+    "headline": "{{ .Title }}",
+    "description": "{{ .Page.Params.description }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{.Site.Title}}"
+  },
+  "datePublished": "{{ time.Now.Format $ISO8601 | safeHTML }}",
+  "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}",
+}
+</script>
+{{ end }}
