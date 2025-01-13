@@ -1,4 +1,4 @@
-{{- $title := cond (isset . "Title") .Title $.Site.Title -}}
+{{- $title := .Page.Title}}
 
 <!-- PAGE METADATA -->
 <meta charset="utf-8">
@@ -9,9 +9,7 @@
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
 <meta name="description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
 
-{{- with .Keywords -}}
-<meta name="keywords" content="{{ . }}" />
-{{- end -}}
+<meta name="keywords" content="{{ with .Params.keywords }}{{range .}}{{.}},{{end}} {{else}} {{ with .Site.Params.keywords }}{{range .}}{{.}},{{end}}{{end}} {{ end }}" />
 
 {{ hugo.Generator }}
 

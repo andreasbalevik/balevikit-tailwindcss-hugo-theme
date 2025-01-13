@@ -2,7 +2,7 @@
 
 <meta itemprop="name" content="{{ .Title }}">
 <meta itemprop="description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
-<meta itemprops="keywords" name="keywords" content="{{ with .Params.keywords }}, {{.}} {{else}} {{ with .Site.Params.keywords }}{{.}}{{end}} {{ end }}">
+<meta itemprops="keywords" name="keywords" content="{{ with .Params.keywords }} {{.}}, {{else}} {{ with .Site.Params.keywords }}{{range .}}{{.}},{{end}}{{end}} {{ end }}">
 
 {{- if not .PublishDate.IsZero -}}
 <meta itemprop="datePublished" content="{{ .PublishDate.Format $ISO8601 | safeHTML }}">
