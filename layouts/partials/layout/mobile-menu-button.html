@@ -1,0 +1,42 @@
+<button data-collapse-toggle="navbar-sticky" type="button"
+    class="inline-flex items-center w-5 h-5 justify-center text-sm text-inherit rounded-lg lg:hidden hover:bg-gray-100"
+    aria-controls="navbar-sticky" aria-expanded="false" onclick="toggleMenu(this)">
+    <span class="sr-only">Open main menu</span>
+    <svg class="w-5 h-5 closed-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 17 14">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M1 1h15M1 7h15M1 13h15" />
+    </svg>
+    <svg class="w-5 h-5 open-icon hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+        viewBox="0 0 20 20">
+        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M4 4l12 12M4 16L16 4" />
+    </svg>
+</button>
+
+<script>
+    function toggleMenu(button) {
+        const isOpen = button.getAttribute("aria-expanded") === "true";
+        button.setAttribute("aria-expanded", isOpen ? "false" : "true");
+
+        const closedIcon = button.querySelector(".closed-icon");
+        const openIcon = button.querySelector(".open-icon");
+
+        if (isOpen) {
+            closedIcon.classList.remove("hidden");
+            openIcon.classList.add("hidden");
+        } else {
+            closedIcon.classList.add("hidden");
+            openIcon.classList.remove("hidden");
+        }
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const button = document.querySelector('[data-collapse-toggle="navbar-sticky"]');
+        if (button) {
+            const isOpen = button.getAttribute("aria-expanded") === "true";
+            button.querySelector(".closed-icon").classList.toggle("hidden", isOpen);
+            button.querySelector(".open-icon").classList.toggle("hidden", !isOpen);
+        }
+    });
+</script>
