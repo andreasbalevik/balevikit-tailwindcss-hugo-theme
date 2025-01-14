@@ -10,29 +10,36 @@ images:
 
 
 
-<div id="default-carousel" class="relative w-full h-full" data-carousel="static">
+<div id="default-carousel" class="relative w-full" data-carousel="static">
     <!-- Carousel wrapper -->
 
-    <div class="relative h-full overflow-hidden">
+    <div class="relative h-[312px] md:h-[400px] lg:h-[500px] overflow-hidden">
         {{ range .images }}
         {{ $image := resources.GetMatch .src }}
-        {{ $image_small := $image.Fill "640x582" }}
+        {{ $image_large := $image.Fill "600x420 q100" }}
+        {{ $image_medium := $image.Fill "600x420 q40" }}
+        {{ $image_small := $image.Fill "414x276 q40" }}
+
         <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            <img itemprop="image" class="absolute block w-full h-full object-contain" src="{{ $image_small.RelPermalink }}" {{ with .alt
-                }}alt="{{ . }}" {{ end }} loading="lazy">
+            <img itemprop="image"
+                class="absolute block h-full object-cover -translate-x-1/2 -translate-y-1/2 top-1/2 left-1/2" srcset="
+                {{ $image_small.RelPermalink }} 600w, 
+                {{ $image_medium.RelPermalink }} 1000w, 
+                {{ $image_large.RelPermalink }} 1200w" src="{{ $image_large.RelPermalink }}" {{ with .alt }}alt="{{ . }}" {{ end
+                }} loading="lazy">
 
             {{ with .subject }}
-            <div class="absolute inset-0 flex items-end p-[60px] justify-center bg-black bg-opacity-10">
+            <div class="absolute inset-0 flex items-end p-4 md:p-8 lg:p-12 justify-center bg-black bg-opacity-10">
                 <span class="text-white text-lg md:text-xl lg:text-2xl font-bold">
                     {{ . }}
                 </span>
             </div>
             {{ end }}
         </div>
-
         {{ end }}
-
     </div>
+
+
 
     <!-- Slider indicators -->
     <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
