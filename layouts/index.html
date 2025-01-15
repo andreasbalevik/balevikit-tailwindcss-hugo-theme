@@ -1,0 +1,48 @@
+{{ define "main" }}
+
+<div class="container py-8">
+    <div class="grid grid-cols-2 gap-8">
+
+        {{ $example := index .Site.Data.example.images 0}}
+
+        <div class="col-span-2">
+            Banner
+            {{ partial "components/images/image-banner.html" $example }}
+        </div>
+
+        <div>
+            thumbnail
+            {{ partial "components/images/thumbnail.html" $example }}
+        </div>
+        <div>
+            square
+            {{ partial "components/images/image-square.html" $example }}
+        </div>
+    </div>
+</div>
+
+<div class="container py-8">
+    <div class="grid grid-cols-2 gap-8">
+
+
+        {{ $example := .Site.Data.example.images }}
+
+        <div class="col-span-2">
+            Carousel Banner
+            {{ partial "components/images/carousel-banner" (dict "ctx" . "images" $example ) }}
+            
+        </div>
+
+        <div class="col-span-1">
+            Carousel Square
+            {{ partial "components/images/carousel-square" (dict "ctx" . "images" $example ) }}
+            
+        </div>
+
+       
+    </div>
+</div>
+
+
+
+{{ end }}
