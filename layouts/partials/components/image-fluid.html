@@ -1,0 +1,15 @@
+{{/*
+Usage:
+
+{{ with index .Params.images 0 }}
+{{ partial "components/image-fluid" . }}
+{{ end }}
+
+*/}}
+
+<div class="block lg:hidden">
+    {{ partial "components/images/image-banner.html" . }}
+</div>
+<div class="hidden lg:block">
+    {{ partial "components/images/image-square.html" . }}
+</div>

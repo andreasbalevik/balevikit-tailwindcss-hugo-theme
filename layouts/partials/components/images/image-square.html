@@ -1,6 +1,6 @@
 {{/*
     Usage:
-    {{ partial "components/image-square.html" . }}
+    {{ partial "components/images/image-square.html" . }}
 
     Data:
     image_1:
@@ -9,7 +9,7 @@
 */}}
 
 {{ $image := resources.GetMatch .src }}
-{{ $image_small := $image.Fill "650x501" }}
+{{ $image_small := $image.Fill "650x500 q60" }}
 <picture>
     <img class="w-full h-full object-cover" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy" src="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
 </picture>
