@@ -8,7 +8,8 @@
         alt: "Description of the image"
 */}}
 
-{{ $image := resources.GetMatch .src }}
+{{ $filter := images.Contrast 10 }}
+{{ $image := resources.GetMatch .src | images.Filter $filter }}
 {{ $image_large := $image.Fill "1216x600 q60" }} <!-- For large screens up to 1216px -->
 {{ $image_medium := $image.Fill "810x500 q60" }} <!-- For screens up to 1050px -->
 {{ $image_small := $image.Fill "625x400 q60" }}  <!-- For tablets -->
