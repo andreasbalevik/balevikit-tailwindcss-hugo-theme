@@ -9,23 +9,26 @@
 */}}
 
 {{ $image := resources.GetMatch .src }}
-{{ $image_large := $image.Fill "1216x500 q75" }} <!-- For large screens up to 1216px -->
-{{ $image_medium := $image.Fill "810x500 q70" }} <!-- For screens up to 1050px -->
-{{ $image_small := $image.Fill "625x400 q65" }}  <!-- For tablets -->
+{{ $image_large := $image.Fill "1216x600 q60" }} <!-- For large screens up to 1216px -->
+{{ $image_medium := $image.Fill "810x500 q60" }} <!-- For screens up to 1050px -->
+{{ $image_small := $image.Fill "625x400 q60" }}  <!-- For tablets -->
 {{ $image_xsmall := $image.Fill "341x300 q60" }} <!-- For small devices -->
 
-<picture>
-    <!-- Define image sizes for different screen widths -->
-    <source media="(min-width: 1050px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
-    <source media="(min-width: 768px)" srcset="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
-    <source media="(min-width: 480px)" srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
-    <source srcset="{{ $image_xsmall.RelPermalink }}" width="{{ $image_xsmall.Width }}" height="{{ $image_xsmall.Height }}">
 
-    <!-- Fallback for very small screens or browsers that don't support <picture> -->
-    <img class="w-full h-[300px] sm:h-[400px] md:h-[500px] object-cover" 
-         {{ with .alt }}alt="{{ . }}"{{ end }} 
-         loading="lazy" 
-         src="{{ $image_xsmall.RelPermalink }}" 
-         width="{{ $image_xsmall.Width }}" 
-         height="{{ $image_xsmall.Height }}">
-</picture>
+<div class="max-w-[1720px] mx-auto">
+  <picture>
+      <!-- Define image sizes for different screen widths -->
+      <source media="(min-width: 1050px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+      <source media="(min-width: 768px)" srcset="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
+      <source media="(min-width: 480px)" srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+      <source srcset="{{ $image_xsmall.RelPermalink }}" width="{{ $image_xsmall.Width }}" height="{{ $image_xsmall.Height }}">
+
+      <!-- Fallback for very small screens or browsers that don't support <picture> -->
+      <img class="w-full h-[300px] sm:h-[400px] md:h-[500px] xl:h-[600px] object-cover" 
+          {{ with .alt }}alt="{{ . }}"{{ end }} 
+          loading="lazy" 
+          src="{{ $image_xsmall.RelPermalink }}" 
+          width="{{ $image_xsmall.Width }}" 
+          height="{{ $image_xsmall.Height }}">
+  </picture>
+</div>

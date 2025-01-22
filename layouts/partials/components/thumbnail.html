@@ -9,7 +9,7 @@ alt: ""
 */}}
 
 {{ $image := resources.GetMatch .src }}
-{{ $image_large := $image.Fill "648x400 q60" }}
+{{ $image_large := $image.Fill "648x400 q40" }}
 
 <picture>
     <img class="h-full object-cover w-full max-h-[400px] " {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy"
