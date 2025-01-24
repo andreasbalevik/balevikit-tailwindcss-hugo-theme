@@ -1,5 +1,5 @@
 <header class="mb-[56px] bg-white text-black">
-    <nav class="z-50 bg-inherit fixed w-full top-0 start-0 border-b border-gray-200">
+    <nav class="z-40 bg-inherit fixed w-full top-0 start-0 border-b border-gray-200">
         <div class="h-[56px] container flex flex-wrap items-center justify-between mx-auto py-3 bg-inherit">
 
             <a href="/" class="flex items-center space-x-3 rtl:space-x-reverse">
@@ -16,8 +16,8 @@
             {{ if .Site.Menus.main }}
             <div class="hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
                 <div
-                    class="z-40 top-[50px] fixed inset-0 flex flex-col p-4 bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
-                    <ul class="flex-grow block md:grid md:grid-cols-2 lg:flex gap-8 justify-end text-xl lg:text-base">
+                    class="top-[50px] fixed inset-0 flex flex-col p-4 bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
+                    <ul class="lg:flex gap-8 md:justify-end text-xl lg:text-base">
                         {{ range .Site.Menus.main.Sort }}
                         <li>
                             <a href="{{.URL}}"
