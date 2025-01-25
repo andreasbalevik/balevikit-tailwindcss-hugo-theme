@@ -12,6 +12,6 @@
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
 {{ $image_small := $image.Fill "650x500 q60" }}
 <picture>
-    <img style="aspect-ratio: 5/4;" class="w-full h-full object-cover" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy" src="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+    <img class="w-full h-full object-cover" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy" src="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
 </picture>
 
