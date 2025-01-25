@@ -15,6 +15,7 @@
     "tailwindcss": "^3.4.3"
   },
   "dependencies": {
-    "flowbite": "^2.3.0"
+    "flowbite": "^2.3.0",
+    "tailwindcss-debug-screens": "^2.2.1"
   }
 }
