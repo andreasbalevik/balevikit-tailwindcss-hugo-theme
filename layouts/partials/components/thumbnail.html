@@ -10,9 +10,9 @@ alt: ""
 
 {{ $filter := images.Contrast 5 }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_large := $image.Fill "648x450 q40" }}
+{{ $image_large := $image.Fill "648x400 q40" }}
 
 <picture>
-    <img class="object-cover w-full" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy"
+    <img style="aspect-ratio: 3/2;" class="object-cover w-full" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy"
         src="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
 </picture>
