@@ -16,6 +16,9 @@ module.exports = {
           lg: "1250px",
        }
       },
+      maxWidth: {
+        'screen-sm': '768px',
+      },
       colors: {
         'primary': 'rgb(var(--color-primary,26,86,219),1)',
         'primary--hover': 'rgb(var(--color-primary,26,86,219),.9)',
