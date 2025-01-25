@@ -10,11 +10,10 @@
 
 {{ $filter := images.Contrast 10 }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_large := $image.Fill "1200x500 q60" }} <!-- For large screens up to 1216px -->
+{{ $image_large := $image.Fill "1200x600 q60" }} <!-- For large screens up to 1216px -->
 {{ $image_medium := $image.Fill "741x387 q60" }} <!-- For screens up to 1050px -->
 {{ $image_small := $image.Fill "625x387 q60" }}  <!-- For tablets -->
 {{ $image_xsmall := $image.Fill "415x277 q80" }} <!-- For small devices -->
-
 
 <picture>
     <!-- Define image sizes for different screen widths -->
