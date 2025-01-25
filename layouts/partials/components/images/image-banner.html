@@ -24,7 +24,6 @@
     <!-- Fallback for very small screens or browsers that don't support <picture> -->
     <img class="w-full object-cover" 
         {{ with .alt }}alt="{{ . }}"{{ end }} 
-        loading="lazy" 
         src="{{ $image_small.RelPermalink }}" 
         width="{{ $image_small.Width }}" 
         height="{{ $image_small.Height }}">

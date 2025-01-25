@@ -14,11 +14,10 @@ images:
     <!-- Carousel wrapper -->
     <div class="relative h-[350px] sm:h-[500px] overflow-hidden">
         {{ range .images }}
-        {{ $image := resources.GetMatch .src }}
-
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            {{ partial "components/images/image-square.html" .}}
-        </div>
+            {{ $image := resources.GetMatch .src }}
+            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                {{ partial "components/images/image-square.html" .}}
+            </div>
         {{ end }}
     </div>
 
