@@ -1,0 +1,10 @@
+@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+
+@utility container {
+  @apply mx-auto py-8 px-4 max-w-[1250px]
+}
+
+body {
+  @apply antialiased
+}
