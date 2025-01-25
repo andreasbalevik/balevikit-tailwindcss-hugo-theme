@@ -2,12 +2,12 @@
 <html lang="{{ site.LanguageCode }}">
 
 <head>
-  {{ partial "seo/meta.html" . }}
   {{ partial "utils/css.html" . }}
+  {{ partial "seo/meta.html" . }}
   {{ partial "utils/js.html" . }}
 </head>
 
-<body class="bg-[#f5f5f5] {{ if eq hugo.Environment "development" }}debug-screens{{ end }}">
+<body class="bg-[#f5f5f5]">
 
   {{ partial "layout/header.html" . }}
 
