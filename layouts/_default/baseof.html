@@ -12,7 +12,7 @@
   
 </head>
 
-<body class="bg-[#f5f5f5] debug-screens">
+<body class="bg-[#f5f5f5] {{ if eq hugo.Environment "development" }}debug-screens{{ end }}">
 
   {{ partial "layout/header.html" . }}
 
