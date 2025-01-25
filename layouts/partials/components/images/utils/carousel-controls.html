@@ -1,4 +1,4 @@
-{{ $images_length := len .images }}
+{{ $images_length := len . }}
 
 {{ if gt $images_length 1}}
 
@@ -6,7 +6,7 @@
 <div class="absolute z-30 flex -translate-x-1/2 bottom-5 left-1/2 space-x-3 rtl:space-x-reverse">
 
     {{ $counter := 0 }}
-    {{ range .images }}
+    {{ range . }}
     <button type="button" class="w-3 h-3 shadow rounded-full" aria-current="true" aria-label="Slide {{$counter}}"
         data-carousel-slide-to="{{$counter}}"></button>
     {{ $counter = add $counter 1 }}
