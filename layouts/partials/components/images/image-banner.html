@@ -24,7 +24,7 @@
       <source srcset="{{ $image_xsmall.RelPermalink }}" width="{{ $image_xsmall.Width }}" height="{{ $image_xsmall.Height }}">
 
       <!-- Fallback for very small screens or browsers that don't support <picture> -->
-      <img class="w-full h-[300px] sm:h-[400px] md:h-[500px] xl:h-[600px] object-cover" 
+      <img class="w-full h-[350px] sm:h-[500px] md:h-[550px] lg:h-[600px] object-cover" 
           {{ with .alt }}alt="{{ . }}"{{ end }} 
           loading="lazy" 
           src="{{ $image_xsmall.RelPermalink }}" 
