@@ -1,6 +1,8 @@
 {{/*
 Usage:
-{{ partial "components/images/carousel-square" . }}
+{{ with .Params.images }}
+    {{ partial "components/images/carousel-square" . }}
+{{ end }}
 
 Object:
 images:

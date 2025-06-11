@@ -6,6 +6,11 @@
         {{ $example := index .Site.Data.example.images 0}}
 
         <div class="col-span-2">
+            Fluid
+            {{ partial "components/images/image-fluid.html" $example }}
+        </div>
+
+        <div class="col-span-2">
             Banner
             {{ partial "components/images/image-banner.html" $example }}
         </div>
@@ -25,17 +30,20 @@
     <div class="grid grid-cols-2 gap-8">
 
 
-        {{ $example := .Site.Data.example.images }}
+        {{ $example_carousel := .Site.Data.example.images }}
 
         <div class="col-span-2">
             Carousel Banner
-            {{ partial "components/images/carousel-banner" (dict "ctx" . "images" $example ) }}
+            {{ with $example_carousel }}
+            {{ partial "components/images/carousel-banner" . }}
+            {{ end }}
+        
             
         </div>
 
         <div class="col-span-1">
             Carousel Square
-            {{ partial "components/images/carousel-square" (dict "ctx" . "images" $example ) }}
+            {{ partial "components/images/carousel-square" $example_carousel }}
             
         </div>
 

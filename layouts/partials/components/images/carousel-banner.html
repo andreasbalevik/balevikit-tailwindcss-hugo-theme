@@ -1,6 +1,9 @@
 {{/*
 Usage:
-{{ partial "components/images/carousel-banner" (dict "ctx" . "images" .images ) }}
+
+{{ with .Params.images }}
+    {{ partial "components/images/carousel-banner" . }}
+{{ end }}
 
 Object:
 images:
@@ -12,10 +15,10 @@ images:
     
     <!-- Images -->
     <div class="relative h-[350px] sm:h-[400px] md:h-[500px] overflow-hidden">
-        {{ range .images }}
-        <div class="hidden duration-700 ease-in-out" data-carousel-item>
-            {{ partial "components/images/image-banner" . }}
-        </div>
+        {{ range . }}
+            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+                {{ partial "components/images/image-banner" . }}
+            </div>
         {{ end }}
     </div>
 
