@@ -8,16 +8,17 @@
                 </span>
             </a>
 
-            {{ partial "layout/mobile-menu-button.html" . }}
-
             {{ $currentPage := . }}
             {{ $section := .Site.GetPage $currentPage.Section }}
 
             {{ if .Site.Menus.main }}
+
+            {{ partial "layout/mobile-menu-button.html" . }}
             <div class="hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
                 <div
                     class="top-[50px] fixed inset-0 flex flex-col p-4 bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
                     <ul class="lg:flex gap-8 md:justify-end text-xl lg:text-base">
+                    
                         {{ range .Site.Menus.main.Sort }}
                         <li>
                             <a href="{{.URL}}"
@@ -29,8 +30,10 @@
                         {{ end }}
 
                         {{ with .Translations }}
-                        <li class="ml-0 mt-6 lg:ml-6 lg:mt-0">{{ partial "layout/language.html" . }}</li>
+                            <li class="ml-0 mt-6 lg:ml-6 lg:mt-0">{{ partial "layout/language.html" . }}</li>
                         {{ end }}
+
+
                     </ul>
                 </div>
 
