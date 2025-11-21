@@ -2,9 +2,14 @@
 @plugin "@tailwindcss/typography";
 
 @utility container {
-  @apply mx-auto py-8 px-4 max-w-[1250px]
+  @apply mx-auto py-8 lg:py-10 xl:py-12 px-4 xl:px-0 max-w-[1250px]
 }
 
-body {
+html {
+  @apply bg-gray-50 text-slate-900 leading-relaxed;
   @apply antialiased
+}
+
+img, svg, video {
+  @apply max-w-full h-auto;
 }
