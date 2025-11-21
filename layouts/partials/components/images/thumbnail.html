@@ -8,7 +8,8 @@ src: "images/sample-4.jpg"
 alt: ""
 */}}
 
-{{ $filter := images.Contrast 5 }}
+{{ $contrast := site.Params.contrast | default 5 }}
+{{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
 {{ $image_large := $image.Fill "648x350 q40" }}
 
