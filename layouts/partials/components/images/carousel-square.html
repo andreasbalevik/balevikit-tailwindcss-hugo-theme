@@ -12,7 +12,7 @@ images:
 
 <div id="default-carousel" class="relative w-full" data-carousel="static">
     <!-- Carousel wrapper -->
-    <div class="relative h-[400px] sm:h-[400px] lg:h-[550px] overflow-hidden">
+    <div class="relative h-[400px] md:h-[450px] overflow-hidden">
         {{ range . }}
             {{ $image := resources.GetMatch .src }}
             <div class="hidden duration-700 ease-in-out" data-carousel-item>

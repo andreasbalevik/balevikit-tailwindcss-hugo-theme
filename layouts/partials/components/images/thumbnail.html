@@ -11,9 +11,9 @@ alt: ""
 {{ $contrast := site.Params.contrast | default 5 }}
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_large := $image.Fill "648x350 q40" }}
+{{ $image_large := $image.Fill "404x303 q70" }}
 
 <picture>
-    <img style="aspect-ratio: 3/2;" class="object-cover w-full" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy"
+    <img style="aspect-ratio: 4/3;" class="object-cover w-full" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy"
         src="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
 </picture>
