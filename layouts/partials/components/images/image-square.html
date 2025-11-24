@@ -11,7 +11,20 @@
 {{ $contrast := site.Params.contrast | default 5 }}
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_small := $image.Fill "650x500 q60" }}
+{{ $image_large := $image.Fill "650x500 q60" }}
+{{ $image_medium := $image.Fill "750x450 q60" }} <!-- For screens up to 1050px -->
+{{ $image_small := $image.Fill "470x450 q60" }}  <!-- For tablets -->
+
 <picture>
-    <img style="aspect-ratio: 5/4;" class="h-full w-full min-h-[500px] object-cover" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy" src="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+    <!-- Define image sizes for different screen widths -->
+    <source media="(min-width: 1000px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+    <source media="(min-width: 650px)" srcset="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
+    <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+
+    <!-- Fallback for very small screens or browsers that don't support <picture> -->
+    <img class="w-full h-full min-h-[350px] object-cover" 
+        {{ with .alt }}alt="{{ . }}"{{ end }} 
+        src="{{ $image_small.RelPermalink }}" 
+        width="{{ $image_small.Width }}" 
+        height="{{ $image_small.Height }}">
 </picture>
