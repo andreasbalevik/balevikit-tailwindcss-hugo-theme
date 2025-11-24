@@ -12,9 +12,9 @@
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
 {{ $image_large := $image.Fill "1200x600 q60" }} <!-- For large screens up to 1216px -->
-{{ $image_medium := $image.Fill "741x387 q60" }} <!-- For screens up to 1050px -->
-{{ $image_small := $image.Fill "625x387 q60" }}  <!-- For tablets -->
-{{ $image_xsmall := $image.Fill "415x277 q80" }} <!-- For small devices -->
+{{ $image_medium := $image.Fill "741x500 q60" }} <!-- For screens up to 1050px -->
+{{ $image_small := $image.Fill "625x500 q60" }}  <!-- For tablets -->
+{{ $image_xsmall := $image.Fill "415x500 q80" }} <!-- For small devices -->
 
 <picture>
     <!-- Define image sizes for different screen widths -->
@@ -23,7 +23,7 @@
     <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
 
     <!-- Fallback for very small screens or browsers that don't support <picture> -->
-    <img class="w-full h-full min-h-[450px] object-cover" 
+    <img class="w-full h-full min-h-[500px] object-cover" 
         {{ with .alt }}alt="{{ . }}"{{ end }} 
         src="{{ $image_small.RelPermalink }}" 
         width="{{ $image_small.Width }}" 

@@ -12,8 +12,8 @@
     "@type": "Person",
     "name": "{{.Site.Title}}"
   },
-  "datePublished": "{{ time.Now.Format $ISO8601 | safeHTML }}",
-  "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}",
+  "datePublished": "{{ .Date.Format $ISO8601 | safeHTML }}",
+  "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}"
 }
 </script>
 {{ end }}

@@ -5,6 +5,6 @@
         "@type": "WebSite",
         "url": "{{ .Site.BaseURL }}",
         "name": "{{ .Site.Title }}",
-        "description" : {{ .Page.Params.description | default .Site.Params.description }},
+        "description": "{{ .Page.Params.description | default .Site.Params.description }}"
     }
 </script>
