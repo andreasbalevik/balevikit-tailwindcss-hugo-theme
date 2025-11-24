@@ -13,6 +13,8 @@
   {{ end }}
 {{ end }}
 
+
+
 <!-- PAGE METADATA -->
 <meta charset="utf-8">
 <title>{{ $title }}</title>
@@ -24,10 +26,10 @@
 <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml" />
 
 <!-- SEO METADATA -->
-<meta name="description" content="{{$description}}">
+<meta name="description" content="{{ $description | truncate 160 }}">
 <meta name="keywords" content="{{ with .Params.keywords }}{{range .}}{{.}},{{end}} {{else}} {{ with .Site.Params.keywords }}{{range .}}{{.}},{{end}}{{end}} {{ end }}" />
 <meta property="og:title" content="{{ .Title }}">
-<meta property="og:description" content="{{$description}}">
+<meta property="og:description" content="{{ $description | truncate 160 }}">
 <meta property="og:type" content="website">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:site_name" content="{{ .Site.Title }}">
