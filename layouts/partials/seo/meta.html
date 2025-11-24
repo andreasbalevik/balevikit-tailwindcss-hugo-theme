@@ -1,37 +1,74 @@
 {{- $title := .Page.Title}}
+{{ $ISO8601 := "2006-01-02T15:04:05-07:00" }}
+{{ $description := "" }}
+{{ with .Description }}
+  {{ $description = . }}
+{{ else }}
+  {{ if .IsPage }}
+    {{ $description = .Summary }}
+  {{ else }}
+    {{ with .Site.Params.description }}
+      {{ $description = . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
 
 <!-- PAGE METADATA -->
 <meta charset="utf-8">
-<title itemprop="name">{{ $title }}</title>
+<title>{{ $title }}</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <meta name="robots" content="follow, index">
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
-<meta name="description" content="{{- with .Description }}{{ . }}{{ else }}{{- if .IsPage }}{{ .Summary }}{{ else }}{{- with .Site.Params.description }}{{ . }}{{- end }}{{- end }}{{- end }}">
+<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml" />
 
+<!-- SEO METADATA -->
+<meta name="description" content="{{$description}}">
 <meta name="keywords" content="{{ with .Params.keywords }}{{range .}}{{.}},{{end}} {{else}} {{ with .Site.Params.keywords }}{{range .}}{{.}},{{end}}{{end}} {{ end }}" />
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{$description}}">
+<meta property="og:type" content="website">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:updated_time" content="{{ .Lastmod.Format $ISO8601 | safeHTML }}">
+<meta property="article:modified_time" content="{{.Lastmod.Format $ISO8601 | safeHTML }}">
+<meta property="og:locale" content="{{ .Site.Language }}">
+{{ if .Translations}}
+    {{ range .AllTranslations }}
+        <meta property="og:locale:alternate" content="{{ .Language.LanguageName }}">
+    {{ end }}
+{{ end}}
 
-{{ hugo.Generator }}
+<!-- IMAGE -->
+{{- with .Page.Params.images -}}
+    {{- range first 1 . -}}
+        {{ $image := resources.GetMatch .src }}
+        <meta property="og:image" content="{{ $image.Permalink }}" />
+    {{- end -}}
+{{- end -}}
 
-<meta name="apple-mobile-web-app-title" content="{{ $title }}" />
-<meta name="application-name" content="{{ $title }}" />
-
-<!-- PAGE SCHEMA -->
-{{ partial "seo/schema.html" . }}
-
-<!-- OPENGRAPH -->
-{{ partial "seo/opengraph.html" .}}
+<!-- TWITTER CARD METADATA -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{$description}}">
 
 <!-- PAGE LINKS -->
-<link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
-{{ range .AllTranslations }}
-<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
-{{ end }}
-
 <link rel="canonical" href="{{ .Permalink }}" itemprop="url" />
-<link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml" />
+{{ if .Translations}}
+    <link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
+    {{ range .AllTranslations }}
+    <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
+    {{ end }}
+{{ end}}
+
+<!-- MOBILE WEB APP -->
+<meta name="apple-mobile-web-app-title" content="{{ $title }}" />
+<meta name="application-name" content="{{ $title }}" />
 <link rel="icon" type="image/x-icon" href="/favicon/favicon.ico">
 <link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
 <link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
 
 {{ partial "seo/json-ld/json-ld.html" . }}
+
+{{ partial "dns-prefetch.html" . }}
