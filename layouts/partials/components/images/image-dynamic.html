@@ -1,0 +1,36 @@
+{{/*
+    Usage: 
+    {{ partial "components/images/image-banner.html" . }}
+
+    Data:
+      image_1: 
+        src: "images/sample-4.jpg"
+        alt: "Description of the image"
+*/}}
+
+{{ $contrast := site.Params.contrast | default 5 }}
+{{ $filter := images.Contrast $contrast }}
+{{ $image := resources.GetMatch .src | images.Filter $filter }}
+{{ $image_xlarge := $image.Fill "1920x1000 q80" }}   <!-- 2XL screens (1536px+) -->
+{{ $image_large := $image.Fill "1536x800 q80" }}    <!-- XL screens (1280px+) -->
+{{ $image_desktop := $image.Fill "1280x700 q75" }}  <!-- Large screens (1024px+) -->
+{{ $image_tablet := $image.Fill "1024x600 q75" }}   <!-- Tablet landscape (768px+) -->
+{{ $image_mobile := $image.Fill "768x500 q70" }}    <!-- Mobile landscape (640px+) -->
+{{ $image_small := $image.Fill "640x450 q70" }}     <!-- Mobile portrait -->
+
+<picture>
+    <!-- Define image sizes for different screen widths -->
+    <source media="(min-width: 1536px)" srcset="{{ $image_xlarge.RelPermalink }}" width="{{ $image_xlarge.Width }}" height="{{ $image_xlarge.Height }}">
+    <source media="(min-width: 1280px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+    <source media="(min-width: 1024px)" srcset="{{ $image_desktop.RelPermalink }}" width="{{ $image_desktop.Width }}" height="{{ $image_desktop.Height }}">
+    <source media="(min-width: 768px)" srcset="{{ $image_tablet.RelPermalink }}" width="{{ $image_tablet.Width }}" height="{{ $image_tablet.Height }}">
+    <source media="(min-width: 640px)" srcset="{{ $image_mobile.RelPermalink }}" width="{{ $image_mobile.Width }}" height="{{ $image_mobile.Height }}">
+    <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+
+    <!-- Fallback for browsers that don't support <picture> -->
+    <img class="w-full min-h-[400px] md:min-h-[450px] max-h-[450px] md:max-h-[600px] lg:max-h-[900px] object-cover" 
+        {{ with .alt }}alt="{{ . }}"{{ end }} 
+        src="{{ $image_small.RelPermalink }}" 
+        width="{{ $image_small.Width }}" 
+        height="{{ $image_small.Height }}">
+</picture>

@@ -1,20 +1,30 @@
 {{ define "main" }}
 
+{{ $example := index .Site.Data.example.images 0}}
+
 <div class="container">
-    <div class="grid grid-cols-2 gap-8">
+    <div class="grid grid-cols-1 gap-8">
 
-        {{ $example := index .Site.Data.example.images 0}}
+        <div>
+            Dynamic
+            {{ partial "components/images/image-dynamic.html" $example }}
+        </div>
 
-        <div class="col-span-2">
+
+        <div>
             Fluid
             {{ partial "components/images/image-fluid.html" $example }}
         </div>
 
-        <div class="col-span-2">
+        <div>
             Banner
             {{ partial "components/images/image-banner.html" $example }}
         </div>
+    </div>
+</div>
 
+<div class="container">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
         <div>
             thumbnail
             {{ partial "components/images/thumbnail.html" $example }}
@@ -41,7 +51,7 @@
             
         </div>
 
-        <div class="col-span-1">
+        <div class="col-span-2 lg:col-span-1">
             Carousel Square
             {{ partial "components/images/carousel-square" $example_carousel }}
             
