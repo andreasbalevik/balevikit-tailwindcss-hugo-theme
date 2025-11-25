@@ -11,9 +11,9 @@
 {{ $contrast := site.Params.contrast | default 5 }}
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_large := $image.Fill "1200x600 q60" }} <!-- For large screens up to 1216px -->
-{{ $image_medium := $image.Fill "741x487 q60" }} <!-- For screens up to 1050px -->
-{{ $image_small := $image.Fill "625x387 q60" }}  <!-- For tablets -->
+{{ $image_large := $image.Fill "1200x600 q60 webp" }} <!-- For large screens up to 1216px -->
+{{ $image_medium := $image.Fill "741x487 q60 webp" }} <!-- For screens up to 1050px -->
+{{ $image_small := $image.Fill "625x387 q60 webp" }}  <!-- For tablets -->
 
 <picture>
     <!-- Define image sizes for different screen widths -->
