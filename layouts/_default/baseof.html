@@ -8,6 +8,8 @@
   
   {{ partial "utils/css.html" . }}
   {{ partial "utils/js.html" . }}
+
+  {{ partial "custom-script-head.html" . }}
 </head>
 
 <body class="bg-[#f5f5f5]">
@@ -20,8 +22,10 @@
 
   {{ partial "layout/footer.html" . }}
 
-  {{ partial "custom-script.html" . }}
+
 
 </body>
+
+{{ partial "custom-script.html" . }}
 
 </html>
