@@ -12,8 +12,28 @@
     "@type": "Person",
     "name": "{{.Site.Title}}"
   },
-  "datePublished": "{{ .Date.Format $ISO8601 | safeHTML }}",
-  "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}"
+  {{ $pubDate := .Date }}
+  {{ if .Date.IsZero }}
+    {{ with .GitInfo }}
+      {{ with .Ancestors.Reverse | first 1 }}
+        {{ range . }}
+          {{ $pubDate = .AuthorDate }}
+        {{ end }}
+      {{ else }}
+        {{ $pubDate = .AuthorDate }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  "datePublished": "{{ $pubDate.Format $ISO8601 | safeHTML }}",
+  "dateModified": "{{ .Lastmod.Format $ISO8601 | safeHTML }}",
+  {{- with .Page.Params.images -}}
+    {{- range first 1 . -}}
+      {{ $image := resources.GetMatch .src }}
+  "image": "{{ $image.Permalink }}"
+    {{- end -}}
+  {{- else -}}
+  "image": "{{ .Site.Params.brand_image | absURL }}"
+  {{- end -}}
 }
 </script>
 {{ end }}
