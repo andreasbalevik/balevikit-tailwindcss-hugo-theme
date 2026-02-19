@@ -15,7 +15,7 @@ images:
     <div class="relative h-[400px] md:h-[450px] overflow-hidden">
         {{ range . }}
             {{ $image := resources.GetMatch .src }}
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <div class="hidden duration-700 ease-in-out bg-white" data-carousel-item>
                 {{ partial "components/images/image-square.html" .}}
             </div>
         {{ end }}

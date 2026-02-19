@@ -1,0 +1,155 @@
+{{/*
+Usage:
+
+{{ with .Params.images }}
+    {{ partial "components/images/carousel-full" . }}
+{{ end }}
+
+Object:
+images:
+- src: image.jpg
+  alt: "Description"
+
+Shows full images with no cropping, height-priority approach
+*/}}
+
+<div id="full-carousel" class="relative w-full" data-carousel="static">
+    
+    <!-- Images Container - Fixed height, width adjusts automatically -->
+    <div class="relative w-full bg-gray-100 overflow-hidden rounded-lg h-[400px] sm:h-[500px] md:h-[550px] lg:h-[600px] xl:h-[650px]">
+        {{ range $index, $image := . }}
+            <div class="hidden duration-700 ease-in-out w-full h-full absolute inset-0" data-carousel-item>
+                <div class="w-full h-full flex items-center justify-center">
+                    <!-- Loading Spinner -->
+                    <div class="absolute inset-0 flex items-center justify-center">
+                        <svg class="animate-spin h-12 w-12 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                        </svg>
+                    </div>
+                    
+                    {{ $img := resources.GetMatch $image.src }}
+                    {{ if $img }}
+                        {{ $imgProcessed := $img.Resize "1400x webp q85" }}
+                        <img class="max-w-full max-h-full h-auto w-auto object-contain relative z-10" 
+                            src="{{ $imgProcessed.RelPermalink }}" 
+                            alt="{{ $image.alt }}"
+                            loading="lazy"
+                            onload="this.previousElementSibling.style.display='none'">
+                    {{ end }}
+                </div>
+            </div>
+        {{ end }}
+        
+        <!-- Fullscreen Button -->
+        <button type="button" 
+            onclick="openFullscreen()"
+            class="absolute top-4 right-4 z-40 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all duration-300 group"
+            aria-label="View fullscreen">
+            <svg class="w-5 h-5 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 4H4m0 0v4m0-4 5 5m7-5h4m0 0v4m0-4-5 5M8 20H4m0 0v-4m0 4 5-5m7 5h4m0 0v-4m0 4-5-5"/>
+            </svg>
+        </button>
+    </div>
+
+    {{ partial "components/images/utils/carousel-controls" . }}
+</div>
+
+<!-- Fullscreen Modal -->
+<div id="fullscreen-modal" class="hidden fixed inset-0 z-50 bg-black/95" onclick="closeFullscreen()">
+    <button type="button" 
+        onclick="closeFullscreen()"
+        class="absolute top-4 right-4 z-50 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300"
+        aria-label="Close fullscreen">
+        <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6m0 12L6 6"/>
+        </svg>
+    </button>
+    
+    <div class="w-full h-full flex items-center justify-center p-4 md:p-8" onclick="event.stopPropagation()">
+        <div id="fullscreen-carousel" class="relative w-full max-w-7xl h-[90vh]" data-carousel="static">
+            <div class="relative w-full h-full overflow-hidden">
+                {{ range $index, $image := . }}
+                    <div class="hidden duration-700 ease-in-out w-full h-full absolute inset-0" data-carousel-item>
+                        <div class="w-full h-full flex items-center justify-center">
+                            <!-- Loading Spinner -->
+                            <div class="absolute inset-0 flex items-center justify-center">
+                                <svg class="animate-spin h-16 w-16 text-white/50" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                                </svg>
+                            </div>
+                            
+                            {{ $img := resources.GetMatch $image.src }}
+                            {{ if $img }}
+                                {{ $imgLarge := $img.Resize "1920x webp q90" }}
+                                <img class="max-w-full max-h-full h-auto w-auto object-contain relative z-10" 
+                                    src="{{ $imgLarge.RelPermalink }}" 
+                                    alt="{{ $image.alt }}"
+                                    loading="lazy"
+                                    onload="this.previousElementSibling.style.display='none'">
+                            {{ end }}
+                        </div>
+                    </div>
+                {{ end }}
+            </div>
+            
+            <!-- Fullscreen Carousel Controls -->
+            <button type="button" class="absolute top-1/2 -translate-y-1/2 start-4 z-30 flex items-center justify-center h-12 w-12 cursor-pointer group focus:outline-none" data-carousel-prev onclick="event.stopPropagation()">
+                <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors duration-300">
+                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 1 1 5l4 4"/>
+                    </svg>
+                    <span class="sr-only">Previous</span>
+                </span>
+            </button>
+            <button type="button" class="absolute top-1/2 -translate-y-1/2 end-4 z-30 flex items-center justify-center h-12 w-12 cursor-pointer group focus:outline-none" data-carousel-next onclick="event.stopPropagation()">
+                <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors duration-300">
+                    <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 6 10">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 9 4-4-4-4"/>
+                    </svg>
+                    <span class="sr-only">Next</span>
+                </span>
+            </button>
+        </div>
+    </div>
+</div>
+
+<script>
+function openFullscreen() {
+    const modal = document.getElementById('fullscreen-modal');
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+}
+
+function closeFullscreen() {
+    const modal = document.getElementById('fullscreen-modal');
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+}
+
+// Keyboard navigation
+document.addEventListener('keydown', function(e) {
+    const modal = document.getElementById('fullscreen-modal');
+    const isFullscreenOpen = !modal.classList.contains('hidden');
+    
+    if (!isFullscreenOpen) return;
+    
+    // ESC - Close fullscreen
+    if (e.key === 'Escape') {
+        closeFullscreen();
+        return;
+    }
+    
+    // Arrow keys - Navigate carousel
+    if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        const prevButton = document.querySelector('#fullscreen-carousel [data-carousel-prev]');
+        if (prevButton) prevButton.click();
+    } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        const nextButton = document.querySelector('#fullscreen-carousel [data-carousel-next]');
+        if (nextButton) nextButton.click();
+    }
+});
+</script>

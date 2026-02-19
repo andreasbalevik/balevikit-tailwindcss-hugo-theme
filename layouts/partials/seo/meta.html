@@ -64,32 +64,35 @@
 {{ end}}
 
 <!-- IMAGE -->
-{{- with .Page.Params.images -}}
-    {{- range first 1 . -}}
-        {{ $image := resources.GetMatch .src }}
-        <meta property="og:image" content="{{ $image.Permalink }}" />
-        {{ with $image }}
-        <meta property="og:image:width" content="{{ .Width }}" />
-        <meta property="og:image:height" content="{{ .Height }}" />
-        {{ end }}
-        {{ with .alt }}
+{{- with .Page.Params.images }}
+  {{- range first 1 . }}
+    {{- $alt := .alt }}
+    {{- with $.Page.Resources.GetMatch .src }}
+      <meta property="og:image" content="{{ .Permalink }}" />
+      <meta property="og:image:width" content="{{ .Width }}" />
+      <meta property="og:image:height" content="{{ .Height }}" />
+      {{- with $alt }}
         <meta property="og:image:alt" content="{{ . }}" />
-        {{ end }}
-    {{- end -}}
-{{- end -}}
+      {{- end }}
+    {{- end }}
+  {{- end }}
+{{- end }}
+
 
 <!-- TWITTER CARD METADATA -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="{{ .Title }}">
 <meta name="twitter:description" content="{{$description}}">
 {{- with .Page.Params.images -}}
-    {{- range first 1 . -}}
-        {{ $image := resources.GetMatch .src }}
-        <meta name="twitter:image" content="{{ $image.Permalink }}" />
-        {{ with .alt }}
-        <meta name="twitter:image:alt" content="{{ . }}" />
-        {{ end }}
-    {{- end -}}
+  {{- range first 1 . -}}
+    {{- with $.Page.Resources.GetMatch .src }}
+      <meta name="twitter:image" content="{{ .Permalink }}" />
+    {{- end }}
+
+    {{- with .alt }}
+      <meta name="twitter:image:alt" content="{{ . }}" />
+    {{- end }}
+  {{- end -}}
 {{- end -}}
 
 <!-- PAGE LINKS -->

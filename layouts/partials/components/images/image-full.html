@@ -1,0 +1,34 @@
+{{/*
+    Usage: 
+    {{ partial "components/images/image-full.html" . }}
+
+    Data:
+      image: 
+        src: "images/sample-4.jpg"
+        alt: "Description of the image"
+    
+    Shows full image with no cropping, preserving aspect ratio
+*/}}
+
+{{ $contrast := site.Params.contrast | default 5 }}
+{{ $filter := images.Contrast $contrast }}
+{{ $image := resources.GetMatch .src | images.Filter $filter }}
+
+<!-- Full images - no cropping, just resize with aspect ratio preserved -->
+{{ $image_large := $image.Resize "1400x webp q85" }}   <!-- Desktop: Max 1400px wide -->
+{{ $image_medium := $image.Resize "1024x webp q80" }}  <!-- Tablet: Max 1024px wide -->
+{{ $image_small := $image.Resize "768x webp q75" }}    <!-- Mobile: Max 768px wide -->
+
+<picture class="block w-full h-full">
+    <!-- Responsive images - full aspect ratio preserved -->
+    <source media="(min-width: 1024px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+    <source media="(min-width: 768px)" srcset="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
+    <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+
+    <!-- Image with responsive max-height, preserves aspect ratio -->
+    <img class="w-full h-full object-contain mx-auto block" 
+        {{ with .alt }}alt="{{ . }}"{{ end }} 
+        src="{{ $image_small.RelPermalink }}" 
+        width="{{ $image_small.Width }}" 
+        height="{{ $image_small.Height }}">
+</picture>

@@ -20,7 +20,7 @@
     <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
 
     <!-- Fallback for very small screens or browsers that don't support <picture> -->
-    <img style="aspect-ratio: 3/2;" class="w-full h-full min-h-[400px] sm:min-h-[450px] object-cover" 
+    <img style="aspect-ratio: 3/2;" class="w-full h-full min-h-[400px] sm:min-h-[450px] object-cover bg-white" 
         {{ with .alt }}alt="{{ . }}"{{ end }} 
         src="{{ $image_small.RelPermalink }}" 
         width="{{ $image_small.Width }}" 

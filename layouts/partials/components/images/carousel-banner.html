@@ -13,10 +13,10 @@ images:
 
 <div id="default-carousel" class="relative w-full" data-carousel="static">
     
-    <!-- Images -->
-    <div class="relative h-[370px] sm:h-[480px] lg:h-[500px] overflow-hidden">
+    <!-- Images - Responsive heights: square on mobile, landscape on desktop -->
+    <div class="relative w-full min-h-[400px] sm:min-h-[450px] md:min-h-[500px] lg:min-h-[550px] xl:min-h-[600px] overflow-hidden rounded-lg">
         {{ range . }}
-            <div class="hidden duration-700 ease-in-out" data-carousel-item>
+            <div class="hidden duration-700 ease-in-out h-full" data-carousel-item>
                 {{ partial "components/images/image-banner" . }}
             </div>
         {{ end }}

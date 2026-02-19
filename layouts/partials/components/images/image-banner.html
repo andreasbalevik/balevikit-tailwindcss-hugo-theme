@@ -11,20 +11,26 @@
 {{ $contrast := site.Params.contrast | default 5 }}
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_large := $image.Fill "1200x600 q60 webp" }} <!-- For large screens up to 1216px -->
-{{ $image_medium := $image.Fill "741x487 q60 webp" }} <!-- For screens up to 1050px -->
-{{ $image_small := $image.Fill "625x387 q60 webp" }}  <!-- For tablets -->
 
-<picture>
-    <!-- Define image sizes for different screen widths -->
-    <source media="(min-width: 1050px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+<!-- Smart cropping: Square on mobile, gradually to landscape on desktop -->
+{{ $image_xlarge := $image.Fill "1400x600 center q80 webp" }}  <!-- XL Desktop: 2.33:1 wide landscape -->
+{{ $image_large := $image.Fill "1200x550 center q80 webp" }}   <!-- Desktop: 2.18:1 landscape -->
+{{ $image_medium := $image.Fill "1024x500 center q80 webp" }}  <!-- Tablet landscape: 2.05:1 -->
+{{ $image_small := $image.Fill "768x450 center q75 webp" }}    <!-- Tablet portrait: 1.71:1 -->
+{{ $image_mobile := $image.Fill "640x400 center q75 webp" }}   <!-- Mobile: 1.6:1 almost square -->
+
+<picture class="flex items-center justify-center h-full w-full">
+    <!-- Define image sizes - progressively wider aspect ratios for larger screens -->
+    <source media="(min-width: 1280px)" srcset="{{ $image_xlarge.RelPermalink }}" width="{{ $image_xlarge.Width }}" height="{{ $image_xlarge.Height }}">
+    <source media="(min-width: 1024px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
     <source media="(min-width: 768px)" srcset="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
-    <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+    <source media="(min-width: 640px)" srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
+    <source srcset="{{ $image_mobile.RelPermalink }}" width="{{ $image_mobile.Width }}" height="{{ $image_mobile.Height }}">
 
-    <!-- Fallback for very small screens or browsers that don't support <picture> -->
-    <img class="w-full h-full min-h-[450px] object-cover" 
+    <!-- Fallback -->
+    <img class="w-full h-full object-cover" 
         {{ with .alt }}alt="{{ . }}"{{ end }} 
-        src="{{ $image_small.RelPermalink }}" 
-        width="{{ $image_small.Width }}" 
-        height="{{ $image_small.Height }}">
+        src="{{ $image_mobile.RelPermalink }}" 
+        width="{{ $image_mobile.Width }}" 
+        height="{{ $image_mobile.Height }}">
 </picture>
