@@ -11,8 +11,6 @@
 {{ $contrast := site.Params.contrast | default 5 }}
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_xlarge := $image.Fill "1920x1000 q80 webp" }}   <!-- 2XL screens (1536px+) -->
-{{ $image_large := $image.Fill "1536x800 q80 webp" }}    <!-- XL screens (1280px+) -->
 {{ $image_desktop := $image.Fill "1280x700 q75 webp" }}  <!-- Large screens (1024px+) -->
 {{ $image_tablet := $image.Fill "1024x600 q75 webp" }}   <!-- Tablet landscape (768px+) -->
 {{ $image_mobile := $image.Fill "768x500 q70 webp" }}    <!-- Mobile landscape (640px+) -->
@@ -20,8 +18,6 @@
 
 <picture>
     <!-- Define image sizes for different screen widths -->
-    <source media="(min-width: 1536px)" srcset="{{ $image_xlarge.RelPermalink }}" width="{{ $image_xlarge.Width }}" height="{{ $image_xlarge.Height }}">
-    <source media="(min-width: 1280px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
     <source media="(min-width: 1024px)" srcset="{{ $image_desktop.RelPermalink }}" width="{{ $image_desktop.Width }}" height="{{ $image_desktop.Height }}">
     <source media="(min-width: 768px)" srcset="{{ $image_tablet.RelPermalink }}" width="{{ $image_tablet.Width }}" height="{{ $image_tablet.Height }}">
     <source media="(min-width: 640px)" srcset="{{ $image_mobile.RelPermalink }}" width="{{ $image_mobile.Width }}" height="{{ $image_mobile.Height }}">
