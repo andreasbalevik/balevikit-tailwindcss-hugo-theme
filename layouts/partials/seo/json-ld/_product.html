@@ -1,0 +1,116 @@
+{{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
+
+{{ if eq .Section "activities" }}
+<!-- PRODUCT / TOURIST TRIP SCHEMA for Activities -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": ["Product", "TouristTrip"],
+  "name": "{{ .Title }}",
+  "description": "{{ .Page.Params.description }}",
+  {{ with .Page.Params.images }}
+    {{ range first 1 . }}
+      {{ $image := resources.GetMatch .src }}
+      {{ if $image }}
+  "image": [
+    "{{ $image.Permalink }}"
+      {{ end }}
+    {{ end }}
+    {{ range after 1 . }}
+      {{ $image := resources.GetMatch .src }}
+      {{ if $image }}
+    ,"{{ $image.Permalink }}"
+      {{ end }}
+    {{ end }}
+  ],
+  {{ else }}
+  "image": ["{{ .Site.Params.brand_image | absURL }}"],
+  {{ end }}
+  "url": "{{ .Permalink }}",
+  "brand": {
+    "@type": "Brand",
+    "name": "{{ .Site.Title }}"
+  },
+  "provider": {
+    "@type": "LocalBusiness",
+    "name": "{{ .Site.Title }}",
+    "address": {
+      "@type": "PostalAddress",
+      "streetAddress": "{{ .Site.Params.address }}",
+      "addressLocality": "Balestrand",
+      "addressRegion": "Vestland",
+      "postalCode": "6899",
+      "addressCountry": "NO"
+    },
+    "geo": {
+      "@type": "GeoCoordinates",
+      "latitude": "61.2069",
+      "longitude": "6.5278"
+    },
+    "telephone": "{{ .Site.Params.phone }}",
+    "email": "{{ .Site.Params.email }}",
+    "url": "{{ .Site.BaseURL }}"
+  },
+  {{ with .Page.Params.product_info }}
+  "offers": {
+    "@type": "AggregateOffer",
+    "priceCurrency": "NOK",
+    {{ with .prices }}
+      {{ $firstPrice := index . 0 }}
+      {{ $lastPrice := index . (sub (len .) 1) }}
+    "lowPrice": "{{ $firstPrice.price }}",
+    "highPrice": "{{ $lastPrice.price }}",
+    {{ end }}
+    "availability": "https://schema.org/InStock",
+    "url": "{{ $.Permalink }}",
+    "priceValidUntil": "2027-12-31"
+  },
+  {{ with .duration }}
+  "duration": "PT{{ .hours }}H{{ .minutes }}M",
+  {{ end }}
+  {{ with .persons }}
+  "touristType": "{{ if eq . "7" }}Small Group (up to {{ . }} people){{ else }}Private Tour (up to {{ . }} people){{ end }}"
+  {{ end }}
+  {{ end }}
+  {{ with .Page.Params.tags }}
+  ,"category": [
+    {{ range $index, $tag := . }}
+      {{ if $index }},{{ end }}
+      "{{ $tag }}"
+    {{ end }}
+  ]
+  {{ end }}
+  {{ with .Page.Params.keywords }}
+  ,"keywords": "{{ delimit (first 10 .) ", " }}"
+  {{ end }}
+}
+</script>
+
+<!-- BREADCRUMB SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Activities",
+      "item": "{{ .Site.BaseURL }}activities/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+{{ end }}

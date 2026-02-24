@@ -1,0 +1,125 @@
+{{ if .IsHome }}
+<!-- LOCAL BUSINESS SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "@id": "{{ .Site.BaseURL }}#localbusiness",
+  "name": "{{ .Site.Title }}",
+  "description": "{{ .Page.Params.description | default .Site.Params.description }}",
+  {{ with .Page.Params.images }}
+    {{ range first 1 . }}
+      {{ $image := resources.GetMatch .src }}
+      {{ if $image }}
+  "image": "{{ $image.Permalink }}",
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  "url": "{{ .Site.BaseURL }}",
+  "telephone": "{{ .Site.Params.phone }}",
+  "email": "{{ .Site.Params.email }}",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ .Site.Params.address }}",
+    "addressLocality": "Balestrand",
+    "addressRegion": "Vestland",
+    "postalCode": "6899",
+    "addressCountry": "NO"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "61.2069",
+    "longitude": "6.5278"
+  },
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday",
+      "Sunday"
+    ],
+    "opens": "00:00",
+    "closes": "23:59"
+  },
+  "priceRange": "NOK 3000-10000",
+  "areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "61.2069",
+      "longitude": "6.5278"
+    },
+    "geoRadius": "50000"
+  },
+  "hasMap": "https://www.google.com/maps/place/Holmen+3,+6899+Balestrand,+Norway",
+  "sameAs": [
+    "https://www.instagram.com/balestrandfjordangling/",
+    "https://www.facebook.com/balestrandfjordangling/"
+  ],
+  "makesOffer": [
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Fjord Fishing Tours",
+        "description": "Guided fishing tours in the Sognefjord"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "Scenic Boat Tours",
+        "description": "Private scenic boat excursions in Balestrand and Sognefjord"
+      }
+    },
+    {
+      "@type": "Offer",
+      "itemOffered": {
+        "@type": "Service",
+        "name": "E-bike Rentals",
+        "description": "Electric bike rentals for exploring Balestrand"
+      }
+    }
+  ]
+}
+</script>
+
+<!-- TOURIST DESTINATION SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TouristDestination",
+  "name": "Balestrand Sognefjord",
+  "description": "Experience authentic Norwegian fjord adventures with Captain Tor in Balestrand, Sognefjord",
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": "61.2069",
+    "longitude": "6.5278"
+  },
+  "touristType": [
+    "Families",
+    "Couples",
+    "Adventure Seekers",
+    "Nature Lovers",
+    "Anglers"
+  ],
+  "includesAttraction": [
+    {
+      "@type": "TouristAttraction",
+      "name": "Sognefjord Fishing",
+      "description": "World-class fjord angling experiences"
+    },
+    {
+      "@type": "TouristAttraction",
+      "name": "Scenic Fjord Cruises",
+      "description": "Private boat tours through Norway's longest and deepest fjord"
+    }
+  ]
+}
+</script>
+{{ end }}

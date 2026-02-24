@@ -1,0 +1,105 @@
+{{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
+
+{{ if eq .Section "inspirations" }}
+<!-- BLOG POSTING SCHEMA for Inspirations -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "{{ .Title }}",
+  "description": "{{ .Page.Params.description }}",
+  "url": "{{ .Permalink }}",
+  {{ with .Page.Params.images }}
+    {{ range first 1 . }}
+      {{ $image := resources.GetMatch .src }}
+      {{ if $image }}
+  "image": {
+    "@type": "ImageObject",
+    "url": "{{ $image.Permalink }}",
+    "width": "{{ $image.Width }}",
+    "height": "{{ $image.Height }}"
+  },
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  "author": {
+    "@type": "Person",
+    "name": "Captain Tor",
+    "url": "{{ .Site.BaseURL }}about/"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.logo }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ . | absURL }}"
+    }{{ end }}
+  },
+  {{ $pubDate := .Date }}
+  {{ if .Date.IsZero }}
+    {{ with .GitInfo }}
+      {{ with .Ancestors.Reverse | first 1 }}
+        {{ range . }}
+          {{ $pubDate = .AuthorDate }}
+        {{ end }}
+      {{ else }}
+        {{ $pubDate = .AuthorDate }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  "datePublished": "{{ $pubDate.Format $ISO8601 | safeHTML }}",
+  "dateModified": "{{ .Lastmod.Format $ISO8601 | safeHTML }}",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }
+  {{ with .Page.Params.keywords }}
+  ,"keywords": "{{ delimit (first 10 .) ", " }}"
+  {{ end }}
+  {{ with .Page.Params.related_activities }}
+  ,"mentions": [
+    {{ range $index, $activity := . }}
+      {{ $activityPath := replace . "/index" "" }}
+      {{ with $.Site.GetPage $activityPath }}
+        {{ if $index }},{{ end }}
+    {
+      "@type": "Product",
+      "name": "{{ .Title }}",
+      "url": "{{ .Permalink }}"
+    }
+      {{ end }}
+    {{ end }}
+  ]
+  {{ end }}
+}
+</script>
+
+<!-- BREADCRUMB SCHEMA -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Inspiration",
+      "item": "{{ .Site.BaseURL }}inspirations/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+{{ end }}
