@@ -11,16 +11,20 @@
 {{ $contrast := site.Params.contrast | default 5 }}
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
-{{ $image_medium := $image.Fill "650x450 q80 webp" }} <!-- For screens up to 1050px -->
-{{ $image_small := $image.Fill "450x303 q80 webp" }}  <!-- For tablets -->
+{{ $image_large := $image.Fill "600x450 q80 webp" }} <!-- Desktop: 4:3 standard -->
+{{ $image_small := $image.Fill "450x450 q80 webp" }} <!-- Mobile: 1:1 square -->
 
 <picture>
-    <!-- Define image sizes for different screen widths -->
-    <source media="(min-width: 510px)" srcset="{{ $image_medium.RelPermalink }}" width="{{ $image_medium.Width }}" height="{{ $image_medium.Height }}">
+    <!-- Desktop/Tablet: md breakpoint (768px+) -->
+    <source media="(min-width: 768px)" srcset="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+    
+    <!-- Mobile: < 768px -->
     <source srcset="{{ $image_small.RelPermalink }}" width="{{ $image_small.Width }}" height="{{ $image_small.Height }}">
 
-    <!-- Fallback for very small screens or browsers that don't support <picture> -->
-    <img class="w-full h-full sm:min-h-[350px] object-cover bg-white" 
+    <!-- Fallback -->
+    <img class="w-full h-auto object-cover" 
+        loading="lazy"
+        decoding="async"
         {{ with .alt }}alt="{{ . }}"{{ end }} 
         src="{{ $image_small.RelPermalink }}" 
         width="{{ $image_small.Width }}" 

@@ -1,0 +1,36 @@
+{{/*
+    Usage: 
+    {{ partial "components/images/image-dynamic.html" . }}
+
+    Data:
+      image_1: 
+        src: "images/sample-4.jpg"
+        alt: "Description of the image"
+*/}}
+
+{{ $contrast := site.Params.contrast | default 5 }}
+{{ $filter := images.Contrast $contrast }}
+{{ $image := resources.GetMatch .src | images.Filter $filter }}
+{{ $image_desktop := $image.Fill "1250x625 q80 webp" }}  <!-- Desktop: 2:1 panorama -->
+{{ $image_tablet := $image.Fill "768x512 q80 webp" }}    <!-- Tablet: 3:2 mellomting -->
+{{ $image_mobile := $image.Fill "640x480 q80 webp" }}    <!-- Mobile: 4:3 mer square -->
+
+<picture>
+    <!-- Desktop: lg breakpoint (1024px+) -->
+    <source media="(min-width: 1024px)" srcset="{{ $image_desktop.RelPermalink }}" width="{{ $image_desktop.Width }}" height="{{ $image_desktop.Height }}">
+    
+    <!-- Tablet: md breakpoint (768px+) -->
+    <source media="(min-width: 768px)" srcset="{{ $image_tablet.RelPermalink }}" width="{{ $image_tablet.Width }}" height="{{ $image_tablet.Height }}">
+    
+    <!-- Mobile: < 768px -->
+    <source srcset="{{ $image_mobile.RelPermalink }}" width="{{ $image_mobile.Width }}" height="{{ $image_mobile.Height }}">
+
+    <!-- Fallback -->
+    <img class="w-full h-auto object-cover" 
+        loading="lazy"
+        decoding="async"
+        {{ with .alt }}alt="{{ . }}"{{ end }} 
+        src="{{ $image_mobile.RelPermalink }}" 
+        width="{{ $image_mobile.Width }}" 
+        height="{{ $image_mobile.Height }}">
+</picture>

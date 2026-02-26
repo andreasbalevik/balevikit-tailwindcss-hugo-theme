@@ -14,6 +14,11 @@ alt: ""
 {{ $image_large := $image.Fill "404x303 q80 webp" }}
 
 <picture>
-    <img style="aspect-ratio: 4/3;" class="object-cover w-full max-h-[425px]" {{ with .alt }}alt="{{ . }}" {{ end }} loading="lazy"
-        src="{{ $image_large.RelPermalink }}" width="{{ $image_large.Width }}" height="{{ $image_large.Height }}">
+    <img class="w-full h-auto object-cover aspect-[4/3]" 
+        loading="lazy"
+        decoding="async"
+        {{ with .alt }}alt="{{ . }}" {{ end }}
+        src="{{ $image_large.RelPermalink }}" 
+        width="{{ $image_large.Width }}" 
+        height="{{ $image_large.Height }}">
 </picture>
