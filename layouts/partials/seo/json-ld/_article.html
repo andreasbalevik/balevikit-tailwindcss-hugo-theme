@@ -29,7 +29,11 @@
   {{- with .Page.Params.images -}}
     {{- range first 1 . -}}
       {{ $image := resources.GetMatch .src }}
+      {{- if $image -}}
   "image": "{{ $image.Permalink }}"
+      {{- else -}}
+  "image": "{{ .src | absURL }}"
+      {{- end -}}
     {{- end -}}
   {{- else -}}
   "image": "{{ .Site.Params.brand_image | absURL }}"

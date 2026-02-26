@@ -1,4 +1,4 @@
-{{- with resources.Get "js/flowbite-3.0.0.js" }}
+{{- with resources.Get "js/ui-components.js" }}
   {{- if eq hugo.Environment "development" }}
     {{- with . | js.Build }}
       <script defer src="{{ .RelPermalink }}"></script>

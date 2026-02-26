@@ -56,10 +56,10 @@ Shows full images with no cropping, height-priority approach
 </div>
 
 <!-- Fullscreen Modal -->
-<div id="fullscreen-modal" class="hidden fixed inset-0 z-50 bg-black/95" onclick="closeFullscreen()">
+<div id="fullscreen-modal" class="hidden fixed inset-0 z-[9999] bg-black/95" onclick="closeFullscreen()">
     <button type="button" 
         onclick="closeFullscreen()"
-        class="absolute top-4 right-4 z-50 inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300"
+        class="absolute top-4 right-4 z-[9999] inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300"
         aria-label="Close fullscreen">
         <svg class="w-6 h-6 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
             <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18 18 6m0 12L6 6"/>
@@ -120,12 +120,22 @@ function openFullscreen() {
     const modal = document.getElementById('fullscreen-modal');
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
+    
+    // Hide regular carousel controls when fullscreen opens
+    document.querySelectorAll('#carousel-controls, .carousel-control-btn').forEach(el => {
+        el.style.display = 'none';
+    });
 }
 
 function closeFullscreen() {
     const modal = document.getElementById('fullscreen-modal');
     modal.classList.add('hidden');
     document.body.style.overflow = '';
+    
+    // Show regular carousel controls when fullscreen closes
+    document.querySelectorAll('#carousel-controls, .carousel-control-btn').forEach(el => {
+        el.style.display = '';
+    });
 }
 
 // Keyboard navigation
