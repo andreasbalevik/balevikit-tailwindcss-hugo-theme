@@ -59,6 +59,12 @@
 {{ $filter := images.Contrast $contrast }}
 {{ $image := resources.GetMatch .src | images.Filter $filter }}
 
+{{/* Skip rendering if image doesn't exist */}}
+{{ if not $image }}
+  {{/* Image file not found - render nothing to avoid broken imgs */}}
+  {{ return }}
+{{ end }}
+
 {{/* Generate responsive images */}}
 {{ $desktop := $image.Fill (printf "%dx%d q80 webp" $sizes.desktop.width $sizes.desktop.height) }}
 {{ $tablet := $image.Fill (printf "%dx%d q80 webp" $sizes.tablet.width $sizes.tablet.height) }}
