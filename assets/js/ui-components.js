@@ -5,131 +5,63 @@
  */
 
 // ============================================================================
-// TABS FUNCTIONALITY
-// ============================================================================
-
-class TabsComponent {
-  constructor(tabElement) {
-    this.tabElement = tabElement;
-    this.tabs = tabElement.querySelectorAll('[role="tab"]');
-    this.contentContainer = document.querySelector(
-      tabElement.getAttribute('data-tabs-toggle')
-    );
-
-    if (!this.contentContainer) return;
-
-    this.activeClasses = (tabElement.getAttribute('data-tabs-active-classes') || '').split(' ');
-    this.inactiveClasses = (tabElement.getAttribute('data-tabs-inactive-classes') || '').split(' ');
-
-    this.init();
-  }
-
-  init() {
-    this.tabs.forEach((tab, index) => {
-      tab.addEventListener('click', () => this.selectTab(index));
-      
-      // Set first tab as active on initialization
-      if (index === 0) {
-        this.selectTab(index);
-      }
-    });
-  }
-
-  selectTab(index) {
-    // Hide all tabs and remove active classes
-    this.tabs.forEach((tab, i) => {
-      const targetId = tab.getAttribute('data-tabs-target');
-      const targetPanel = document.querySelector(targetId);
-
-      if (i === index) {
-        // Show this tab
-        tab.setAttribute('aria-selected', 'true');
-        this.activeClasses.forEach(cls => {
-          if (cls) tab.classList.add(cls);
-        });
-        this.inactiveClasses.forEach(cls => {
-          if (cls) tab.classList.remove(cls);
-        });
-
-        if (targetPanel) {
-          targetPanel.classList.remove('hidden');
-        }
-      } else {
-        // Hide other tabs
-        tab.setAttribute('aria-selected', 'false');
-        this.inactiveClasses.forEach(cls => {
-          if (cls) tab.classList.add(cls);
-        });
-        this.activeClasses.forEach(cls => {
-          if (cls) tab.classList.remove(cls);
-        });
-
-        if (targetPanel) {
-          targetPanel.classList.add('hidden');
-        }
-      }
-    });
-  }
-}
-
-// ============================================================================
 // MODAL FUNCTIONALITY
 // ============================================================================
 
-class ModalComponent {
-  constructor() {
-    this.init();
-  }
-
-  init() {
-    // Find all elements with data-modal-toggle or data-modal-target
-    document.querySelectorAll('[data-modal-toggle], [data-modal-target]').forEach(trigger => {
-      trigger.addEventListener('click', (e) => {
-        e.preventDefault();
-        const modalId = trigger.getAttribute('data-modal-toggle') || trigger.getAttribute('data-modal-target');
-        const modal = document.getElementById(modalId);
-        if (modal) {
-          this.toggleModal(modal);
-        }
-      });
-    });
-
-    // Close modal when clicking outside of content
-    document.querySelectorAll('[role="dialog"]').forEach(modal => {
-      modal.addEventListener('click', (e) => {
-        if (e.target === modal) {
-          this.closeModal(modal);
-        }
-      });
-    });
-
-    // Close modal with escape key
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') {
-        document.querySelectorAll('[role="dialog"]:not(.hidden)').forEach(modal => {
-          this.closeModal(modal);
-        });
+function setupModals() {
+  console.log('setupModals called');
+  
+  // Open modal when clicking open button
+  document.querySelectorAll('[data-modal-target]').forEach(button => {
+    console.log('Found open button:', button);
+    button.addEventListener('click', function(e) {
+      e.preventDefault();
+      const modalId = this.getAttribute('data-modal-target');
+      const modal = document.getElementById(modalId);
+      console.log('Opening modal:', modalId, modal);
+      if (modal) {
+        modal.classList.remove('hidden');
+        document.body.style.overflow = 'hidden';
       }
     });
-  }
+  });
 
-  toggleModal(modal) {
-    if (modal.classList.contains('hidden')) {
-      this.openModal(modal);
-    } else {
-      this.closeModal(modal);
+  // Close modal when clicking close button
+  document.querySelectorAll('[data-modal-toggle]').forEach(closeBtn => {
+    console.log('Found close button:', closeBtn);
+    closeBtn.addEventListener('click', function(e) {
+      e.preventDefault();
+      const modalId = this.getAttribute('data-modal-toggle');
+      const modal = document.getElementById(modalId);
+      console.log('Closing modal:', modalId, modal);
+      if (modal) {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  // Close modal when clicking on the backdrop (outside the content)
+  document.querySelectorAll('[role="dialog"]').forEach(modal => {
+    modal.addEventListener('click', function(e) {
+      if (e.target === this) {
+        console.log('Closing modal via backdrop');
+        this.classList.add('hidden');
+        document.body.style.overflow = '';
+      }
+    });
+  });
+
+  // Close all modals with escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+      console.log('Closing modals via escape');
+      document.querySelectorAll('[role="dialog"]').forEach(modal => {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      });
     }
-  }
-
-  openModal(modal) {
-    modal.classList.remove('hidden');
-    document.body.style.overflow = 'hidden';
-  }
-
-  closeModal(modal) {
-    modal.classList.add('hidden');
-    document.body.style.overflow = '';
-  }
+  });
 }
 
 // ============================================================================
@@ -232,12 +164,7 @@ class CarouselComponent {
 
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize modals
-  new ModalComponent();
-
-  // Initialize all tabs
-  document.querySelectorAll('[role="tablist"][data-tabs-toggle]').forEach(tabElement => {
-    new TabsComponent(tabElement);
-  });
+  setupModals();
 
   // Initialize all carousels
   document.querySelectorAll('[data-carousel]').forEach(carouselElement => {
