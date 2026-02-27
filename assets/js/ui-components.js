@@ -68,6 +68,10 @@ function setupModals() {
 // CAROUSEL FUNCTIONALITY
 // ============================================================================
 
+// Global carousel instances for sync between main and fullscreen
+let mainCarousel = null;
+let fullscreenCarousel = null;
+
 class CarouselComponent {
   constructor(carouselElement) {
     this.carousel = carouselElement;
@@ -75,11 +79,19 @@ class CarouselComponent {
     this.prevBtn = carouselElement.querySelector('[data-carousel-prev]');
     this.nextBtn = carouselElement.querySelector('[data-carousel-next]');
     this.indicators = carouselElement.querySelectorAll('[data-carousel-slide-to]');
+    this.isFullscreen = carouselElement.closest('#fullscreen-carousel') !== null;
 
     if (this.items.length < 2) return;
 
     this.currentIndex = 0;
     this.init();
+    
+    // Track global carousel instances for sync between main and fullscreen
+    if (this.isFullscreen) {
+      fullscreenCarousel = this;
+    } else if (carouselElement.id === 'full-carousel') {
+      mainCarousel = this;
+    }
   }
 
   init() {
@@ -123,6 +135,42 @@ class CarouselComponent {
       this.currentIndex = index;
     }
 
+    // Hide all items
+    this.items.forEach((item, i) => {
+      item.classList.add('hidden');
+      item.style.opacity = '0';
+    });
+
+    // Show current item with fade animation
+    const currentItem = this.items[this.currentIndex];
+    currentItem.classList.remove('hidden');
+    // Trigger reflow to ensure transition plays
+    currentItem.offsetHeight;
+    currentItem.style.opacity = '1';
+    currentItem.style.transition = 'opacity 0.7s ease-in-out';
+
+    // Update indicators
+    this.indicators.forEach((indicator, i) => {
+      if (i === this.currentIndex) {
+        indicator.classList.add('bg-[#e09a00]');
+        indicator.classList.remove('bg-gray-300');
+      } else {
+        indicator.classList.remove('bg-[#e09a00]');
+        indicator.classList.add('bg-gray-300');
+      }
+    });
+
+    // Keep both carousels in sync
+    if (this.isFullscreen && mainCarousel) {
+      mainCarousel.currentIndex = this.currentIndex;
+      mainCarousel.updateDisplay();
+    } else if (!this.isFullscreen && fullscreenCarousel) {
+      fullscreenCarousel.currentIndex = this.currentIndex;
+      fullscreenCarousel.updateDisplay();
+    }
+  }
+
+  updateDisplay() {
     // Hide all items
     this.items.forEach((item, i) => {
       item.classList.add('hidden');

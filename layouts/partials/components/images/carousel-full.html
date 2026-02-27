@@ -121,6 +121,11 @@ function openFullscreen() {
     modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
     
+    // Sync fullscreen carousel display to main carousel
+    if (mainCarousel && fullscreenCarousel) {
+        fullscreenCarousel.updateDisplay();
+    }
+    
     // Hide regular carousel controls when fullscreen opens
     document.querySelectorAll('#carousel-controls, .carousel-control-btn').forEach(el => {
         el.style.display = 'none';
