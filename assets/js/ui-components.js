@@ -73,6 +73,66 @@ class TabsComponent {
 }
 
 // ============================================================================
+// MODAL FUNCTIONALITY
+// ============================================================================
+
+class ModalComponent {
+  constructor() {
+    this.init();
+  }
+
+  init() {
+    // Find all elements with data-modal-toggle or data-modal-target
+    document.querySelectorAll('[data-modal-toggle], [data-modal-target]').forEach(trigger => {
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        const modalId = trigger.getAttribute('data-modal-toggle') || trigger.getAttribute('data-modal-target');
+        const modal = document.getElementById(modalId);
+        if (modal) {
+          this.toggleModal(modal);
+        }
+      });
+    });
+
+    // Close modal when clicking outside of content
+    document.querySelectorAll('[role="dialog"]').forEach(modal => {
+      modal.addEventListener('click', (e) => {
+        if (e.target === modal) {
+          this.closeModal(modal);
+        }
+      });
+    });
+
+    // Close modal with escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('[role="dialog"]:not(.hidden)').forEach(modal => {
+          this.closeModal(modal);
+        });
+      }
+    });
+  }
+
+  toggleModal(modal) {
+    if (modal.classList.contains('hidden')) {
+      this.openModal(modal);
+    } else {
+      this.closeModal(modal);
+    }
+  }
+
+  openModal(modal) {
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+  }
+
+  closeModal(modal) {
+    modal.classList.add('hidden');
+    document.body.style.overflow = '';
+  }
+}
+
+// ============================================================================
 // CAROUSEL FUNCTIONALITY
 // ============================================================================
 
@@ -171,6 +231,9 @@ class CarouselComponent {
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
+  // Initialize modals
+  new ModalComponent();
+
   // Initialize all tabs
   document.querySelectorAll('[role="tablist"][data-tabs-toggle]').forEach(tabElement => {
     new TabsComponent(tabElement);
