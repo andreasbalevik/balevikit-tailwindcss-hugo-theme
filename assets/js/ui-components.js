@@ -65,6 +65,47 @@ function setupModals() {
 }
 
 // ============================================================================
+// DROPDOWN FUNCTIONALITY
+// ============================================================================
+
+function setupDropdowns() {
+  console.log('setupDropdowns called');
+
+  // Toggle dropdowns
+  document.querySelectorAll('[data-dropdown-toggle]').forEach(button => {
+    button.addEventListener('click', function(e) {
+      e.stopPropagation(); // Prevent closing immediately
+      const targetId = this.getAttribute('data-dropdown-toggle');
+      const dropdown = document.getElementById(targetId);
+      
+      if (dropdown) {
+        // Toggle visibility
+        dropdown.classList.toggle('hidden');
+        
+        // Update aria-expanded for rotation
+        const isExpanded = !dropdown.classList.contains('hidden');
+        this.setAttribute('aria-expanded', isExpanded);
+      }
+    });
+  });
+
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function(e) {
+    document.querySelectorAll('[data-dropdown-toggle]').forEach(button => {
+      const targetId = button.getAttribute('data-dropdown-toggle');
+      const dropdown = document.getElementById(targetId);
+      
+      if (dropdown && !dropdown.classList.contains('hidden')) {
+        if (!button.contains(e.target) && !dropdown.contains(e.target)) {
+          dropdown.classList.add('hidden');
+          button.setAttribute('aria-expanded', 'false');
+        }
+      }
+    });
+  });
+}
+
+// ============================================================================
 // CAROUSEL FUNCTIONALITY
 // ============================================================================
 
@@ -213,6 +254,9 @@ class CarouselComponent {
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize modals
   setupModals();
+
+  // Initialize dropdowns
+  setupDropdowns();
 
   // Initialize all carousels
   document.querySelectorAll('[data-carousel]').forEach(carouselElement => {
