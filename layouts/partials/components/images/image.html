@@ -20,21 +20,21 @@
     ) }}
     
     Available presets:
-    - "hero"      : Full width banner/hero (16:9 desktop, 3:2 tablet, 3:2 mobile)
+    - "hero"      : Full width banner/hero (16:9 desktop, 3:2 tablet, 1:1 mobile)
     - "card"      : Cards in grid (3:2 desktop, 1:1 mobile)
     - "thumbnail" : Small thumbnails (3:2 constant)
 */}}
 
 {{ $presets := dict 
   "hero" (dict 
-    "desktop" (dict "width" 1280 "height" 720)
+    "desktop" (dict "width" 1920 "height" 1080)
     "tablet" (dict "width" 1024 "height" 683)
-    "mobile" (dict "width" 768 "height" 512)
+    "mobile" (dict "width" 480 "height" 320)
   )
   "card" (dict 
     "desktop" (dict "width" 720 "height" 480)
     "tablet" (dict "width" 720 "height" 480)
-    "mobile" (dict "width" 480 "height" 480)
+    "mobile" (dict "width" 480 "height" 320)
   )
   "thumbnail" (dict 
     "desktop" (dict "width" 400 "height" 267)
