@@ -65,10 +65,13 @@
   {{ return }}
 {{ end }}
 
-{{/* Generate responsive images */}}
-{{ $desktop := $image.Fill (printf "%dx%d q80 webp" $sizes.desktop.width $sizes.desktop.height) }}
-{{ $tablet := $image.Fill (printf "%dx%d q80 webp" $sizes.tablet.width $sizes.tablet.height) }}
-{{ $mobile := $image.Fill (printf "%dx%d q80 webp" $sizes.mobile.width $sizes.mobile.height) }}
+{{/* Generate responsive images in WebP and JPEG */}}
+{{ $desktopWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.desktop.width $sizes.desktop.height) }}
+{{ $desktopJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.desktop.width $sizes.desktop.height) }}
+{{ $tabletWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.tablet.width $sizes.tablet.height) }}
+{{ $tabletJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.tablet.width $sizes.tablet.height) }}
+{{ $mobileWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.mobile.width $sizes.mobile.height) }}
+{{ $mobileJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.mobile.width $sizes.mobile.height) }}
 
 {{/* Determine if we need breakpoints (desktop/tablet/mobile are different) */}}
 {{ $needsBreakpoints := or (ne $sizes.desktop.width $sizes.tablet.width) (ne $sizes.tablet.width $sizes.mobile.width) }}
@@ -77,23 +80,41 @@
   {{ if $needsBreakpoints }}
     <!-- Desktop: lg breakpoint (1024px+) -->
     <source media="(min-width: 1024px)" 
-            srcset="{{ $desktop.RelPermalink }}" 
-            width="{{ $desktop.Width }}" 
-            height="{{ $desktop.Height }}">
+            srcset="{{ $desktopWebp.RelPermalink }}" 
+            type="image/webp"
+            width="{{ $desktopWebp.Width }}" 
+            height="{{ $desktopWebp.Height }}">
+    <source media="(min-width: 1024px)" 
+            srcset="{{ $desktopJpeg.RelPermalink }}" 
+            type="image/jpeg"
+            width="{{ $desktopJpeg.Width }}" 
+            height="{{ $desktopJpeg.Height }}">
     
     <!-- Tablet: md breakpoint (768px+) -->
     <source media="(min-width: 768px)" 
-            srcset="{{ $tablet.RelPermalink }}" 
-            width="{{ $tablet.Width }}" 
-            height="{{ $tablet.Height }}">
+            srcset="{{ $tabletWebp.RelPermalink }}" 
+            type="image/webp"
+            width="{{ $tabletWebp.Width }}" 
+            height="{{ $tabletWebp.Height }}">
+    <source media="(min-width: 768px)" 
+            srcset="{{ $tabletJpeg.RelPermalink }}" 
+            type="image/jpeg"
+            width="{{ $tabletJpeg.Width }}" 
+            height="{{ $tabletJpeg.Height }}">
   {{ end }}
   
-  <!-- Mobile fallback -->
+  <!-- Mobile WebP -->
+  <source srcset="{{ $mobileWebp.RelPermalink }}" 
+          type="image/webp"
+          width="{{ $mobileWebp.Width }}" 
+          height="{{ $mobileWebp.Height }}">
+  
+  <!-- Mobile JPEG fallback -->
   <img class="w-full h-auto object-cover" 
        loading="lazy"
        decoding="async"
        {{ with .alt }}alt="{{ . }}"{{ end }} 
-       src="{{ $mobile.RelPermalink }}" 
-       width="{{ $mobile.Width }}" 
-       height="{{ $mobile.Height }}">
+       src="{{ $mobileJpeg.RelPermalink }}" 
+       width="{{ $mobileJpeg.Width }}" 
+       height="{{ $mobileJpeg.Height }}">
 </picture>
