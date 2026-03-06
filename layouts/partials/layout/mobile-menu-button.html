@@ -1,17 +1,7 @@
 <button data-collapse-toggle="navbar-sticky" type="button"
-    class="inline-flex items-center w-5 h-5 justify-center text-sm text-inherit rounded-lg lg:hidden hover:bg-gray-100"
-    aria-controls="navbar-sticky" aria-expanded="false" onclick="toggleMenu(this)">
-    <span class="sr-only">Open main menu</span>
-    <svg class="w-5 h-5 closed-icon" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-        viewBox="0 0 17 14">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M1 1h15M1 7h15M1 13h15" />
-    </svg>
-    <svg class="w-5 h-5 open-icon hidden" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
-        viewBox="0 0 20 20">
-        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-            d="M4 4l12 12M4 16L16 4" />
-    </svg>
+    class="inline-flex items-center w-8 h-8 justify-center text-sm text-inherit rounded-lg lg:hidden hover:bg-gray-100 cursor-pointer" onclick="toggleMenu(this)" aria-controls="navbar-sticky" aria-expanded="false">
+    <i data-lucide="menu" class="w-6 h-6 closed-icon"></i>
+    <i data-lucide="x" class="w-6 h-6 open-icon hidden"></i>
 </button>
 
 <script>
