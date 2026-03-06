@@ -66,12 +66,13 @@
 {{ end }}
 
 {{/* Generate responsive images in WebP and JPEG */}}
-{{ $desktopWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.desktop.width $sizes.desktop.height) }}
-{{ $desktopJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.desktop.width $sizes.desktop.height) }}
+{{/* Mobile: q70 (faster load), Desktop: q85 (better quality) */}}
+{{ $desktopWebp := $image.Fill (printf "%dx%d q85 webp" $sizes.desktop.width $sizes.desktop.height) }}
+{{ $desktopJpeg := $image.Fill (printf "%dx%d q85 jpeg" $sizes.desktop.width $sizes.desktop.height) }}
 {{ $tabletWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.tablet.width $sizes.tablet.height) }}
 {{ $tabletJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.tablet.width $sizes.tablet.height) }}
-{{ $mobileWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.mobile.width $sizes.mobile.height) }}
-{{ $mobileJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.mobile.width $sizes.mobile.height) }}
+{{ $mobileWebp := $image.Fill (printf "%dx%d q70 webp" $sizes.mobile.width $sizes.mobile.height) }}
+{{ $mobileJpeg := $image.Fill (printf "%dx%d q70 jpeg" $sizes.mobile.width $sizes.mobile.height) }}
 
 {{/* Determine if we need breakpoints (desktop/tablet/mobile are different) */}}
 {{ $needsBreakpoints := or (ne $sizes.desktop.width $sizes.tablet.width) (ne $sizes.tablet.width $sizes.mobile.width) }}

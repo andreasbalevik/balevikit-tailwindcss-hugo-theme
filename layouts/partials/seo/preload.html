@@ -1,0 +1,27 @@
+{{/* Attempt to find the LCP/Hero image */}}
+{{ $lcpImage := "" }}
+
+{{/* 1. Check for specific hero image in frontmatter */}}
+{{ if .Params.hero_image }}
+  {{ $lcpImage = .Params.hero_image }}
+{{/* 2. Check for first image in images array */}}
+{{ else if .Params.images }}
+  {{ range first 1 .Params.images }}
+    {{ $lcpImage = .src }}
+  {{ end }}
+{{/* 3. Fallback to site brand image if home page */}}
+{{ else if .IsHome }}
+  {{ $lcpImage = .Site.Params.brand_image }}
+{{ end }}
+
+{{/* Output preload tag if image found */}}
+{{ if $lcpImage }}
+  {{ $imgRes := resources.GetMatch $lcpImage }}
+  {{ if $imgRes }}
+    <!-- Preload LCP Image (CSS Wizardry Trick) -->
+    <link rel="preload" as="image" href="{{ $imgRes.Permalink }}" fetchpriority="high">
+  {{ else }}
+    <!-- Preload LCP Image (External/Static) -->
+    <link rel="preload" as="image" href="{{ $lcpImage | absURL }}" fetchpriority="high">
+  {{ end }}
+{{ end }}

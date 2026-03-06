@@ -27,6 +27,7 @@
   "image": ["{{ .Site.Params.brand_image | absURL }}"],
   {{ end }}
   "url": "{{ .Permalink }}",
+  {{ with .Page.Params.product_info.sku }}"sku": "{{ . }}",{{ end }}
   "brand": {
     "@type": "Brand",
     "name": "{{ .Site.Title }}"
@@ -60,6 +61,7 @@
       {{ $lastPrice := index . (sub (len .) 1) }}
     "lowPrice": "{{ $firstPrice.price }}",
     "highPrice": "{{ $lastPrice.price }}",
+    "offerCount": "{{ len . }}",
     {{ end }}
     "availability": "https://schema.org/InStock",
     "url": "{{ $.Permalink }}",
@@ -71,6 +73,15 @@
   {{ with .persons }}
   "touristType": "{{ if eq . "7" }}Small Group (up to {{ . }} people){{ else }}Private Tour (up to {{ . }} people){{ end }}"
   {{ end }}
+  {{ end }}
+  {{ with .Page.Params.aggregateRating }}
+  ,"aggregateRating": {
+    "@type": "AggregateRating",
+    "ratingValue": "{{ .ratingValue }}",
+    "reviewCount": "{{ .reviewCount }}",
+    "bestRating": "5",
+    "worstRating": "1"
+  }
   {{ end }}
   {{ with .Page.Params.tags }}
   ,"category": [

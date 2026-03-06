@@ -19,15 +19,20 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+{{ partial "seo/preload.html" . }}
+
 <meta name="robots" content="follow, index">
 <meta http-equiv="content-language" content="{{ .Site.Language }}">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ .Site.BaseURL }}sitemap.xml" />
 
 <!-- SEO METADATA -->
-<meta name="description" content="{{ $description | truncate 160 }}">
+<meta name="description" content="{{ $description | truncate 155 }}">
 <meta name="keywords" content="{{ with .Params.keywords }}{{range .}}{{.}},{{end}} {{else}} {{ with .Site.Params.keywords }}{{range .}}{{.}},{{end}}{{end}} {{ end }}" />
+<meta name="author" content="{{ .Site.Title }}">
+<meta name="publisher" content="{{ .Site.Title }}">
 <meta property="og:title" content="{{ .Title }}">
-<meta property="og:description" content="{{ $description | truncate 160 }}">
+<meta property="og:description" content="{{ $description | truncate 155 }}">
 {{ if .IsPage }}
 <meta property="og:type" content="article">
 {{ $pubDate := .Date }}
@@ -69,6 +74,7 @@
     {{- $alt := .alt }}
     {{- with $.Page.Resources.GetMatch .src }}
       <meta property="og:image" content="{{ .Permalink }}" />
+      <meta property="og:image:type" content="{{ .MediaType }}" />
       <meta property="og:image:width" content="{{ .Width }}" />
       <meta property="og:image:height" content="{{ .Height }}" />
       {{- with $alt }}
@@ -81,6 +87,7 @@
 
 <!-- TWITTER CARD METADATA -->
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@balestrandfjordangling">
 <meta name="twitter:title" content="{{ .Title }}">
 <meta name="twitter:description" content="{{$description}}">
 {{- with .Page.Params.images -}}
