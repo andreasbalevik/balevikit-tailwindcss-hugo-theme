@@ -1,7 +1,5 @@
 /**
- * Lightweight UI Components - Tabs and Carousel
- * Replaces Flowbite functionality with vanilla JavaScript
- * Aligns with Nordic Minimal design system
+ * Lightweight UI Components — Carousel, Dropdown, Modal
  */
 
 // ============================================================================
@@ -9,16 +7,10 @@
 // ============================================================================
 
 function setupModals() {
-  console.log('setupModals called');
-  
-  // Open modal when clicking open button
   document.querySelectorAll('[data-modal-target]').forEach(button => {
-    console.log('Found open button:', button);
     button.addEventListener('click', function(e) {
       e.preventDefault();
-      const modalId = this.getAttribute('data-modal-target');
-      const modal = document.getElementById(modalId);
-      console.log('Opening modal:', modalId, modal);
+      const modal = document.getElementById(this.getAttribute('data-modal-target'));
       if (modal) {
         modal.classList.remove('hidden');
         document.body.style.overflow = 'hidden';
@@ -26,14 +18,10 @@ function setupModals() {
     });
   });
 
-  // Close modal when clicking close button
   document.querySelectorAll('[data-modal-toggle]').forEach(closeBtn => {
-    console.log('Found close button:', closeBtn);
     closeBtn.addEventListener('click', function(e) {
       e.preventDefault();
-      const modalId = this.getAttribute('data-modal-toggle');
-      const modal = document.getElementById(modalId);
-      console.log('Closing modal:', modalId, modal);
+      const modal = document.getElementById(this.getAttribute('data-modal-toggle'));
       if (modal) {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
@@ -41,21 +29,17 @@ function setupModals() {
     });
   });
 
-  // Close modal when clicking on the backdrop (outside the content)
   document.querySelectorAll('[role="dialog"]').forEach(modal => {
     modal.addEventListener('click', function(e) {
       if (e.target === this) {
-        console.log('Closing modal via backdrop');
         this.classList.add('hidden');
         document.body.style.overflow = '';
       }
     });
   });
 
-  // Close all modals with escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') {
-      console.log('Closing modals via escape');
       document.querySelectorAll('[role="dialog"]').forEach(modal => {
         modal.classList.add('hidden');
         document.body.style.overflow = '';
@@ -69,32 +53,20 @@ function setupModals() {
 // ============================================================================
 
 function setupDropdowns() {
-  console.log('setupDropdowns called');
-
-  // Toggle dropdowns
   document.querySelectorAll('[data-dropdown-toggle]').forEach(button => {
     button.addEventListener('click', function(e) {
-      e.stopPropagation(); // Prevent closing immediately
-      const targetId = this.getAttribute('data-dropdown-toggle');
-      const dropdown = document.getElementById(targetId);
-      
+      e.stopPropagation();
+      const dropdown = document.getElementById(this.getAttribute('data-dropdown-toggle'));
       if (dropdown) {
-        // Toggle visibility
         dropdown.classList.toggle('hidden');
-        
-        // Update aria-expanded for rotation
-        const isExpanded = !dropdown.classList.contains('hidden');
-        this.setAttribute('aria-expanded', isExpanded);
+        this.setAttribute('aria-expanded', !dropdown.classList.contains('hidden'));
       }
     });
   });
 
-  // Close dropdowns when clicking outside
   document.addEventListener('click', function(e) {
     document.querySelectorAll('[data-dropdown-toggle]').forEach(button => {
-      const targetId = button.getAttribute('data-dropdown-toggle');
-      const dropdown = document.getElementById(targetId);
-      
+      const dropdown = document.getElementById(button.getAttribute('data-dropdown-toggle'));
       if (dropdown && !dropdown.classList.contains('hidden')) {
         if (!button.contains(e.target) && !dropdown.contains(e.target)) {
           dropdown.classList.add('hidden');
@@ -109,142 +81,75 @@ function setupDropdowns() {
 // CAROUSEL FUNCTIONALITY
 // ============================================================================
 
-// Global carousel instances for sync between main and fullscreen
-let mainCarousel = null;
-let fullscreenCarousel = null;
-
 class CarouselComponent {
-  constructor(carouselElement) {
-    this.carousel = carouselElement;
-    this.items = carouselElement.querySelectorAll('[data-carousel-item]');
-    this.prevBtn = carouselElement.querySelector('[data-carousel-prev]');
-    this.nextBtn = carouselElement.querySelector('[data-carousel-next]');
-    this.indicators = carouselElement.querySelectorAll('[data-carousel-slide-to]');
-    this.isFullscreen = carouselElement.closest('#fullscreen-carousel') !== null;
-
-    if (this.items.length < 2) return;
-
+  constructor(element) {
+    this.el = element;
+    this.items = element.querySelectorAll('[data-carousel-item]');
+    this.prevBtn = element.querySelector('[data-carousel-prev]');
+    this.nextBtn = element.querySelector('[data-carousel-next]');
+    this.indicators = element.querySelectorAll('[data-carousel-slide-to]');
     this.currentIndex = 0;
+    this.peer = null;
+
+    if (this.items.length === 0) return;
     this.init();
-    
-    // Track global carousel instances for sync between main and fullscreen
-    if (this.isFullscreen) {
-      fullscreenCarousel = this;
-    } else if (carouselElement.id === 'full-carousel') {
-      mainCarousel = this;
-    }
   }
 
   init() {
-    // Show first item
     this.showItem(0);
-
-    // Bind events
-    if (this.prevBtn) {
-      this.prevBtn.addEventListener('click', () => this.prevSlide());
-    }
-    if (this.nextBtn) {
-      this.nextBtn.addEventListener('click', () => this.nextSlide());
-    }
-
-    // Bind indicator clicks
-    this.indicators.forEach((indicator, index) => {
-      indicator.addEventListener('click', () => this.showItem(index));
-    });
-
-    // Keyboard navigation (for fullscreen carousel)
-    document.addEventListener('keydown', (e) => {
-      if (!this.carousel.closest('#fullscreen-modal')?.classList.contains('hidden')) {
-        if (e.key === 'ArrowLeft') {
-          e.preventDefault();
-          this.prevSlide();
-        } else if (e.key === 'ArrowRight') {
-          e.preventDefault();
-          this.nextSlide();
-        }
-      }
-    });
+    if (this.prevBtn) this.prevBtn.addEventListener('click', () => this.prevSlide());
+    if (this.nextBtn) this.nextBtn.addEventListener('click', () => this.nextSlide());
+    this.indicators.forEach((ind, i) => ind.addEventListener('click', () => this.showItem(i)));
   }
 
   showItem(index) {
-    // Clamp index
-    if (index < 0) {
-      this.currentIndex = this.items.length - 1;
-    } else if (index >= this.items.length) {
-      this.currentIndex = 0;
-    } else {
-      this.currentIndex = index;
-    }
+    if (index < 0) this.currentIndex = this.items.length - 1;
+    else if (index >= this.items.length) this.currentIndex = 0;
+    else this.currentIndex = index;
 
-    // Hide all items
-    this.items.forEach((item, i) => {
+    this.items.forEach(item => {
       item.classList.add('hidden');
       item.style.opacity = '0';
     });
 
-    // Show current item with fade animation
-    const currentItem = this.items[this.currentIndex];
-    currentItem.classList.remove('hidden');
-    // Trigger reflow to ensure transition plays
-    currentItem.offsetHeight;
-    currentItem.style.opacity = '1';
-    currentItem.style.transition = 'opacity 0.7s ease-in-out';
+    const current = this.items[this.currentIndex];
+    current.classList.remove('hidden');
+    current.offsetHeight; // trigger reflow for transition
+    current.style.opacity = '1';
+    current.style.transition = 'opacity 0.7s ease-in-out';
 
-    // Update indicators
-    this.indicators.forEach((indicator, i) => {
-      if (i === this.currentIndex) {
-        indicator.classList.add('bg-[#e09a00]');
-        indicator.classList.remove('bg-gray-300');
-      } else {
-        indicator.classList.remove('bg-[#e09a00]');
-        indicator.classList.add('bg-gray-300');
-      }
+    this.indicators.forEach((ind, i) => {
+      ind.classList.toggle('bg-[#e09a00]', i === this.currentIndex);
+      ind.classList.toggle('bg-gray-300', i !== this.currentIndex);
     });
 
-    // Keep both carousels in sync
-    if (this.isFullscreen && mainCarousel) {
-      mainCarousel.currentIndex = this.currentIndex;
-      mainCarousel.updateDisplay();
-    } else if (!this.isFullscreen && fullscreenCarousel) {
-      fullscreenCarousel.currentIndex = this.currentIndex;
-      fullscreenCarousel.updateDisplay();
+    // Sync peer carousel (main <-> fullscreen)
+    if (this.peer) {
+      this.peer.currentIndex = this.currentIndex;
+      this.peer.updateDisplay();
     }
   }
 
   updateDisplay() {
-    // Hide all items
-    this.items.forEach((item, i) => {
+    this.items.forEach(item => {
       item.classList.add('hidden');
       item.style.opacity = '0';
     });
 
-    // Show current item with fade animation
-    const currentItem = this.items[this.currentIndex];
-    currentItem.classList.remove('hidden');
-    // Trigger reflow to ensure transition plays
-    currentItem.offsetHeight;
-    currentItem.style.opacity = '1';
-    currentItem.style.transition = 'opacity 0.7s ease-in-out';
+    const current = this.items[this.currentIndex];
+    current.classList.remove('hidden');
+    current.offsetHeight;
+    current.style.opacity = '1';
+    current.style.transition = 'opacity 0.7s ease-in-out';
 
-    // Update indicators
-    this.indicators.forEach((indicator, i) => {
-      if (i === this.currentIndex) {
-        indicator.classList.add('bg-[#e09a00]');
-        indicator.classList.remove('bg-gray-300');
-      } else {
-        indicator.classList.remove('bg-[#e09a00]');
-        indicator.classList.add('bg-gray-300');
-      }
+    this.indicators.forEach((ind, i) => {
+      ind.classList.toggle('bg-[#e09a00]', i === this.currentIndex);
+      ind.classList.toggle('bg-gray-300', i !== this.currentIndex);
     });
   }
 
-  prevSlide() {
-    this.showItem(this.currentIndex - 1);
-  }
-
-  nextSlide() {
-    this.showItem(this.currentIndex + 1);
-  }
+  prevSlide() { this.showItem(this.currentIndex - 1); }
+  nextSlide() { this.showItem(this.currentIndex + 1); }
 }
 
 // ============================================================================
@@ -252,14 +157,78 @@ class CarouselComponent {
 // ============================================================================
 
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize modals
   setupModals();
-
-  // Initialize dropdowns
   setupDropdowns();
 
-  // Initialize all carousels
-  document.querySelectorAll('[data-carousel]').forEach(carouselElement => {
-    new CarouselComponent(carouselElement);
+  // Initialize all carousels and store by ID
+  const carousels = new Map();
+  document.querySelectorAll('[data-carousel]').forEach(el => {
+    const instance = new CarouselComponent(el);
+    if (el.id) carousels.set(el.id, instance);
+  });
+
+  // Link main <-> fullscreen carousel pairs via data-carousel-sync
+  carousels.forEach((instance, id) => {
+    const peerId = instance.el.dataset.carouselSync;
+    if (peerId && carousels.has(peerId)) {
+      const peer = carousels.get(peerId);
+      instance.peer = peer;
+      peer.peer = instance;
+    }
+  });
+
+  // Fullscreen open buttons
+  document.querySelectorAll('[data-open-modal]').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const modal = document.getElementById(btn.dataset.openModal);
+      if (!modal) return;
+
+      modal.classList.remove('hidden');
+      document.body.style.overflow = 'hidden';
+
+      // Sync fullscreen to current main slide
+      const fsId = modal.dataset.carouselFullscreenModal;
+      const mainId = btn.closest('[data-carousel]')?.id;
+      if (fsId && mainId && carousels.has(fsId) && carousels.has(mainId)) {
+        carousels.get(fsId).currentIndex = carousels.get(mainId).currentIndex;
+        carousels.get(fsId).updateDisplay();
+      }
+    });
+  });
+
+  // Fullscreen close buttons and backdrop click
+  document.querySelectorAll('[data-close-modal]').forEach(el => {
+    el.addEventListener('click', e => {
+      // Only close if clicking the backdrop itself (not children), or if it's a button
+      if (el.tagName === 'BUTTON' || e.target === el) {
+        const modal = document.getElementById(el.dataset.closeModal);
+        if (modal) {
+          modal.classList.add('hidden');
+          document.body.style.overflow = '';
+        }
+      }
+    });
+  });
+
+  // Keyboard navigation for open fullscreen modals
+  document.addEventListener('keydown', e => {
+    document.querySelectorAll('[data-carousel-fullscreen-modal]').forEach(modal => {
+      if (modal.classList.contains('hidden')) return;
+      const fsId = modal.dataset.carouselFullscreenModal;
+      const fs = carousels.get(fsId);
+      if (!fs) return;
+
+      if (e.key === 'Escape') {
+        modal.classList.add('hidden');
+        document.body.style.overflow = '';
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        fs.prevSlide();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        fs.nextSlide();
+      }
+    });
   });
 });

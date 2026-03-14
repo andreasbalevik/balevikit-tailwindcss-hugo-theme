@@ -21,8 +21,13 @@
     
     Available presets:
     - "hero"      : Full width banner/hero (16:9 desktop, 3:2 tablet, 1:1 mobile)
+    - "square"    : Square crop (1:1 all breakpoints)
     - "card"      : Cards in grid (3:2 desktop, 1:1 mobile)
     - "thumbnail" : Small thumbnails (3:2 constant)
+    
+    Optional parameters:
+    - "imgClass"  : Override CSS classes on the <img> element
+                    Default: "w-full h-auto object-cover"
 */}}
 
 {{ $presets := dict 
@@ -30,6 +35,11 @@
     "desktop" (dict "width" 1280 "height" 720)
     "tablet" (dict "width" 778 "height" 518)
     "mobile" (dict "width" 500 "height" 400)
+  )
+  "square" (dict 
+    "desktop" (dict "width" 600 "height" 600)
+    "tablet" (dict "width" 600 "height" 600)
+    "mobile" (dict "width" 400 "height" 400)
   )
   "card" (dict 
     "desktop" (dict "width" 720 "height" 540)
@@ -111,7 +121,8 @@
           height="{{ $mobileWebp.Height }}">
   
   <!-- Mobile JPEG fallback -->
-  <img class="w-full h-auto object-cover" 
+  {{ $imgClass := .imgClass | default "w-full h-auto object-cover" }}
+  <img class="{{ $imgClass }}" 
        loading="lazy"
        decoding="async"
        {{ with .alt }}alt="{{ . }}"{{ end }} 

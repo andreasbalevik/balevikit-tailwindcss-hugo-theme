@@ -1,5 +1,4 @@
-<div
-    class="px-3 py-2 lg:p-0 h-full flex items-center gap-4 lg:order-2 space-x-1 bg-transparent lg:space-x-0 rtl:space-x-reverse lg:w-auto w-full justify-between">
+<div class="relative px-3 py-2 lg:p-0 h-full flex items-center gap-4 lg:order-2 space-x-1 bg-transparent lg:space-x-0 rtl:space-x-reverse lg:w-auto w-full justify-between">
     <!-- SELECT TRANSLATION BUTTON -->
     <button type="button" data-dropdown-toggle="language-dropdown-menu"
         class="inline-flex items-center justify-center text-sm text-inherit rounded-lg cursor-pointer">
@@ -11,13 +10,12 @@
     </button>
 
     <!-- TRANSLATIONS-->
-    <div class="z-50 hidden text-base list-none bg-inherit bg-white" id="language-dropdown-menu">
-        <ul class="py-2 font-medium border" role="none">
+    <div class="absolute top-full right-0 z-50 hidden border rounded-lg overflow-hidden text-base list-none bg-white shadow-lg" id="language-dropdown-menu">
+        <ul class="py-2 font-medium" role="none">
             {{ range . }}
             <li>
-                <a href="{{.Permalink}}" class="block px-4 py-2 text-sm hover:text-black " role="menuitem">
+                <a href="{{.Permalink}}" class="block px-4 py-2 text-md hover:text-blue-700 " role="menuitem">
                     <div class="inline-flex items-center">
-                        {{.Language.Params.flag | safeHTML}}
                         <label class="block pl-2 cursor-pointer">{{.Language.LanguageName }}</label>
                     </div>
                 </a>
