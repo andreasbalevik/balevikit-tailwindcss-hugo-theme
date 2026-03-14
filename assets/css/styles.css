@@ -6,6 +6,7 @@
 }
 
 html {
+  font-size: 18px; /* 1rem = 18px; all rem-values scale from this */
   @apply bg-gray-50 text-slate-900 leading-relaxed;
   @apply antialiased
 }
