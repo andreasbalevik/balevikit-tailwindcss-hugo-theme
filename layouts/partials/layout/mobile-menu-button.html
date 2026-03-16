@@ -1,35 +1,5 @@
 <button data-collapse-toggle="navbar-sticky" type="button"
-    class="inline-flex items-center w-8 h-8 justify-center text-sm text-inherit rounded-lg lg:hidden hover:bg-gray-100 cursor-pointer" onclick="toggleMenu(this)" aria-controls="navbar-sticky" aria-expanded="false">
+    class="inline-flex items-center w-8 h-8 justify-center text-sm text-inherit rounded-lg lg:hidden hover:bg-gray-100 cursor-pointer" aria-controls="navbar-sticky" aria-expanded="false">
     <i data-lucide="menu" class="w-6 h-6 closed-icon"></i>
     <i data-lucide="x" class="w-6 h-6 open-icon hidden"></i>
 </button>
-
-<script>
-    function toggleMenu(button) {
-        const isOpen = button.getAttribute("aria-expanded") === "true";
-        button.setAttribute("aria-expanded", isOpen ? "false" : "true");
-
-        const closedIcon = button.querySelector(".closed-icon");
-        const openIcon = button.querySelector(".open-icon");
-        const menu = document.getElementById("navbar-sticky");
-
-        if (isOpen) {
-            closedIcon.classList.remove("hidden");
-            openIcon.classList.add("hidden");
-            menu.classList.add("hidden");
-        } else {
-            closedIcon.classList.add("hidden");
-            openIcon.classList.remove("hidden");
-            menu.classList.remove("hidden");
-        }
-    }
-
-    document.addEventListener("DOMContentLoaded", () => {
-        const button = document.querySelector('[data-collapse-toggle="navbar-sticky"]');
-        if (button) {
-            const isOpen = button.getAttribute("aria-expanded") === "true";
-            button.querySelector(".closed-icon").classList.toggle("hidden", isOpen);
-            button.querySelector(".open-icon").classList.toggle("hidden", !isOpen);
-        }
-    });
-</script>
