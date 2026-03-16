@@ -4,7 +4,8 @@
 
             <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center">
                 {{ if .Site.Params.logo }}
-                    <img src="{{ .Site.Params.logo }}" alt="{{ .Site.Title }}" class="w-auto h-9 w-auto object-contain">
+                    {{- $logo := resources.Get .Site.Params.logo -}}
+                    {{- if $logo }}<img src="{{ $logo.RelPermalink }}" alt="{{ .Site.Title }}" class="w-auto h-9 w-auto object-contain">{{- end }}
                 {{ else }}
                     <span class="self-center text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
                 {{ end }}

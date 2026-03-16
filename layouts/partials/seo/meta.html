@@ -82,6 +82,16 @@
       {{- end }}
     {{- end }}
   {{- end }}
+{{- else }}
+  {{- with .Site.Params.logo }}
+    {{- $logo := resources.Get . -}}
+    {{- if $logo }}
+      <meta property="og:image" content="{{ $logo.Permalink }}" />
+      <meta property="og:image:type" content="{{ $logo.MediaType }}" />
+      <meta property="og:image:width" content="{{ $logo.Width }}" />
+      <meta property="og:image:height" content="{{ $logo.Height }}" />
+    {{- end }}
+  {{- end }}
 {{- end }}
 
 
@@ -119,16 +129,27 @@
 <meta name="theme-color" content="#0369a1">
 
 <!-- FAVICONS -->
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon/favicon-16x16.png">
-<link rel="icon" type="image/png" sizes="32x32" href="/favicon/favicon-32x32.png">
-<link rel="icon" type="image/png" sizes="48x48" href="/favicon/favicon-48x48.png">
-<link rel="icon" type="image/png" sizes="96x96" href="/favicon/favicon-96x96.png">
-<link rel="icon" type="image/png" sizes="144x144" href="/favicon/favicon-144x144.png">
-<link rel="apple-touch-icon" sizes="180x180" href="/favicon/apple-touch-icon.png">
-<link rel="icon" type="image/png" sizes="192x192" href="/favicon/android-chrome-192x192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="/favicon/android-chrome-512x512.png">
+{{- with .Site.Params.logo }}
+  {{- $logo := resources.Get . -}}
+  {{- if $logo -}}
+    {{- $fav16     := resources.Copy "favicon/favicon-16x16.png"           ($logo.Fill "16x16 Center")   -}}
+    {{- $fav32     := resources.Copy "favicon/favicon-32x32.png"           ($logo.Fill "32x32 Center")   -}}
+    {{- $fav48     := resources.Copy "favicon/favicon-48x48.png"           ($logo.Fill "48x48 Center")   -}}
+    {{- $fav96     := resources.Copy "favicon/favicon-96x96.png"           ($logo.Fill "96x96 Center")   -}}
+    {{- $fav144    := resources.Copy "favicon/favicon-144x144.png"         ($logo.Fill "144x144 Center") -}}
+    {{- $apple     := resources.Copy "favicon/apple-touch-icon.png"        ($logo.Fill "180x180 Center") -}}
+    {{- $chrome192 := resources.Copy "favicon/android-chrome-192x192.png"  ($logo.Fill "192x192 Center") -}}
+    {{- $chrome512 := resources.Copy "favicon/android-chrome-512x512.png"  ($logo.Fill "512x512 Center") -}}
+    <link rel="icon" type="image/png" sizes="16x16"   href="{{ $fav16.RelPermalink }}">
+    <link rel="icon" type="image/png" sizes="32x32"   href="{{ $fav32.RelPermalink }}">
+    <link rel="icon" type="image/png" sizes="48x48"   href="{{ $fav48.RelPermalink }}">
+    <link rel="icon" type="image/png" sizes="96x96"   href="{{ $fav96.RelPermalink }}">
+    <link rel="icon" type="image/png" sizes="144x144" href="{{ $fav144.RelPermalink }}">
+    <link rel="apple-touch-icon" sizes="180x180"      href="{{ $apple.RelPermalink }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ $chrome192.RelPermalink }}">
+    <link rel="icon" type="image/png" sizes="512x512" href="{{ $chrome512.RelPermalink }}">
+  {{- end -}}
+{{- end -}}
 {{ if (fileExists "static/site.webmanifest") }}<link rel="manifest" href="/site.webmanifest">{{ end }}
 
 {{ partial "seo/json-ld/json-ld.html" . }}

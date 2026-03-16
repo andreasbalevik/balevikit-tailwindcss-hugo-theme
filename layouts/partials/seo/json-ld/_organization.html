@@ -5,7 +5,7 @@
       "@type": "Organization",
       "url": "{{ .Site.BaseURL }}",
       "name": "{{ .Site.Title }}",
-      {{ with .Site.Params.logo }}"logo": "{{ . | absURL }}",{{ end }}
+      {{ with .Site.Params.logo }}{{ $logo := resources.Get . }}{{ if $logo }}"logo": "{{ $logo.Permalink }}",{{ end }}{{ end }}
       "contactPoint": {
         "@type": "ContactPoint",
         "email": "{{ .Site.Params.email }}",
