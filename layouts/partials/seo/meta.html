@@ -132,14 +132,14 @@
 {{- with .Site.Params.logo }}
   {{- $logo := resources.Get . -}}
   {{- if $logo -}}
-    {{- $fav16     := resources.Copy "favicon/favicon-16x16.png"           ($logo.Fill "16x16 Center")   -}}
-    {{- $fav32     := resources.Copy "favicon/favicon-32x32.png"           ($logo.Fill "32x32 Center")   -}}
-    {{- $fav48     := resources.Copy "favicon/favicon-48x48.png"           ($logo.Fill "48x48 Center")   -}}
-    {{- $fav96     := resources.Copy "favicon/favicon-96x96.png"           ($logo.Fill "96x96 Center")   -}}
-    {{- $fav144    := resources.Copy "favicon/favicon-144x144.png"         ($logo.Fill "144x144 Center") -}}
-    {{- $apple     := resources.Copy "favicon/apple-touch-icon.png"        ($logo.Fill "180x180 Center") -}}
-    {{- $chrome192 := resources.Copy "favicon/android-chrome-192x192.png"  ($logo.Fill "192x192 Center") -}}
-    {{- $chrome512 := resources.Copy "favicon/android-chrome-512x512.png"  ($logo.Fill "512x512 Center") -}}
+    {{- $fav16     := resources.Copy "favicon/favicon-16x16.png"           ($logo.Fit "16x16")   -}}
+    {{- $fav32     := resources.Copy "favicon/favicon-32x32.png"           ($logo.Fit "32x32")   -}}
+    {{- $fav48     := resources.Copy "favicon/favicon-48x48.png"           ($logo.Fit "48x48")   -}}
+    {{- $fav96     := resources.Copy "favicon/favicon-96x96.png"           ($logo.Fit "96x96")   -}}
+    {{- $fav144    := resources.Copy "favicon/favicon-144x144.png"         ($logo.Fit "144x144") -}}
+    {{- $apple     := resources.Copy "favicon/apple-touch-icon.png"        ($logo.Fit "180x180") -}}
+    {{- $chrome192 := resources.Copy "favicon/android-chrome-192x192.png"  ($logo.Fit "192x192") -}}
+    {{- $chrome512 := resources.Copy "favicon/android-chrome-512x512.png"  ($logo.Fit "512x512") -}}
     <link rel="icon" type="image/png" sizes="16x16"   href="{{ $fav16.RelPermalink }}">
     <link rel="icon" type="image/png" sizes="32x32"   href="{{ $fav32.RelPermalink }}">
     <link rel="icon" type="image/png" sizes="48x48"   href="{{ $fav48.RelPermalink }}">
