@@ -1,0 +1,104 @@
+@import "tailwindcss";
+@plugin "./themes/balevikit-tailwindcss-hugo-theme/node_modules/@tailwindcss/typography";
+
+@theme {
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+}
+
+@utility container {
+  margin-inline: auto;
+  padding-block: 3rem;
+  padding-inline: 1rem;
+  max-width: 1280px;
+
+  @media (min-width: 1024px) {
+    padding-block: 4rem;
+  }
+
+  @media (min-width: 1536px) {
+    padding-block: 5rem;
+    padding-inline: 0;
+  }
+}
+
+@layer base {
+  html {
+    font-size: 18px;
+    font-feature-settings: 'cv05' 1;
+    scroll-behavior: smooth;
+    scroll-padding-top: 80px;
+    background-color: theme(colors.gray.50);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    color: theme(colors.gray.800);
+    line-height: 1.625;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: theme(colors.gray.900);
+  }
+
+  img, svg, video {
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* ─── Prose (tailwindcss/typography) ─────────────────────────────────────────
+   All prose configuration lives here. In templates, use:
+     <div class="prose max-w-none">{{ .Content }}</div>
+   Container controls width — never combine with max-w-prose.
+   ─────────────────────────────────────────────────────────────────────────── */
+
+.prose {
+  /* Color palette */
+  --tw-prose-body: theme(colors.gray.800);
+  --tw-prose-headings: theme(colors.gray.900);
+  --tw-prose-links: var(--color-primary);
+  --tw-prose-bold: theme(colors.gray.900);
+  --tw-prose-counters: theme(colors.gray.700);
+  --tw-prose-bullets: theme(colors.gray.700);
+  --tw-prose-hr: theme(colors.gray.200);
+  --tw-prose-quotes: theme(colors.gray.800);
+  --tw-prose-quote-borders: var(--color-primary);
+  --tw-prose-captions: theme(colors.gray.700);
+  --tw-prose-code: theme(colors.gray.900);
+  --tw-prose-pre-code: theme(colors.gray.100);
+  --tw-prose-pre-bg: theme(colors.gray.900);
+  --tw-prose-th-borders: theme(colors.gray.300);
+  --tw-prose-td-borders: theme(colors.gray.200);
+
+  /* Headings: font-medium, tight tracking, balanced wrapping */
+  & :where(h1, h2, h3, h4, h5, h6):not(:where([class~="not-prose"] *)) {
+    font-weight: 500;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  /* Links: no underline by default, underline on hover */
+  & :where(a):not(:where([class~="not-prose"] *)) {
+    text-decoration: none;
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  /* Images: rounded corners and subtle shadow */
+  & :where(img):not(:where([class~="not-prose"] *)) {
+    border-radius: theme(borderRadius.lg);
+    box-shadow: theme(boxShadow.sm);
+  }
+
+  /* Spacing: no top margin on first element, no bottom margin on last element.
+     These are already prose defaults, but stated explicitly for clarity. */
+  & > :first-child {
+    margin-top: 0;
+  }
+
+  & > :last-child {
+    margin-bottom: 0;
+  }
+}
