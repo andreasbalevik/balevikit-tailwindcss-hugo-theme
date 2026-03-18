@@ -97,7 +97,7 @@
 
 <!-- TWITTER CARD METADATA -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:site" content="@balestrandfjordangling">
+{{ with .Site.Params.twitter_handle }}<meta name="twitter:site" content="{{ . }}">{{ end }}
 <meta name="twitter:title" content="{{ .Title }}">
 <meta name="twitter:description" content="{{$description}}">
 {{- with .Page.Params.images -}}
