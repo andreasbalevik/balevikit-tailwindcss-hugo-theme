@@ -20,14 +20,14 @@
             {{ partial "layout/mobile-menu-button.html" . }}
             <div class="hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
                 <div
-                    class="top-[70px] fixed inset-0 flex flex-col p-4 bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
+                    class="top-[70px] fixed inset-0 flex flex-col bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
                     <ul class="lg:flex gap-8 md:justify-end text-xl lg:text-base">
                     
                         {{ range .Site.Menus.main.Sort }}
                         {{ $isActive := eq $section.RelPermalink .URL }}
-                        <li>
+                        <li class="hover:bg-primary/20 p-2 rounded">
                             <a href="{{.URL}}"
-                                class="{{if $isActive}}text-blue-700 font-medium{{else}}text-gray-900{{end}} block tracking-wide py-2 px-3 rounded hover:bg-slate-50 lg:hover:bg-transparent lg:hover:text-blue-700 lg:p-0"
+                                class="{{if $isActive}}text-blue-700 font-medium{{else}}text-gray-900{{end}} block tracking-wide py-2 px-3 rounded lg:p-0"
                                 {{if $isActive}}aria-current="page"{{end}}>
                                 {{ .Name }}
                             </a>
