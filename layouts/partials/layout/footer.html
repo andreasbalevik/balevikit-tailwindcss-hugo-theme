@@ -11,7 +11,7 @@
 
         <!-- Company Info -->
         <div>
-          <h3 class="mt-0 mb-6 text-xl md:text-2xl font-medium text-balance">{{ .Site.Title }}</h3>
+          <h3 class="mt-0 mb-6 text-xl md:text-2xl font-medium text-balance text-white">{{ .Site.Title }}</h3>
           <div class="space-y-4 text-gray-300 {{ if eq $cols 1 }}flex flex-col items-center{{ end }}">
             {{ with .Site.Params.email}}
             <a href="mailto:{{.}}" class="flex items-center hover:text-white transition-colors duration-300">
