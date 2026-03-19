@@ -1,41 +1,46 @@
 <!-- ORGANIZATION -->
 <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Organization",
-      "url": "{{ .Site.BaseURL }}",
-      "name": "{{ .Site.Title }}",
-      {{ with .Site.Params.logo }}{{ $logo := resources.Get . }}{{ if $logo }}"logo": "{{ $logo.Permalink }}",{{ end }}{{ end }}
-      "contactPoint": {
-        "@type": "ContactPoint",
-        "email": "{{ .Site.Params.email }}",
-        "telephone": "{{ .Site.Params.phone }}",
-        "contactType": "customer service"
-      },
-      "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "{{ .Site.Params.address }}",
-        "addressLocality": "Balestrand",
-        "addressRegion": "Vestland",
-        "postalCode": "6899",
-        "addressCountry": "NO"
-      },
-      "sameAs": [
-        "https://www.instagram.com/balestrandfjordangling/",
-        "https://www.facebook.com/balestrandfjordangling/"
-      ],
-      "founder": {
-        "@type": "Person",
-        "name": "Captain Tor Balevik"
-      },
-      "areaServed": {
-        "@type": "GeoCircle",
-        "geoMidpoint": {
-          "@type": "GeoCoordinates",
-          "latitude": "61.2069",
-          "longitude": "6.5278"
-        },
-        "geoRadius": "50000"
-      }
-    }
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "url": "{{ .Site.BaseURL }}",
+  "name": "{{ .Site.Title }}"
+  {{ with .Site.Params.logo }}{{ $logo := resources.Get . }}{{ if $logo }},"logo": "{{ $logo.Permalink }}"{{ end }}{{ end }}
+  ,"contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{ .Site.Params.email }}",
+    "telephone": "{{ .Site.Params.phone }}",
+    "contactType": "customer service"
+  }
+  {{ with .Site.Params.address }}
+  ,"address": {
+    "@type": "PostalAddress",
+    "streetAddress": "{{ . }}"
+    {{ with $.Site.Params.addressLocality }},"addressLocality": "{{ . }}"{{ end }}
+    {{ with $.Site.Params.addressRegion }},"addressRegion": "{{ . }}"{{ end }}
+    {{ with $.Site.Params.postalCode }},"postalCode": "{{ . }}"{{ end }}
+    ,"addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
+  }
+  {{ end }}
+  {{ with .Site.Params.social }}
+  ,"sameAs": [{{ range $i, $url := . }}{{ if $i }},{{ end }}"{{ $url }}"{{ end }}]
+  {{ end }}
+  {{ with .Site.Params.founder }}
+  ,"founder": {
+    "@type": "Person",
+    "name": "{{ . }}"
+  }
+  {{ end }}
+  {{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }}
+  ,"areaServed": {
+    "@type": "GeoCircle",
+    "geoMidpoint": {
+      "@type": "GeoCoordinates",
+      "latitude": "{{ .Site.Params.latitude }}",
+      "longitude": "{{ .Site.Params.longitude }}"
+    },
+    "geoRadius": "{{ .Site.Params.areaServedRadius }}"
+  }
+  {{ end }}
+}
 </script>

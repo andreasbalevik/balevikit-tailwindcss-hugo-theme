@@ -1,7 +1,8 @@
 {{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
 
-{{ if eq .Section "inspirations" }}
-<!-- BLOG POSTING SCHEMA for Inspirations -->
+{{ $blogSection := .Site.Params.blog_section | default "blog" }}
+{{ if eq .Section $blogSection }}
+<!-- BLOG POSTING SCHEMA -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -24,8 +25,8 @@
   {{ end }}
   "author": {
     "@type": "Person",
-    "name": "Captain Tor",
-    "url": "{{ .Site.BaseURL }}about/"
+    "name": "{{ .Site.Params.author | default .Site.Title }}"
+    {{ with .Site.Params.author_url }},"url": "{{ . }}"{{ end }}
   },
   "publisher": {
     "@type": "Organization",
@@ -59,6 +60,7 @@
   {{ end }}
   {{ with .Page.Params.related_activities }}
   ,"mentions": [
+    {{ $productSection := $.Site.Params.product_section | default "products" }}
     {{ range $index, $activity := . }}
       {{ $activityPath := replace . "/index" "" }}
       {{ with $.Site.GetPage $activityPath }}
@@ -90,8 +92,8 @@
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "Inspiration",
-      "item": "{{ .Site.BaseURL }}inspirations/"
+      "name": "{{ with .Site.GetPage $blogSection }}{{ .Title }}{{ else }}{{ $blogSection | title }}{{ end }}",
+      "item": "{{ .Site.BaseURL }}{{ $blogSection }}/"
     },
     {
       "@type": "ListItem",
