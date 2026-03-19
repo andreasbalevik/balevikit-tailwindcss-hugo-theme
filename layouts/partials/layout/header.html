@@ -27,7 +27,7 @@
                         {{ $isActive := eq $section.RelPermalink .URL }}
                         <li class="hover:bg-primary/20 p-2 rounded">
                             <a href="{{.URL}}"
-                                class="{{if $isActive}}text-blue-700 font-medium{{else}}text-gray-900{{end}} block tracking-wide py-2 px-3 rounded lg:p-0"
+                                class="{{if $isActive}}text-primary font-medium{{else}}text-gray-900{{end}} block tracking-wide py-2 px-3 rounded lg:p-0"
                                 {{if $isActive}}aria-current="page"{{end}}>
                                 {{ .Name }}
                             </a>
