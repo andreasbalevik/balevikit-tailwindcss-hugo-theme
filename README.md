@@ -130,6 +130,80 @@ Eksempel på `assets/css/custom.css`:
 
 Temaet importerer denne filen automatisk. Du trenger ikke egne CSS-filer utover dette.
 
+## JSON-LD og strukturerte data
+
+Temaet genererer automatisk strukturerte data (Schema.org JSON-LD) basert på `[params]` i `hugo.toml`.
+
+### Tilgjengelige schemas
+
+| Schema | Utløses av |
+|--------|-----------|
+| `Organization` | Alle sider |
+| `WebSite` | Alle sider |
+| `LocalBusiness` | Forsiden |
+| `WebPage` / `Article` | Undersider |
+| `BlogPosting` + Breadcrumb | Sider i seksjonen definert av `blog_section` |
+| `Product` / `TouristTrip` + Breadcrumb | Sider i seksjonen definert av `product_section` |
+| `ItemList` | List-sider og taksonomier |
+| `VideoObject` | Sider med `video`-param i front matter |
+
+### Params for JSON-LD
+
+Legg til det du trenger i `[params]`:
+
+```toml
+[params]
+  # Kontaktinfo (brukes i Organization og LocalBusiness)
+  email   = "post@eksempel.no"
+  phone   = "+47 900 00 000"
+  address = "Gateveien 1, 5000 Bergen, Norway"
+
+  # Adressedetaljer for strukturerte data
+  addressLocality = "Bergen"
+  addressRegion   = "Vestland"
+  postalCode      = "5000"
+  addressCountry  = "NO"
+
+  # Geografi
+  latitude         = "60.3913"
+  longitude        = "5.3221"
+  areaServedRadius = "50000"
+
+  # Bedriftsdetaljer
+  founder    = "Ola Nordmann"
+  author     = "Ola Nordmann"
+  author_url = "https://eksempel.no/om/"
+  priceRange = "NOK 500-5000"
+  hasMap     = "https://www.google.com/maps/place/..."
+  currency   = "NOK"
+
+  # Sosiale medier (vises i sameAs-feltet)
+  social = [
+    "https://www.instagram.com/eksempel/",
+    "https://www.facebook.com/eksempel/"
+  ]
+
+  # Innholdsseksjoner — styr hvilke seksjoner som får BlogPosting/Product-schema
+  blog_section    = "blog"       # standard: "blog"
+  product_section = "products"   # standard: "products"
+```
+
+Alle params er valgfrie. Schemas tilpasser seg automatisk — mangler en param, utelates feltet.
+
+### Overstyr schemas per prosjekt
+
+Legg en fil i `layouts/partials/seo/json-ld/` i prosjektet for å overstyre en bestemt schema. Hugo foretrekker prosjektets fil foran temaets.
+
+```text
+layouts/
+└── partials/
+    └── seo/
+        └── json-ld/
+            └── _localbusiness.html   ← overstyrer temaets versjon
+```
+
+Typisk bruk: prosjekter med sterkt spesifikke schemas (TouristDestination, FoodEstablishment, MedicalBusiness o.l.) som ikke passer inn i generiske params.
+
 ## Dette skal du vanligvis ikke opprette
 
 Hvis du setter opp et nytt prosjekt med dette temaet, skal du normalt ikke lage:
