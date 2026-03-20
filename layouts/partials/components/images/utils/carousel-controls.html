@@ -18,17 +18,17 @@
 <button type="button"
     class="carousel-control-btn absolute top-0 start-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
     data-carousel-prev>
-    <span class="shadow inline-flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-gray-100">
+    <span class="shadow inline-flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-gray-100 group-focus-visible:ring-2 group-focus-visible:ring-primary group-focus-visible:ring-offset-2">
         <i data-lucide="chevron-left" class="w-4 h-4 text-gray-800 rtl:rotate-180"></i>
-        <span class="sr-only">{{ i18n "next" }}</span>
+        <span class="sr-only">{{ i18n "previous" }}</span>
     </span>
 </button>
 <button type="button"
     class="carousel-control-btn absolute top-0 end-0 z-30 flex items-center justify-center h-full px-4 cursor-pointer group focus:outline-none"
     data-carousel-next>
-    <span class="shadow inline-flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-gray-100">
+    <span class="shadow inline-flex items-center justify-center w-10 h-10 rounded-full bg-white hover:bg-gray-100 group-focus-visible:ring-2 group-focus-visible:ring-primary group-focus-visible:ring-offset-2">
         <i data-lucide="chevron-right" class="w-4 h-4 text-gray-800 rtl:rotate-180"></i>
-        <span class="sr-only">{{ i18n "previous" }}</span>
+        <span class="sr-only">{{ i18n "next" }}</span>
     </span>
 </button>
 {{ end }}
