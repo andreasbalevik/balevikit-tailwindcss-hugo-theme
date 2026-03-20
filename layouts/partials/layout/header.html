@@ -3,10 +3,16 @@
         <div class="h-[70px] container flex flex-wrap items-center justify-between mx-auto py-3 bg-inherit">
 
 
-            <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center">
+            <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center gap-3">
                 {{ if .Site.Params.logo }}
                     {{- $logo := resources.Get .Site.Params.logo -}}
-                    {{- if $logo }}<img src="{{ $logo.RelPermalink }}" alt="{{ .Site.Title }}" class="w-auto h-9 w-auto object-contain">{{- end }}
+                    {{- if $logo -}}
+                    {{- $logo = $logo.Resize "x48 webp" -}}
+                    <img src="{{ $logo.RelPermalink }}" width="{{ $logo.Width }}" height="{{ $logo.Height }}" alt="{{ .Site.Title }}" class="w-auto h-9 object-contain">
+                    {{- end }}
+                    {{ if .Site.Params.logo_title }}
+                    <span class="hidden sm:block self-center text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
+                    {{ end }}
                 {{ else }}
                     <span class="self-center text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
                 {{ end }}

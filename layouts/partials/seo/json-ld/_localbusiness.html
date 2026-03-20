@@ -61,7 +61,8 @@
   ,"hasMap": "{{ . }}"
   {{ end }}
   {{ with .Site.Params.social }}
-  ,"sameAs": [{{ range $i, $url := . }}{{ if $i }},{{ end }}"{{ $url }}"{{ end }}]
+  {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
+  {{ if $urls }},"sameAs": [{{ range $i, $url := $urls }}{{ if $i }},{{ end }}"{{ $url }}"{{ end }}]{{ end }}
   {{ end }}
 }
 </script>
