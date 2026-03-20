@@ -1,3 +1,4 @@
+{{ $productSection := .Site.Params.product_section | default "products" }}
 {{ if or (eq .Kind "section") (eq .Kind "taxonomy") }}
 {{ if not .IsHome }}
 <!-- ITEM LIST SCHEMA for List Pages -->
@@ -15,7 +16,7 @@
     {
       "@type": "ListItem",
       "position": {{ add $index 1 }},
-      {{ if eq $.Section "activities" }}
+      {{ if eq $.Section $productSection }}
       "item": {
         "@type": ["Product", "TouristTrip"],
         "name": "{{ $page.Title }}",
@@ -35,7 +36,7 @@
             {{ $lastPrice := index . (sub (len .) 1) }}
         ,"offers": {
           "@type": "AggregateOffer",
-          "priceCurrency": "NOK",
+          "priceCurrency": "{{ $.Site.Params.currency | default "NOK" }}",
           "lowPrice": "{{ $firstPrice.price }}",
           "highPrice": "{{ $lastPrice.price }}"
         }

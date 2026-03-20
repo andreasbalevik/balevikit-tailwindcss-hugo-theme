@@ -82,9 +82,24 @@ theme = 'balevikit-tailwindcss-hugo-theme'
   email = 'post@eksempel.no'
   phone = '+47 900 00 000'
   orgnr = '123 456 789'
-  logo = '/favicon/logo.png'
-  brand_image = '/favicon/logo.png'
+  logo = 'favicon/logo.png'
+  logo_title = false
+  brand_image = 'favicon/logo.png'
   ogimage = '/images/og-image.jpg'
+  privacyUrl = '/personvern'
+
+[params.social]
+  youtube     = 'https://www.youtube.com/@eksempel'
+  instagram   = 'https://www.instagram.com/eksempel/'
+  facebook    = 'https://www.facebook.com/eksempel'
+  linkedin    = 'https://www.linkedin.com/company/eksempel'
+  twitter     = 'https://twitter.com/eksempel'
+  tripadvisor = 'https://www.tripadvisor.com/...'
+
+[[menus.footer]]
+  name   = 'Hjem'
+  url    = '/'
+  weight = 10
 ```
 
 `build`- og `module`-oppsettet over er nødvendig for Tailwind/Hugo-pipelinen i temaet.
@@ -129,6 +144,184 @@ Eksempel på `assets/css/custom.css`:
 ```
 
 Temaet importerer denne filen automatisk. Du trenger ikke egne CSS-filer utover dette.
+
+## Header
+
+Headeren er fast og leveres av temaet. Konfigureres utelukkende via `[params]` i `hugo.toml`.
+
+### Logo
+
+Logo må ligge i `assets/`-mappen (ikke `static/`). Temaet bruker Hugo image processing for å
+optimere logoen — det krever at filen er tilgjengelig som en Hugo-ressurs.
+
+```toml
+[params]
+  logo = 'favicon/logo.png'   # sti relativt til assets/
+```
+
+Logoen prosesseres automatisk til WebP og riktig størrelse. Oppgi en kildefil på minst 72 px høyde.
+
+### Logo med tittel
+
+Som standard vises kun logoen. Sett `logo_title = true` for å vise logoen og nettstedets tittel side om side:
+
+```toml
+[params]
+  logo       = 'favicon/logo.png'
+  logo_title = true
+```
+
+| `logo` | `logo_title` | Resultat |
+|--------|-------------|---------|
+| satt | ikke satt / `false` | kun logo |
+| satt | `true` | logo + tittel |
+| ikke satt | — | kun tittel (tekst) |
+
+### Navigasjon
+
+Menylenker i headeren settes via `[[menus.main]]`:
+
+```toml
+[[menus.main]]
+  name   = 'Om oss'
+  url    = '/om/'
+  weight = 10
+```
+
+---
+
+## Footer
+
+Footeren er fast og leveres av temaet. Alt konfigureres via `hugo.toml`.
+
+### Kontaktinfo
+
+Vises automatisk hvis satt:
+
+```toml
+[params]
+  email   = 'post@eksempel.no'
+  phone   = '+47 900 00 000'
+  address = 'Gateveien 1, 5000 Bergen, Norway'
+  orgnr   = '123 456 789'
+```
+
+### Sosiale medier
+
+Bruk `[params.social]` med navngitte nøkler. Støttede plattformer:
+
+```toml
+[params.social]
+  youtube     = 'https://www.youtube.com/@eksempel'
+  instagram   = 'https://www.instagram.com/eksempel/'
+  facebook    = 'https://www.facebook.com/eksempel'
+  linkedin    = 'https://www.linkedin.com/company/eksempel'
+  twitter     = 'https://twitter.com/eksempel'
+  tripadvisor = 'https://www.tripadvisor.com/...'
+```
+
+Kun plattformer du oppgir vises. Verdiene brukes også automatisk i JSON-LD `sameAs`.
+
+### Personvernlenke
+
+```toml
+[params]
+  privacyUrl = '/personvern'
+```
+
+### Footer-meny
+
+Lenker i informasjonskolonnen i footeren settes via `[[menus.footer]]`:
+
+```toml
+[[menus.footer]]
+  name   = 'Hjem'
+  url    = '/'
+  weight = 10
+
+[[menus.footer]]
+  name   = 'Om oss'
+  url    = '/om/'
+  weight = 20
+```
+
+Footer-kolonner vises kun hvis de har innhold. Footer med kun kontaktinfo får sentrert enkeltkolonne-layout automatisk.
+
+---
+
+
+
+Temaet genererer automatisk strukturerte data (Schema.org JSON-LD) basert på `[params]` i `hugo.toml`.
+
+### Tilgjengelige schemas
+
+| Schema | Utløses av |
+|--------|-----------|
+| `Organization` | Alle sider |
+| `WebSite` | Alle sider |
+| `LocalBusiness` | Forsiden |
+| `WebPage` / `Article` | Undersider |
+| `BlogPosting` + Breadcrumb | Sider i seksjonen definert av `blog_section` |
+| `Product` / `TouristTrip` + Breadcrumb | Sider i seksjonen definert av `product_section` |
+| `ItemList` | List-sider og taksonomier |
+| `VideoObject` | Sider med `video`-param i front matter |
+
+### Params for JSON-LD
+
+Legg til det du trenger i `[params]`:
+
+```toml
+[params]
+  # Kontaktinfo (brukes i Organization og LocalBusiness)
+  email   = "post@eksempel.no"
+  phone   = "+47 900 00 000"
+  address = "Gateveien 1, 5000 Bergen, Norway"
+
+  # Adressedetaljer for strukturerte data
+  addressLocality = "Bergen"
+  addressRegion   = "Vestland"
+  postalCode      = "5000"
+  addressCountry  = "NO"
+
+  # Geografi
+  latitude         = "60.3913"
+  longitude        = "5.3221"
+  areaServedRadius = "50000"
+
+  # Bedriftsdetaljer
+  founder    = "Ola Nordmann"
+  author     = "Ola Nordmann"
+  author_url = "https://eksempel.no/om/"
+  priceRange = "NOK 500-5000"
+  hasMap     = "https://www.google.com/maps/place/..."
+  currency   = "NOK"
+
+  # Sosiale medier — vises i footer og i sameAs-feltet i JSON-LD
+  # Alle nøkler er valgfrie. Støttede: youtube, instagram, facebook, linkedin, twitter, tripadvisor
+  [params.social]
+    instagram = "https://www.instagram.com/eksempel/"
+    facebook  = "https://www.facebook.com/eksempel/"
+
+  # Innholdsseksjoner — styr hvilke seksjoner som får BlogPosting/Product-schema
+  blog_section    = "blog"       # standard: "blog"
+  product_section = "products"   # standard: "products"
+```
+
+Alle params er valgfrie. Schemas tilpasser seg automatisk — mangler en param, utelates feltet.
+
+### Overstyr schemas per prosjekt
+
+Legg en fil i `layouts/partials/seo/json-ld/` i prosjektet for å overstyre en bestemt schema. Hugo foretrekker prosjektets fil foran temaets.
+
+```text
+layouts/
+└── partials/
+    └── seo/
+        └── json-ld/
+            └── _localbusiness.html   ← overstyrer temaets versjon
+```
+
+Typisk bruk: prosjekter med sterkt spesifikke schemas (TouristDestination, FoodEstablishment, MedicalBusiness o.l.) som ikke passer inn i generiske params.
 
 ## Dette skal du vanligvis ikke opprette
 
