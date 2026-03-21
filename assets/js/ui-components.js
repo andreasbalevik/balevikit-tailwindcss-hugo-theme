@@ -119,7 +119,7 @@ class CarouselComponent {
     current.style.transition = 'opacity 0.7s ease-in-out';
 
     this.indicators.forEach((ind, i) => {
-      ind.classList.toggle('bg-[#e09a00]', i === this.currentIndex);
+      ind.classList.toggle('bg-primary', i === this.currentIndex);
       ind.classList.toggle('bg-gray-300', i !== this.currentIndex);
     });
 
@@ -143,7 +143,7 @@ class CarouselComponent {
     current.style.transition = 'opacity 0.7s ease-in-out';
 
     this.indicators.forEach((ind, i) => {
-      ind.classList.toggle('bg-[#e09a00]', i === this.currentIndex);
+      ind.classList.toggle('bg-primary', i === this.currentIndex);
       ind.classList.toggle('bg-gray-300', i !== this.currentIndex);
     });
   }

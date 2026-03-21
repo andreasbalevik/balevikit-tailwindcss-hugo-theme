@@ -122,9 +122,11 @@
   
   <!-- Mobile JPEG fallback -->
   {{ $imgClass := .imgClass | default "w-full h-auto object-cover" }}
+  {{ $fetchpriority := cond (eq .preset "hero") "high" "auto" }}
   <img class="{{ $imgClass }}" 
-       loading="lazy"
+       loading="{{ cond (eq .preset "hero") "eager" "lazy" }}"
        decoding="async"
+       fetchpriority="{{ $fetchpriority }}"
        {{ with .alt }}alt="{{ . }}"{{ end }} 
        src="{{ $mobileJpeg.RelPermalink }}" 
        width="{{ $mobileJpeg.Width }}" 

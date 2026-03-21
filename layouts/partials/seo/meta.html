@@ -151,7 +151,7 @@
 <meta name="application-name" content="{{ $title }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="#0369a1">
+<meta name="theme-color" content="{{ .Site.Params.theme_color | default "#0369a1" }}">
 
 <!-- FAVICONS -->
 {{- with .Site.Params.logo -}}

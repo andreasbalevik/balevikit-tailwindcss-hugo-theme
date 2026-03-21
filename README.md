@@ -102,6 +102,7 @@ theme = 'balevikit-tailwindcss-hugo-theme'
   brand_image = 'favicon/logo.png'
   ogimage = '/images/og-image.jpg'
   privacyUrl = '/privacy'
+  theme_color = '#0369a1'   # browser chrome color — set to match your primary color
 
 [params.social]
   youtube     = 'https://www.youtube.com/@example'

@@ -1,8 +1,11 @@
-<button onclick="scrollToTop()" id="scroll-to-top" class="scroll-to-top fixed bottom-4 right-4
-                       rounded-full bg-white 
-                       transition duration-300 hover:bg-gray-100 
-                       p-2 border-solid border-4 border-gray-700 z-100">
-    <i data-lucide="arrow-up" class="w-8 h-8 lg:w-10 lg:h-10 text-gray-950"></i>
+<button onclick="scrollToTop()" id="scroll-to-top"
+        aria-label="{{ i18n "scrollToTop" | default "Gå til toppen" }}"
+        class="scroll-to-top fixed bottom-4 right-4 z-50
+               rounded-full bg-primary text-white shadow
+               hover:bg-primary/90 active:bg-primary/80
+               transition-all duration-300 p-3
+               focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary">
+    <i data-lucide="arrow-up" class="w-6 h-6" aria-hidden="true"></i>
 </button>
 
 

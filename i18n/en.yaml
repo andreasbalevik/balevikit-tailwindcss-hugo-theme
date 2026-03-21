@@ -24,3 +24,11 @@
   translation: "Phone"
 - id: email
   translation: "Email"
+- id: scrollToTop
+  translation: "Go to top"
+- id: followUs
+  translation: "Follow Us"
+- id: information
+  translation: "Information"
+- id: privacyPolicy
+  translation: "Privacy Policy"

@@ -18,3 +18,11 @@
   translation: "Seite nicht gefunden"
 - id: email
   translation: "Email"
+- id: scrollToTop
+  translation: "Nach oben"
+- id: followUs
+  translation: "Folge uns"
+- id: information
+  translation: "Information"
+- id: privacyPolicy
+  translation: "Datenschutzerklärung"

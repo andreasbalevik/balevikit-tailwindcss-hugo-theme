@@ -24,3 +24,11 @@
   translation: "Telefon"
 - id: email
   translation: "E-post"
+- id: scrollToTop
+  translation: "Gå til toppen"
+- id: followUs
+  translation: "Følg oss"
+- id: information
+  translation: "Informasjon"
+- id: privacyPolicy
+  translation: "Personvernerklæring"
