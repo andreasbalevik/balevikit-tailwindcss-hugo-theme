@@ -1,4 +1,12 @@
-{{ if .IsHome }}
+{{ $localBusinessEnabled := false }}
+{{ with .Site.Params.schema }}
+  {{ if .localBusiness }}
+    {{ $localBusinessEnabled = true }}
+  {{ end }}
+{{ end }}
+{{ $hasBusinessSignals := or .Site.Params.email .Site.Params.phone .Site.Params.address (and .Site.Params.latitude .Site.Params.longitude) .Site.Params.priceRange .Site.Params.hasMap .Site.Params.logo }}
+{{ $description := .Page.Params.description | default .Site.Params.description }}
+{{ if and .IsHome $localBusinessEnabled $hasBusinessSignals }}
 <!-- LOCAL BUSINESS SCHEMA -->
 <script type="application/ld+json">
 {
@@ -6,48 +14,50 @@
   "@type": "LocalBusiness",
   "@id": "{{ .Site.BaseURL }}#localbusiness",
   "name": "{{ .Site.Title }}",
-  "description": "{{ .Page.Params.description | default .Site.Params.description }}"
+  "url": "{{ .Site.BaseURL }}",
+  "inLanguage": "{{ .Site.LanguageCode | default .Lang | default "en" }}"{{ with $description }},
+  "description": "{{ . }}"{{ end }}
   {{ with .Page.Params.images }}
     {{ range first 1 . }}
-      {{ $image := resources.GetMatch .src }}
-      {{ if $image }}
-  ,"image": "{{ $image.Permalink }}"
+      {{ with $.Page.Resources.GetMatch .src }},
+  "image": "{{ .Permalink }}"
+      {{ else }},
+  "image": "{{ .src | absURL }}"
       {{ end }}
     {{ end }}
-  {{ end }}
-  ,"url": "{{ .Site.BaseURL }}"
-  ,"telephone": "{{ .Site.Params.phone }}"
-  ,"email": "{{ .Site.Params.email }}"
-  {{ with .Site.Params.address }}
-  ,"address": {
+  {{ else }}
+    {{ with .Site.Params.logo }}
+      {{ with resources.Get . }},
+  "image": "{{ .Permalink }}"
+      {{ end }}
+    {{ end }}
+  {{ end }}{{ with .Site.Params.phone }},
+  "telephone": "{{ . }}"{{ end }}{{ with .Site.Params.email }},
+  "email": "{{ . }}"{{ end }}{{ with .Site.Params.address }},
+  "address": {
     "@type": "PostalAddress",
-    "streetAddress": "{{ . }}"
-    {{ with $.Site.Params.addressLocality }},"addressLocality": "{{ . }}"{{ end }}
-    {{ with $.Site.Params.addressRegion }},"addressRegion": "{{ . }}"{{ end }}
-    {{ with $.Site.Params.postalCode }},"postalCode": "{{ . }}"{{ end }}
-    ,"addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
+    "streetAddress": "{{ . }}"{{ with $.Site.Params.addressLocality }},
+    "addressLocality": "{{ . }}"{{ end }}{{ with $.Site.Params.addressRegion }},
+    "addressRegion": "{{ . }}"{{ end }}{{ with $.Site.Params.postalCode }},
+    "postalCode": "{{ . }}"{{ end }},
+    "addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
   }
-  {{ end }}
-  {{ if and .Site.Params.latitude .Site.Params.longitude }}
-  ,"geo": {
+  {{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude }},
+  "geo": {
     "@type": "GeoCoordinates",
     "latitude": "{{ .Site.Params.latitude }}",
     "longitude": "{{ .Site.Params.longitude }}"
   }
-  {{ end }}
-  {{ with .Site.Params.openingHours }}
-  ,"openingHoursSpecification": {
+  {{ end }}{{ with .Site.Params.openingHours }},
+  "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": {{ .dayOfWeek | jsonify }},
     "opens": "{{ .opens }}",
     "closes": "{{ .closes }}"
   }
-  {{ end }}
-  {{ with .Site.Params.priceRange }}
-  ,"priceRange": "{{ . }}"
-  {{ end }}
-  {{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }}
-  ,"areaServed": {
+  {{ end }}{{ with .Site.Params.priceRange }},
+  "priceRange": "{{ . }}"{{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }},
+  "areaServed": {
     "@type": "GeoCircle",
     "geoMidpoint": {
       "@type": "GeoCoordinates",
@@ -56,13 +66,12 @@
     },
     "geoRadius": "{{ .Site.Params.areaServedRadius }}"
   }
-  {{ end }}
-  {{ with .Site.Params.hasMap }}
-  ,"hasMap": "{{ . }}"
-  {{ end }}
-  {{ with .Site.Params.social }}
-  {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
-  {{ if $urls }},"sameAs": [{{ range $i, $url := $urls }}{{ if $i }},{{ end }}"{{ $url }}"{{ end }}]{{ end }}
+  {{ end }}{{ with .Site.Params.hasMap }},
+  "hasMap": "{{ . }}"{{ end }}{{ with .Site.Params.social }}
+    {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
+    {{ if $urls }},
+  "sameAs": [{{ range $i, $url := $urls }}{{ if $i }}, {{ end }}"{{ $url }}"{{ end }}]
+    {{ end }}
   {{ end }}
 }
 </script>

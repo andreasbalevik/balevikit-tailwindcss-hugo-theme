@@ -1,79 +1,82 @@
 {{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
 
 {{ $blogSection := .Site.Params.blog_section | default "blog" }}
-{{ if eq .Section $blogSection }}
+{{ $description := .Page.Params.description | default (.Summary | plainify) }}
+{{ if and .IsPage (eq .Section $blogSection) $description }}
+{{ $pubDate := .PublishDate }}
+{{ if $pubDate.IsZero }}
+  {{ $pubDate = .Date }}
+{{ end }}
+{{ if $pubDate.IsZero }}
+  {{ with .GitInfo }}
+    {{ $pubDate = .AuthorDate }}
+  {{ end }}
+{{ end }}
+{{ $lastmod := .Lastmod }}
+{{ if $lastmod.IsZero }}
+  {{ with .GitInfo }}
+    {{ $lastmod = .AuthorDate }}
+  {{ end }}
+{{ end }}
+{{ if $lastmod.IsZero }}
+  {{ $lastmod = $pubDate }}
+{{ end }}
+{{ $mentions := slice }}
+{{ with .Page.Params.related_activities }}
+  {{ range . }}
+    {{ $activityPath := replace . "/index" "" }}
+    {{ with $.Site.GetPage $activityPath }}
+      {{ $mentions = $mentions | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
 <!-- BLOG POSTING SCHEMA -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "BlogPosting",
   "headline": "{{ .Title }}",
-  "description": "{{ .Page.Params.description }}",
-  "url": "{{ .Permalink }}",
-  {{ with .Page.Params.images }}
+  "description": "{{ $description }}",
+  "url": "{{ .Permalink }}",{{ with .Page.Params.images }}
     {{ range first 1 . }}
-      {{ $image := resources.GetMatch .src }}
-      {{ if $image }}
+      {{ with $.Page.Resources.GetMatch .src }}
   "image": {
     "@type": "ImageObject",
-    "url": "{{ $image.Permalink }}",
-    "width": "{{ $image.Width }}",
-    "height": "{{ $image.Height }}"
+    "url": "{{ .Permalink }}",
+    "width": "{{ .Width }}",
+    "height": "{{ .Height }}"
   },
+      {{ else }}
+  "image": "{{ .src | absURL }}",
       {{ end }}
     {{ end }}
   {{ end }}
   "author": {
     "@type": "Person",
-    "name": "{{ .Site.Params.author | default .Site.Title }}"
-    {{ with .Site.Params.author_url }},"url": "{{ . }}"{{ end }}
+    "name": "{{ .Site.Params.author | default .Site.Title }}"{{ with .Site.Params.author_url }},
+    "url": "{{ . }}"{{ end }}
   },
   "publisher": {
     "@type": "Organization",
     "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.logo }},
+    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.logo }}{{ with resources.Get . }},
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ . | absURL }}"
-    }{{ end }}
+      "url": "{{ .Permalink }}"
+    }{{ end }}{{ end }}
   },
-  {{ $pubDate := .Date }}
-  {{ if .Date.IsZero }}
-    {{ with .GitInfo }}
-      {{ with .Ancestors.Reverse | first 1 }}
-        {{ range . }}
-          {{ $pubDate = .AuthorDate }}
-        {{ end }}
-      {{ else }}
-        {{ $pubDate = .AuthorDate }}
-      {{ end }}
-    {{ end }}
-  {{ end }}
-  "datePublished": "{{ $pubDate.Format $ISO8601 | safeHTML }}",
-  "dateModified": "{{ .Lastmod.Format $ISO8601 | safeHTML }}",
   "mainEntityOfPage": {
     "@type": "WebPage",
     "@id": "{{ .Permalink }}"
-  }
-  {{ with .Page.Params.keywords }}
-  ,"keywords": "{{ delimit (first 10 .) ", " }}"
-  {{ end }}
-  {{ with .Page.Params.related_activities }}
-  ,"mentions": [
-    {{ $productSection := $.Site.Params.product_section | default "products" }}
-    {{ range $index, $activity := . }}
-      {{ $activityPath := replace . "/index" "" }}
-      {{ with $.Site.GetPage $activityPath }}
-        {{ if $index }},{{ end }}
-    {
-      "@type": "Product",
-      "name": "{{ .Title }}",
-      "url": "{{ .Permalink }}"
-    }
-      {{ end }}
-    {{ end }}
-  ]
-  {{ end }}
+  }{{ if not $pubDate.IsZero }},
+  "datePublished": "{{ $pubDate.Format $ISO8601 | safeHTML }}"{{ end }}{{ if not $lastmod.IsZero }},
+  "dateModified": "{{ $lastmod.Format $ISO8601 | safeHTML }}"{{ end }}{{ with .Page.Params.keywords }},
+  "keywords": "{{ delimit (first 10 .) ", " }}"{{ end }}{{ with $mentions }},
+  "mentions": [{{ range $index, $page := . }}{{ if $index }}, {{ end }}{
+    "@type": "Product",
+    "name": "{{ $page.Title }}",
+    "url": "{{ $page.Permalink }}"
+  }{{ end }}]{{ end }}
 }
 </script>
 

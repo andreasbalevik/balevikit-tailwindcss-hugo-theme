@@ -1,10 +1,14 @@
+{{ $description := .Page.Params.description | default .Site.Params.description }}
+{{ if and .IsHome .Site.BaseURL .Site.Title }}
 <!-- WEBSITE -->
 <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "url": "{{ .Site.BaseURL }}",
-        "name": "{{ .Site.Title }}",
-        "description": "{{ .Page.Params.description | default .Site.Params.description }}"
-    }
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "url": "{{ .Site.BaseURL }}",
+  "name": "{{ .Site.Title }}",
+  "inLanguage": "{{ .Site.LanguageCode | default .Lang | default "en" }}"{{ with $description }},
+  "description": "{{ . }}"{{ end }}
+}
 </script>
+{{ end }}

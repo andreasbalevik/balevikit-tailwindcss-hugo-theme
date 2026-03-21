@@ -1,26 +1,32 @@
-
-{{ if not .IsHome }}
-    <!-- ARTICLE -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebPage",
-        "name": "{{ .Title }}",
-        "url": "{{ .Permalink }}",
-        "mainEntity": {
-            "@type": "Article",
-            "headline": "{{ .Title }}",
-            "description": "{{ .Page.Params.description }}",
-            "image": "{{ with .Page.Params.image }}{{ . | absURL }}{{else}}{{ .Site.Params.brand_image | absURL }}{{ end }}",
-            "publisher": {
-                "@type": "Organization",
-                "name": "{{ .Site.Title }}",
-                "logo": {
-                    "@type": "ImageObject",
-                    "url": "{{ .Site.Params.brand_image | absURL }}"
-                }
-            }
-        }
-    }
-    </script>
+{{ $blogSection := .Site.Params.blog_section | default "blog" }}
+{{ $productSection := .Site.Params.product_section | default "products" }}
+{{ $articleSchemaEnabled := false }}
+{{ if .Params.article }}
+  {{ $articleSchemaEnabled = true }}
+{{ end }}
+{{ with .Params.schema }}
+  {{ if .article }}
+    {{ $articleSchemaEnabled = true }}
+  {{ end }}
+{{ end }}
+{{ $description := .Page.Params.description | default (.Summary | plainify) }}
+{{ if and .IsPage (not .IsHome) (ne .Section $blogSection) (ne .Section $productSection) (not $articleSchemaEnabled) $description }}
+<!-- WEBPAGE -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "{{ .Title }}",
+  "url": "{{ .Permalink }}",
+  "description": "{{ $description }}"{{ with .Page.Params.images }}
+    {{ range first 1 . }}
+      {{ with $.Page.Resources.GetMatch .src }},
+  "image": "{{ .Permalink }}"
+      {{ else }},
+  "image": "{{ .src | absURL }}"
+      {{ end }}
+    {{ end }}
+  {{ end }}
+}
+</script>
 {{ end }}

@@ -1,23 +1,38 @@
 # Balevikit Tailwind CSS Hugo Theme
 
-Et Hugo-tema for enkle, raske og rolige nettsider bygget med Tailwind CSS.
+A minimal, opinionated Hugo theme for business and service websites, built with [Tailwind CSS v4](https://tailwindcss.com/).
 
-## Kort sagt
+[![Hugo](https://img.shields.io/badge/Hugo-≥0.116-ff4088?style=flat-square&logo=hugo)](https://gohugo.io/)
+[![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-38bdf8?style=flat-square&logo=tailwindcss)](https://tailwindcss.com/)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=flat-square)](LICENSE)
 
-For et helt nytt prosjekt trenger du i praksis bare:
+The theme ships a complete page structure — header, footer, SEO, and structured data — so you can focus on content. A new project needs as few as three files:
 
-- `package.json`
-- `hugo.toml`
-- `content/_index.md`
-- `themes/balevikit-tailwindcss-hugo-theme` som git submodule
+```text
+mitt-prosjekt/
+├── content/_index.md
+├── hugo.toml
+└── package.json
+```
 
-Valgfritt:
+## Features
 
-- `assets/css/custom.css` hvis du vil overstyre primærfargen
+- **Zero-config SEO** — meta tags, Open Graph, and 10 Schema.org JSON-LD types generated automatically
+- **Tailwind CSS v4** — processed directly by Hugo, no PostCSS config required
+- **Responsive header & footer** — fully configured via `hugo.toml`, no template work needed
+- **Image pipeline** — automatic WebP conversion and resizing via Hugo's image processing
+- **Multilingual** — built-in translations for English, German, and Norwegian Bokmål
+- **Tailwind Typography** — beautiful prose styling for markdown content out of the box
+- **Lucide icons** — icon set included, used throughout the theme
 
-## Opprett et nytt prosjekt
+## Requirements
 
-### 1. Lag et nytt Hugo-prosjekt
+- Hugo **≥ 0.116** (extended version not required)
+- Node.js (for installing Tailwind CSS dependencies)
+
+## Getting Started
+
+### 1. Create a new Hugo project
 
 ```bash
 hugo new site mitt-prosjekt
@@ -26,9 +41,9 @@ git init
 git submodule add https://github.com/andreasbalevik/balevikit-tailwindcss-hugo-theme.git themes/balevikit-tailwindcss-hugo-theme
 ```
 
-### 2. Legg til `package.json`
+### 2. Add `package.json`
 
-Temaet trenger kun at avhengighetene i temaet installeres. En enkel `package.json` i prosjektroten holder:
+The theme manages its own dependencies. A minimal `package.json` in the project root is enough:
 
 ```json
 {
@@ -42,20 +57,20 @@ Temaet trenger kun at avhengighetene i temaet installeres. En enkel `package.jso
 }
 ```
 
-Kjør deretter:
+Then run:
 
 ```bash
 npm install
 ```
 
-### 3. Sett opp `hugo.toml`
+### 3. Configure `hugo.toml`
 
-Dette er et godt minimumsoppsett:
+A minimal working configuration:
 
 ```toml
-baseURL = 'https://eksempel.no/'
-languageCode = 'nb-NO'
-title = 'Mitt nettsted'
+baseURL = 'https://example.com/'
+languageCode = 'en'
+title = 'My Site'
 theme = 'balevikit-tailwindcss-hugo-theme'
 
 [build]
@@ -78,64 +93,66 @@ theme = 'balevikit-tailwindcss-hugo-theme'
     target = 'assets/notwatching/hugo_stats.json'
 
 [params]
-  description = 'Kort beskrivelse av virksomheten.'
-  email = 'post@eksempel.no'
+  description = 'Short description of the business.'
+  email = 'post@example.com'
   phone = '+47 900 00 000'
   orgnr = '123 456 789'
   logo = 'favicon/logo.png'
   logo_title = false
   brand_image = 'favicon/logo.png'
   ogimage = '/images/og-image.jpg'
-  privacyUrl = '/personvern'
+  privacyUrl = '/privacy'
 
 [params.social]
-  youtube     = 'https://www.youtube.com/@eksempel'
-  instagram   = 'https://www.instagram.com/eksempel/'
-  facebook    = 'https://www.facebook.com/eksempel'
-  linkedin    = 'https://www.linkedin.com/company/eksempel'
-  twitter     = 'https://twitter.com/eksempel'
+  youtube     = 'https://www.youtube.com/@example'
+  instagram   = 'https://www.instagram.com/example/'
+  facebook    = 'https://www.facebook.com/example'
+  linkedin    = 'https://www.linkedin.com/company/example'
+  twitter     = 'https://twitter.com/example'
   tripadvisor = 'https://www.tripadvisor.com/...'
 
 [[menus.footer]]
-  name   = 'Hjem'
+  name   = 'Home'
   url    = '/'
   weight = 10
 ```
 
-`build`- og `module`-oppsettet over er nødvendig for Tailwind/Hugo-pipelinen i temaet.
+The `build` and `module` configuration above is required for the Tailwind/Hugo pipeline.
 
-### 4. Lag forsideinnhold
+### 4. Create homepage content
 
-Opprett `content/_index.md`:
+Create `content/_index.md`:
 
 ```yaml
 ---
-title: "Mitt nettsted"
-description: "Kort beskrivelse av hva dere tilbyr."
+title: "My Site"
+description: "Short description of what you offer."
 ---
 ```
 
-Det holder for å komme i gang.
+That's enough to get started.
 
-### 5. Verifiser oppsettet
+### 5. Verify the setup
 
-Kjør:
+Run:
 
 ```bash
 hugo --minify
 ```
 
-Hvis bygget går gjennom uten feil, er prosjektet satt opp riktig.
+If the build completes without errors, the project is set up correctly.
 
-## Nødvendige lokale overstyringer
+## Configuration
 
-Hold prosjektet så enkelt som mulig. Start med disse filene:
+Keep the project as simple as possible. Start with these files:
 
-- `hugo.toml` for tittel, baseURL, menyer og params
-- `content/_index.md` for innhold på forsiden
-- `assets/css/custom.css` hvis du vil overstyre primærfargen
+- `hugo.toml` — title, baseURL, menus, and params
+- `content/_index.md` — homepage content
+- `assets/css/custom.css` — optional, only if you need to override the primary color
 
-Eksempel på `assets/css/custom.css`:
+### Customizing the primary color
+
+Create `assets/css/custom.css`:
 
 ```css
 @theme {
@@ -143,27 +160,26 @@ Eksempel på `assets/css/custom.css`:
 }
 ```
 
-Temaet importerer denne filen automatisk. Du trenger ikke egne CSS-filer utover dette.
+The theme imports this file automatically. No other CSS files are needed.
 
 ## Header
 
-Headeren er fast og leveres av temaet. Konfigureres utelukkende via `[params]` i `hugo.toml`.
+The header is provided by the theme and configured entirely via `[params]` in `hugo.toml`.
 
 ### Logo
 
-Logo må ligge i `assets/`-mappen (ikke `static/`). Temaet bruker Hugo image processing for å
-optimere logoen — det krever at filen er tilgjengelig som en Hugo-ressurs.
+The logo must be placed in the `assets/` folder (not `static/`). The theme uses Hugo image processing to optimize it — this requires the file to be available as a Hugo resource.
 
 ```toml
 [params]
-  logo = 'favicon/logo.png'   # sti relativt til assets/
+  logo = 'favicon/logo.png'   # path relative to assets/
 ```
 
-Logoen prosesseres automatisk til WebP og riktig størrelse. Oppgi en kildefil på minst 72 px høyde.
+The logo is automatically processed to WebP at the correct size. Provide a source file at least 72 px tall.
 
-### Logo med tittel
+### Logo with site title
 
-Som standard vises kun logoen. Sett `logo_title = true` for å vise logoen og nettstedets tittel side om side:
+By default only the logo is shown. Set `logo_title = true` to display the logo and the site title side by side:
 
 ```toml
 [params]
@@ -171,20 +187,20 @@ Som standard vises kun logoen. Sett `logo_title = true` for å vise logoen og ne
   logo_title = true
 ```
 
-| `logo` | `logo_title` | Resultat |
-|--------|-------------|---------|
-| satt | ikke satt / `false` | kun logo |
-| satt | `true` | logo + tittel |
-| ikke satt | — | kun tittel (tekst) |
+| `logo` | `logo_title` | Result |
+|--------|-------------|--------|
+| set | not set / `false` | logo only |
+| set | `true` | logo + title |
+| not set | — | title text only |
 
-### Navigasjon
+### Navigation
 
-Menylenker i headeren settes via `[[menus.main]]`:
+Header menu links are set via `[[menus.main]]`:
 
 ```toml
 [[menus.main]]
-  name   = 'Om oss'
-  url    = '/om/'
+  name   = 'About'
+  url    = '/about/'
   weight = 10
 ```
 
@@ -192,164 +208,264 @@ Menylenker i headeren settes via `[[menus.main]]`:
 
 ## Footer
 
-Footeren er fast og leveres av temaet. Alt konfigureres via `hugo.toml`.
+The footer is provided by the theme and configured entirely via `hugo.toml`.
 
-### Kontaktinfo
+### Contact info
 
-Vises automatisk hvis satt:
+Shown automatically when set:
 
 ```toml
 [params]
-  email   = 'post@eksempel.no'
+  email   = 'post@example.com'
   phone   = '+47 900 00 000'
-  address = 'Gateveien 1, 5000 Bergen, Norway'
+  address = 'Street 1, 5000 Bergen, Norway'
   orgnr   = '123 456 789'
 ```
 
-### Sosiale medier
+### Social media
 
-Bruk `[params.social]` med navngitte nøkler. Støttede plattformer:
+Use `[params.social]` with named keys. Supported platforms:
 
 ```toml
 [params.social]
-  youtube     = 'https://www.youtube.com/@eksempel'
-  instagram   = 'https://www.instagram.com/eksempel/'
-  facebook    = 'https://www.facebook.com/eksempel'
-  linkedin    = 'https://www.linkedin.com/company/eksempel'
-  twitter     = 'https://twitter.com/eksempel'
+  youtube     = 'https://www.youtube.com/@example'
+  instagram   = 'https://www.instagram.com/example/'
+  facebook    = 'https://www.facebook.com/example'
+  linkedin    = 'https://www.linkedin.com/company/example'
+  twitter     = 'https://twitter.com/example'
   tripadvisor = 'https://www.tripadvisor.com/...'
 ```
 
-Kun plattformer du oppgir vises. Verdiene brukes også automatisk i JSON-LD `sameAs`.
+Only platforms you specify are shown. The values are also used automatically in the JSON-LD `sameAs` field.
 
-### Personvernlenke
+### Privacy link
 
 ```toml
 [params]
-  privacyUrl = '/personvern'
+  privacyUrl = '/privacy'
 ```
 
-### Footer-meny
+### Footer menu
 
-Lenker i informasjonskolonnen i footeren settes via `[[menus.footer]]`:
+Links in the info column of the footer are set via `[[menus.footer]]`:
 
 ```toml
 [[menus.footer]]
-  name   = 'Hjem'
+  name   = 'Home'
   url    = '/'
   weight = 10
 
 [[menus.footer]]
-  name   = 'Om oss'
-  url    = '/om/'
+  name   = 'About'
+  url    = '/about/'
   weight = 20
 ```
 
-Footer-kolonner vises kun hvis de har innhold. Footer med kun kontaktinfo får sentrert enkeltkolonne-layout automatisk.
+Footer columns are only rendered when they have content. A footer with only contact info automatically uses a centered single-column layout.
 
 ---
 
+## Structured Data (JSON-LD)
+
+The theme automatically generates Schema.org structured data, but only when the page and its data actually make sense for the schema type.
 
 
-Temaet genererer automatisk strukturerte data (Schema.org JSON-LD) basert på `[params]` i `hugo.toml`.
+### Available schemas
 
-### Tilgjengelige schemas
-
-| Schema | Utløses av |
-|--------|-----------|
-| `Organization` | Alle sider |
-| `WebSite` | Alle sider |
-| `LocalBusiness` | Forsiden |
-| `WebPage` / `Article` | Undersider |
-| `BlogPosting` + Breadcrumb | Sider i seksjonen definert av `blog_section` |
-| `Product` / `TouristTrip` + Breadcrumb | Sider i seksjonen definert av `product_section` |
-| `ItemList` | List-sider og taksonomier |
-| `VideoObject` | Sider med `video`-param i front matter |
+| Schema | When rendered | Configuration |
+|--------|--------------|---------------|
+| `Organization` | Homepage only, when the site has org data (logo, contact info, address, social profile, or founder) | `title`, `baseURL` and relevant `[params]` |
+| `WebSite` | Homepage only, when `title` and `baseURL` are set | `title`, `baseURL`, optional `params.description` |
+| `LocalBusiness` | Homepage only, when `[params.schema].localBusiness = true` and business signals are present | `params.schema.localBusiness = true` + contact/business data |
+| `FAQPage` | Pages with at least one `faq` item with both `question` and `answer` | `faq` in front matter |
+| `WebPage` | Regular single pages outside `blog_section` and `product_section`, with `description` or `summary` | page front matter |
+| `Article` | Single pages where article schema is explicitly enabled and the page has `description` or `summary` | `article: true` or `schema.article: true` |
+| `BlogPosting` + Breadcrumb | Single pages in the section defined by `blog_section`, with `description` or `summary` | `blog_section` + description in front matter |
+| `Product` + Breadcrumb | Single pages in the section defined by `product_section`, with `description` or `summary` | `product_section`, optional `product_info` |
+| `ItemList` | Section and taxonomy pages that actually have child pages | no extra requirements |
+| `VideoObject` | Pages where `video.thumbnailUrl` and either `video.contentUrl` or `video.embedUrl` are set | `video` in front matter |
 
 ### Params for JSON-LD
 
-Legg til det du trenger i `[params]`:
+Add what you need to `[params]`:
 
 ```toml
 [params]
-  # Kontaktinfo (brukes i Organization og LocalBusiness)
-  email   = "post@eksempel.no"
+  # Contact info (used in Organization and LocalBusiness)
+  email   = "post@example.com"
   phone   = "+47 900 00 000"
-  address = "Gateveien 1, 5000 Bergen, Norway"
+  address = "Street 1, 5000 Bergen, Norway"
 
-  # Adressedetaljer for strukturerte data
+  # Address details for structured data
   addressLocality = "Bergen"
   addressRegion   = "Vestland"
   postalCode      = "5000"
   addressCountry  = "NO"
 
-  # Geografi
+  # Geography
   latitude         = "60.3913"
   longitude        = "5.3221"
   areaServedRadius = "50000"
 
-  # Bedriftsdetaljer
-  founder    = "Ola Nordmann"
-  author     = "Ola Nordmann"
-  author_url = "https://eksempel.no/om/"
+  # Business details
+  founder    = "Your Name"
+  author     = "Your Name"
+  author_url = "https://example.com/about/"
   priceRange = "NOK 500-5000"
   hasMap     = "https://www.google.com/maps/place/..."
   currency   = "NOK"
 
-  # Sosiale medier — vises i footer og i sameAs-feltet i JSON-LD
-  # Alle nøkler er valgfrie. Støttede: youtube, instagram, facebook, linkedin, twitter, tripadvisor
-  [params.social]
-    instagram = "https://www.instagram.com/eksempel/"
-    facebook  = "https://www.facebook.com/eksempel/"
+  [params.schema]
+    localBusiness = true
 
-  # Innholdsseksjoner — styr hvilke seksjoner som får BlogPosting/Product-schema
-  blog_section    = "blog"       # standard: "blog"
-  product_section = "products"   # standard: "products"
+  # Social media — shown in footer and in the sameAs JSON-LD field
+  # All keys are optional. Supported: youtube, instagram, facebook, linkedin, twitter, tripadvisor
+  [params.social]
+    instagram = "https://www.instagram.com/example/"
+    facebook  = "https://www.facebook.com/example/"
+
+  # Content sections — controls which sections get BlogPosting/Product schema
+  blog_section    = "blog"       # default: "blog"
+  product_section = "products"   # default: "products"
 ```
 
-Alle params er valgfrie. Schemas tilpasser seg automatisk — mangler en param, utelates feltet.
+All params are optional. Missing data causes fields or entire schemas to be omitted.
 
-### Overstyr schemas per prosjekt
+### Front matter to activate schemas
 
-Legg en fil i `layouts/partials/seo/json-ld/` i prosjektet for å overstyre en bestemt schema. Hugo foretrekker prosjektets fil foran temaets.
+#### FAQPage
+
+Add `faq` directly to the page's front matter:
+
+
+```yaml
+---
+title: "FAQ"
+description: "Answers to common questions."
+faq:
+  - question: "What does it cost?"
+    answer: "Prices start at NOK 2,500."
+  - question: "How long does it take?"
+    answer: "It depends on the scope and how quickly content is ready."
+---
+```
+
+Only items with both `question` and `answer` are included in `FAQPage`.
+
+#### Article
+
+Use this on content pages that are genuinely articles, not on every subpage:
+
+```yaml
+---
+title: "How to choose the right website"
+description: "A practical guide for small businesses."
+schema:
+  article: true
+---
+```
+
+You can also use `article: true` at the top level if you prefer a flat front matter structure.
+
+#### BlogPosting
+
+Blog posts get `BlogPosting` automatically when they are in the section defined as `blog_section` and have a `description` or enough content to generate a `summary`.
+
+```toml
+[params]
+  blog_section = "blog"
+```
+
+#### Product
+
+Product pages get `Product` automatically when they are in the section defined as `product_section` and have a `description` or `summary`.
+
+```toml
+[params]
+  product_section = "products"
+```
+
+Optional product info:
+
+```yaml
+---
+title: "Standard website"
+description: "2–5 pages with custom design."
+product_info:
+  sku: "WEB-STD-01"
+  priceValidUntil: "2027-12-31"
+  prices:
+    - price: "5000"
+    - price: "9000"
+aggregateRating:
+  ratingValue: "4.9"
+  reviewCount: "12"
+---
+```
+
+For domain-specific types like `TouristTrip`, override `_product.html` locally in your project.
+
+#### VideoObject
+
+Video schema is only rendered when a thumbnail and at least one video URL are provided:
+
+```yaml
+---
+title: "How we work"
+description: "A short video about our process."
+video:
+  name: "How we work"
+  description: "A short video about our process."
+  thumbnailUrl: "https://example.com/images/video-thumb.jpg"
+  embedUrl: "https://www.youtube.com/embed/abc123"
+  duration: "PT1M30S"
+  uploadDate: "2026-03-21T16:00:00+01:00"
+---
+```
+
+Use `contentUrl` instead of `embedUrl` if you host the video file yourself.
+
+#### WebPage
+
+Regular single pages outside `blog_section` and `product_section` get `WebPage` automatically when they have a `description` or enough content to generate a `summary`.
+
+#### ItemList
+
+List pages and taxonomies get `ItemList` automatically when they have child pages to list.
+
+### Overriding schemas per project
+
+Place a file in `layouts/partials/seo/json-ld/` in your project to override a specific schema. Hugo prefers the project's file over the theme's.
 
 ```text
 layouts/
 └── partials/
     └── seo/
         └── json-ld/
-            └── _localbusiness.html   ← overstyrer temaets versjon
+            └── _localbusiness.html   ← overrides the theme's version
 ```
 
-Typisk bruk: prosjekter med sterkt spesifikke schemas (TouristDestination, FoodEstablishment, MedicalBusiness o.l.) som ikke passer inn i generiske params.
+Typical use: projects with highly specific schemas (TouristDestination, FoodEstablishment, MedicalBusiness, etc.) that don't fit into generic params.
 
-## Dette skal du vanligvis ikke opprette
+## What you typically should not create
 
-Hvis du setter opp et nytt prosjekt med dette temaet, skal du normalt ikke lage:
+When setting up a new project with this theme, you normally should not create:
 
 - `layouts/`
-- egne partials
-- egen header eller footer
-- ekstra CSS-filer
-- lokale Tailwind-oppsett
+- custom partials
+- a custom header or footer
+- extra CSS files
+- local Tailwind configuration
 
-Lag bare lokale overstyringer når prosjektet faktisk trenger det.
+Only add local overrides when the project actually requires them.
 
-## Ikke overstyr mer enn nødvendig
+> [!NOTE]
+> The theme already provides a header, footer, Tailwind setup, SEO partials, image partials, and container/typography defaults. Avoid local `layouts/`, partials, and extra CSS until you genuinely need them.
 
-Temaet leverer allerede:
 
-- header og footer
-- Tailwind-oppsett
-- SEO-partials
-- bildepartials
-- container og grunnleggende typografi
+## Minimal project structure
 
-Unngå lokale `layouts/`, partials og ekstra CSS før du faktisk trenger det.
-
-## Minimumsstruktur
-
-Et nytt prosjekt kan se slik ut:
+A new project can look like this:
 
 ```text
 mitt-prosjekt/
@@ -361,7 +477,7 @@ mitt-prosjekt/
 └── package.json
 ```
 
-Hvis du vil overstyre primærfargen, legger du til:
+If you want to override the primary color, add:
 
 ```text
 assets/
@@ -369,26 +485,27 @@ assets/
     └── custom.css
 ```
 
-## For AI og agenter
+## For AI agents and automation
 
-Hvis du setter opp prosjektet automatisk, følg denne rekkefølgen:
+When setting up the project automatically, follow this order:
 
-1. Opprett et nytt Hugo-prosjekt.
-2. Legg til temaet som git submodule.
-3. Opprett `package.json` i prosjektroten.
-4. Opprett `hugo.toml` med `theme`, `build` og `module`.
-5. Opprett `content/_index.md`.
-6. Kjør `npm install`.
-7. Kjør `hugo --minify`.
-8. Ikke opprett lokale `layouts/` eller CSS-overstyringer uten at du trenger dem.
+1. Create a new Hugo project.
+2. Add the theme as a git submodule.
+3. Create `package.json` in the project root.
+4. Create `hugo.toml` with `theme`, `build`, and `module`.
+5. Create `content/_index.md`.
+6. Run `npm install`.
+7. Run `hugo --minify`.
+8. Do not create local `layouts/` or CSS overrides unless you need them.
 
-Det tryggeste standardvalget er å bruke temaet som det er først, og heller legge til små overstyringer etterpå.
+The safest default is to use the theme as-is first, then add small overrides as needed.
 
-## Templates: standard bruk av `baseof`
+## Custom templates
 
-Temaet eier `layouts/_default/baseof.html`. Det betyr at prosjektet normalt ikke skal lage sin egen `baseof.html`.
+The theme owns `layouts/_default/baseof.html`. Your project should not create its own `baseof.html`.
 
-Hvis du trenger en lokal template i prosjektet, skal den som hovedregel bare definere innholdet i `main`:
+When you need a local template, it should only define the `main` block:
+
 
 ```go-html-template
 {{ define "main" }}
@@ -398,21 +515,14 @@ Hvis du trenger en lokal template i prosjektet, skal den som hovedregel bare def
       Hello world
     </h1>
     <p class="text-xl leading-relaxed text-pretty">
-      Dette innholdet rendres inni temaets base layout.
+      This content is rendered inside the theme's base layout.
     </p>
   </div>
 </section>
 {{ end }}
 ```
 
-Eksempel for forside:
-
-```text
-layouts/
-└── index.html
-```
-
-Innhold i `layouts/index.html`:
+For example, to override the homepage create `layouts/index.html`:
 
 ```go-html-template
 {{ define "main" }}
@@ -426,22 +536,21 @@ Innhold i `layouts/index.html`:
 {{ end }}
 ```
 
-Dette gir deg fortsatt header, footer, SEO, CSS og scripts fra temaet.
+This still gives you the header, footer, SEO, CSS, and scripts from the theme.
 
-### Standardregel
+**Rules:**
+- Do not create a local `baseof.html` without a very good reason
+- Do not copy the header or footer into your project
+- Use `{{ define "main" }}` in local templates
+- Let the theme handle the rest
 
-- Ikke opprett lokal `baseof.html` uten en svært god grunn
-- Ikke kopier header eller footer inn i prosjektet
-- Bruk `{{ define "main" }}` i lokale templates
-- La temaet håndtere resten
-
-## Start utvikling
+## Development
 
 ```bash
 npm run dev
 ```
 
-## Bygg nettstedet
+## Build
 
 ```bash
 npm run build

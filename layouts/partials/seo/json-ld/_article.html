@@ -1,43 +1,69 @@
 {{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
-
-{{ if not .IsHome }}
+{{- $blogSection := .Site.Params.blog_section | default "blog" -}}
+{{- $productSection := .Site.Params.product_section | default "products" -}}
+{{- $articleSchemaEnabled := false -}}
+{{- if .Params.article -}}
+  {{- $articleSchemaEnabled = true -}}
+{{- end -}}
+{{- with .Params.schema -}}
+  {{- if .article -}}
+    {{- $articleSchemaEnabled = true -}}
+  {{- end -}}
+{{- end -}}
+{{- $description := .Page.Params.description | default (.Summary | plainify) -}}
+{{- if and .IsPage (not .IsHome) (ne .Section $blogSection) (ne .Section $productSection) $articleSchemaEnabled $description -}}
+{{- $pubDate := .PublishDate -}}
+{{- if $pubDate.IsZero -}}
+  {{- $pubDate = .Date -}}
+{{- end -}}
+{{- if $pubDate.IsZero -}}
+  {{- with .GitInfo -}}
+    {{- $pubDate = .AuthorDate -}}
+  {{- end -}}
+{{- end -}}
+{{- $lastmod := .Lastmod -}}
+{{- if $lastmod.IsZero -}}
+  {{- with .GitInfo -}}
+    {{- $lastmod = .AuthorDate -}}
+  {{- end -}}
+{{- end -}}
+{{- if $lastmod.IsZero -}}
+  {{- $lastmod = $pubDate -}}
+{{- end -}}
 <!-- ARTICLE -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Article",
-    "headline": "{{ .Title }}",
-    "description": "{{ .Page.Params.description }}",
+  "headline": "{{ .Title }}",
+  "description": "{{ $description }}",
   "author": {
     "@type": "Person",
-    "name": "{{.Site.Title}}"
+    "name": "{{ .Site.Params.author | default .Site.Title }}"
   },
-  {{ $pubDate := .Date }}
-  {{ if .Date.IsZero }}
-    {{ with .GitInfo }}
-      {{ with .Ancestors.Reverse | first 1 }}
-        {{ range . }}
-          {{ $pubDate = .AuthorDate }}
-        {{ end }}
-      {{ else }}
-        {{ $pubDate = .AuthorDate }}
+  "publisher": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.logo }}{{ with resources.Get . }},
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ .Permalink }}"
+    }{{ end }}{{ end }}
+  },
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "{{ .Permalink }}"
+  }{{ if not $pubDate.IsZero }},
+  "datePublished": "{{ $pubDate.Format $ISO8601 | safeHTML }}"{{ end }}{{ if not $lastmod.IsZero }},
+  "dateModified": "{{ $lastmod.Format $ISO8601 | safeHTML }}"{{ end }}{{ with .Page.Params.images }}
+    {{ range first 1 . }}
+      {{ with $.Page.Resources.GetMatch .src }},
+  "image": "{{ .Permalink }}"
+      {{ else }},
+  "image": "{{ .src | absURL }}"
       {{ end }}
     {{ end }}
   {{ end }}
-  "datePublished": "{{ $pubDate.Format $ISO8601 | safeHTML }}",
-  "dateModified": "{{ .Lastmod.Format $ISO8601 | safeHTML }}",
-  {{- with .Page.Params.images -}}
-    {{- range first 1 . -}}
-      {{ $image := resources.GetMatch .src }}
-      {{- if $image -}}
-  "image": "{{ $image.Permalink }}"
-      {{- else -}}
-  "image": "{{ .src | absURL }}"
-      {{- end -}}
-    {{- end -}}
-  {{- else -}}
-  "image": "{{ .Site.Params.brand_image | absURL }}"
-  {{- end -}}
 }
 </script>
-{{ end }}
+{{- end -}}

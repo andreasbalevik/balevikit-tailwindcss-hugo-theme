@@ -1,6 +1,6 @@
 {{ $productSection := .Site.Params.product_section | default "products" }}
-{{ if or (eq .Kind "section") (eq .Kind "taxonomy") }}
-{{ if not .IsHome }}
+{{ $blogSection := .Site.Params.blog_section | default "blog" }}
+{{ if and (or (eq .Kind "section") (eq .Kind "taxonomy")) (not .IsHome) (gt (len .Pages) 0) }}
 <!-- ITEM LIST SCHEMA for List Pages -->
 <script type="application/ld+json">
 {
@@ -18,42 +18,53 @@
       "position": {{ add $index 1 }},
       {{ if eq $.Section $productSection }}
       "item": {
-        "@type": ["Product", "TouristTrip"],
+        "@type": "Product",
         "name": "{{ $page.Title }}",
-        "url": "{{ $page.Permalink }}",
-        "description": "{{ $page.Params.description }}"
-        {{ with $page.Params.images }}
+        "url": "{{ $page.Permalink }}"{{ with ($page.Params.description | default ($page.Summary | plainify)) }},
+        "description": "{{ . }}"{{ end }}{{ with $page.Params.images }}
           {{ range first 1 . }}
-            {{ $image := resources.GetMatch .src }}
-            {{ if $image }}
-        ,"image": "{{ $image.Permalink }}"
+            {{ with $page.Resources.GetMatch .src }},
+        "image": "{{ .Permalink }}"
+            {{ else }},
+        "image": "{{ .src | absURL }}"
             {{ end }}
           {{ end }}
-        {{ end }}
-        {{ with $page.Params.product_info }}
-          {{ with .prices }}
-            {{ $firstPrice := index . 0 }}
-            {{ $lastPrice := index . (sub (len .) 1) }}
-        ,"offers": {
+        {{ end }}{{ with $page.Params.product_info }}{{ with .prices }}
+          {{ $firstPrice := index . 0 }}
+          {{ $lastPrice := index . (sub (len .) 1) }},
+        "offers": {
           "@type": "AggregateOffer",
           "priceCurrency": "{{ $.Site.Params.currency | default "NOK" }}",
           "lowPrice": "{{ $firstPrice.price }}",
           "highPrice": "{{ $lastPrice.price }}"
-        }
+        }{{ end }}{{ end }}
+      }
+      {{ else if eq $.Section $blogSection }}
+      "item": {
+        "@type": "BlogPosting",
+        "name": "{{ $page.Title }}",
+        "url": "{{ $page.Permalink }}"{{ with ($page.Params.description | default ($page.Summary | plainify)) }},
+        "description": "{{ . }}"{{ end }}{{ with $page.Params.images }}
+          {{ range first 1 . }}
+            {{ with $page.Resources.GetMatch .src }},
+        "image": "{{ .Permalink }}"
+            {{ else }},
+        "image": "{{ .src | absURL }}"
+            {{ end }}
           {{ end }}
         {{ end }}
       }
       {{ else }}
       "item": {
-        "@type": "Article",
+        "@type": "WebPage",
         "name": "{{ $page.Title }}",
-        "url": "{{ $page.Permalink }}",
-        "description": "{{ $page.Params.description }}"
-        {{ with $page.Params.images }}
+        "url": "{{ $page.Permalink }}"{{ with ($page.Params.description | default ($page.Summary | plainify)) }},
+        "description": "{{ . }}"{{ end }}{{ with $page.Params.images }}
           {{ range first 1 . }}
-            {{ $image := resources.GetMatch .src }}
-            {{ if $image }}
-        ,"image": "{{ $image.Permalink }}"
+            {{ with $page.Resources.GetMatch .src }},
+        "image": "{{ .Permalink }}"
+            {{ else }},
+        "image": "{{ .src | absURL }}"
             {{ end }}
           {{ end }}
         {{ end }}
@@ -64,5 +75,4 @@
   ]
 }
 </script>
-{{ end }}
 {{ end }}

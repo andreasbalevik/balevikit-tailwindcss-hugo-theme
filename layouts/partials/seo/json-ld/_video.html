@@ -1,6 +1,11 @@
 {{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
 
 {{ with .Page.Params.video }}
+{{ $uploadDate := .uploadDate }}
+{{ if and (not $uploadDate) (not $.Date.IsZero) }}
+  {{ $uploadDate = $.Date.Format $ISO8601 }}
+{{ end }}
+{{ if and .thumbnailUrl (or .contentUrl .embedUrl) }}
 <!-- VIDEO OBJECT SCHEMA -->
 <script type="application/ld+json">
 {
@@ -8,20 +13,21 @@
   "@type": "VideoObject",
   "name": "{{ .name | default $.Title }}",
   "description": "{{ .description | default $.Page.Params.description }}",
-  "thumbnailUrl": "{{ .thumbnailUrl }}",
-  "uploadDate": "{{ .uploadDate | default $.Date.Format $ISO8601 }}",
-  "contentUrl": "{{ .contentUrl }}",
-  {{ with .embedUrl }}"embedUrl": "{{ . }}",{{ end }}
-  {{ with .duration }}"duration": "{{ . }}",{{ end }}
+  "thumbnailUrl": "{{ .thumbnailUrl }}"{{ with $uploadDate }},
+  "uploadDate": "{{ . }}"{{ end }}{{ with .contentUrl }},
+  "contentUrl": "{{ . }}"{{ end }}{{ with .embedUrl }},
+  "embedUrl": "{{ . }}"{{ end }}{{ with .duration }},
+  "duration": "{{ . }}"{{ end }},
   "publisher": {
     "@type": "Organization",
     "name": "{{ $.Site.Title }}",
-    "url": "{{ $.Site.BaseURL }}"{{ with $.Site.Params.logo }},
+    "url": "{{ $.Site.BaseURL }}"{{ with $.Site.Params.logo }}{{ with resources.Get . }},
     "logo": {
       "@type": "ImageObject",
-      "url": "{{ . | absURL }}"
-    }{{ end }}
+      "url": "{{ .Permalink }}"
+    }{{ end }}{{ end }}
   }
 }
 </script>
+{{ end }}
 {{ end }}

@@ -1,0 +1,31 @@
+{{ $faqItems := slice }}
+{{ with .Params.faq }}
+  {{ range . }}
+    {{ if and .question .answer }}
+      {{ $faqItems = $faqItems | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ with $faqItems }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "@id": "{{ $.Permalink }}#faq",
+  "inLanguage": "{{ $.Site.LanguageCode | default $.Lang | default "en" }}",
+  "mainEntity": [
+    {{- range $index, $item := . -}}
+      {{- if $index }},{{ end }}
+      {
+        "@type": "Question",
+        "name": "{{ $item.question }}",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "{{ $item.answer }}"
+        }
+      }
+    {{- end }}
+  ]
+}
+</script>
+{{ end }}

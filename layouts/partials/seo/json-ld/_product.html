@@ -1,104 +1,77 @@
-{{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
-
 {{ $productSection := .Site.Params.product_section | default "products" }}
-{{ if eq .Section $productSection }}
+{{ $description := .Page.Params.description | default (.Summary | plainify) }}
+{{ if and .IsPage (eq .Section $productSection) $description }}
 <!-- PRODUCT / SERVICE SCHEMA -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": ["Product", "TouristTrip"],
+  "@type": "Product",
   "name": "{{ .Title }}",
-  "description": "{{ .Page.Params.description }}",
-  {{ with .Page.Params.images }}
+  "description": "{{ $description }}",
+  "url": "{{ .Permalink }}"{{ with .Page.Params.product_info.sku }},
+  "sku": "{{ . }}"{{ end }}{{ with .Page.Params.images }}
     {{ range first 1 . }}
-      {{ $image := resources.GetMatch .src }}
-      {{ if $image }}
+      {{ with $.Page.Resources.GetMatch .src }},
   "image": [
-    "{{ $image.Permalink }}"
+    "{{ .Permalink }}"
+      {{ else }},
+  "image": [
+    "{{ .src | absURL }}"
       {{ end }}
     {{ end }}
     {{ range after 1 . }}
-      {{ $image := resources.GetMatch .src }}
-      {{ if $image }}
-    ,"{{ $image.Permalink }}"
+      {{ with $.Page.Resources.GetMatch .src }}
+    ,"{{ .Permalink }}"
+      {{ else }}
+    ,"{{ .src | absURL }}"
       {{ end }}
     {{ end }}
-  ],
-  {{ else }}
-  "image": ["{{ .Site.Params.brand_image | absURL }}"],
-  {{ end }}
-  "url": "{{ .Permalink }}",
-  {{ with .Page.Params.product_info.sku }}"sku": "{{ . }}",{{ end }}
+  ]{{ end }},
   "brand": {
     "@type": "Brand",
     "name": "{{ .Site.Title }}"
   },
   "provider": {
-    "@type": "LocalBusiness",
-    "name": "{{ .Site.Title }}"
-    {{ with .Site.Params.address }}
-    ,"address": {
+    "@type": "Organization",
+    "name": "{{ .Site.Title }}",
+    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.address }},
+    "address": {
       "@type": "PostalAddress",
-      "streetAddress": "{{ . }}"
-      {{ with $.Site.Params.addressLocality }},"addressLocality": "{{ . }}"{{ end }}
-      {{ with $.Site.Params.addressRegion }},"addressRegion": "{{ . }}"{{ end }}
-      {{ with $.Site.Params.postalCode }},"postalCode": "{{ . }}"{{ end }}
-      ,"addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
-    }
-    {{ end }}
-    {{ if and .Site.Params.latitude .Site.Params.longitude }}
-    ,"geo": {
+      "streetAddress": "{{ . }}"{{ with $.Site.Params.addressLocality }},
+      "addressLocality": "{{ . }}"{{ end }}{{ with $.Site.Params.addressRegion }},
+      "addressRegion": "{{ . }}"{{ end }}{{ with $.Site.Params.postalCode }},
+      "postalCode": "{{ . }}"{{ end }},
+      "addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
+    }{{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude }},
+    "geo": {
       "@type": "GeoCoordinates",
       "latitude": "{{ .Site.Params.latitude }}",
       "longitude": "{{ .Site.Params.longitude }}"
-    }
-    {{ end }}
-    ,"telephone": "{{ .Site.Params.phone }}"
-    ,"email": "{{ .Site.Params.email }}"
-    ,"url": "{{ .Site.BaseURL }}"
-  },
-  {{ with .Page.Params.product_info }}
+    }{{ end }}{{ with .Site.Params.phone }},
+    "telephone": "{{ . }}"{{ end }}{{ with .Site.Params.email }},
+    "email": "{{ . }}"{{ end }}
+  }{{ with .Page.Params.product_info }},
   "offers": {
     "@type": "AggregateOffer",
-    "priceCurrency": "{{ $.Site.Params.currency | default "NOK" }}",
-    {{ with .prices }}
+    "priceCurrency": "{{ $.Site.Params.currency | default "NOK" }}"{{ with .prices }}
       {{ $firstPrice := index . 0 }}
-      {{ $lastPrice := index . (sub (len .) 1) }}
+      {{ $lastPrice := index . (sub (len .) 1) }},
     "lowPrice": "{{ $firstPrice.price }}",
     "highPrice": "{{ $lastPrice.price }}",
-    "offerCount": "{{ len . }}",
-    {{ end }}
+    "offerCount": "{{ len . }}"{{ end }},
     "availability": "https://schema.org/InStock",
-    "url": "{{ $.Permalink }}",
-    "priceValidUntil": "2027-12-31"
-  },
-  {{ with .duration }}
-  "duration": "PT{{ .hours }}H{{ .minutes }}M",
-  {{ end }}
-  {{ with .persons }}
-  "touristType": "{{ if eq . "7" }}Small Group (up to {{ . }} people){{ else }}Private Tour (up to {{ . }} people){{ end }}"
-  {{ end }}
-  {{ end }}
-  {{ with .Page.Params.aggregateRating }}
-  ,"aggregateRating": {
+    "url": "{{ $.Permalink }}"{{ with .priceValidUntil }},
+    "priceValidUntil": "{{ . }}"{{ end }}
+  }{{ end }}{{ with .Page.Params.aggregateRating }},
+  "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "{{ .ratingValue }}",
     "reviewCount": "{{ .reviewCount }}",
     "bestRating": "5",
     "worstRating": "1"
-  }
-  {{ end }}
-  {{ with .Page.Params.tags }}
-  ,"category": [
-    {{ range $index, $tag := . }}
-      {{ if $index }},{{ end }}
-      "{{ $tag }}"
-    {{ end }}
-  ]
-  {{ end }}
-  {{ with .Page.Params.keywords }}
-  ,"keywords": "{{ delimit (first 10 .) ", " }}"
-  {{ end }}
+  }{{ end }}{{ with .Page.Params.tags }},
+  "category": [{{ range $index, $tag := . }}{{ if $index }}, {{ end }}"{{ $tag }}"{{ end }}]{{ end }}{{ with .Page.Params.keywords }},
+  "keywords": "{{ delimit (first 10 .) ", " }}"{{ end }}
 }
 </script>
 

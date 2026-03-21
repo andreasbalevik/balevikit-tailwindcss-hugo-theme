@@ -1,39 +1,41 @@
+{{ $hasOrganizationSignals := or .Site.Params.logo .Site.Params.email .Site.Params.phone .Site.Params.address .Site.Params.social .Site.Params.founder }}
+{{ if and .IsHome .Site.BaseURL .Site.Title $hasOrganizationSignals }}
 <!-- ORGANIZATION -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
   "url": "{{ .Site.BaseURL }}",
-  "name": "{{ .Site.Title }}"
-  {{ with .Site.Params.logo }}{{ $logo := resources.Get . }}{{ if $logo }},"logo": "{{ $logo.Permalink }}"{{ end }}{{ end }}
-  ,"contactPoint": {
-    "@type": "ContactPoint",
-    "email": "{{ .Site.Params.email }}",
-    "telephone": "{{ .Site.Params.phone }}",
+  "name": "{{ .Site.Title }}"{{ with .Site.Params.logo }}{{ with resources.Get . }},
+  "logo": "{{ .Permalink }}"{{ end }}{{ end }}
+  {{ if or .Site.Params.email .Site.Params.phone }},
+  "contactPoint": {
+    "@type": "ContactPoint"{{ with .Site.Params.email }},
+    "email": "{{ . }}"{{ end }}{{ with .Site.Params.phone }},
+    "telephone": "{{ . }}"{{ end }},
     "contactType": "customer service"
   }
-  {{ with .Site.Params.address }}
-  ,"address": {
+  {{ end }}{{ with .Site.Params.address }},
+  "address": {
     "@type": "PostalAddress",
-    "streetAddress": "{{ . }}"
-    {{ with $.Site.Params.addressLocality }},"addressLocality": "{{ . }}"{{ end }}
-    {{ with $.Site.Params.addressRegion }},"addressRegion": "{{ . }}"{{ end }}
-    {{ with $.Site.Params.postalCode }},"postalCode": "{{ . }}"{{ end }}
-    ,"addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
+    "streetAddress": "{{ . }}"{{ with $.Site.Params.addressLocality }},
+    "addressLocality": "{{ . }}"{{ end }}{{ with $.Site.Params.addressRegion }},
+    "addressRegion": "{{ . }}"{{ end }}{{ with $.Site.Params.postalCode }},
+    "postalCode": "{{ . }}"{{ end }},
+    "addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
   }
-  {{ end }}
-  {{ with .Site.Params.social }}
-  {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
-  {{ if $urls }},"sameAs": [{{ range $i, $url := $urls }}{{ if $i }},{{ end }}"{{ $url }}"{{ end }}]{{ end }}
-  {{ end }}
-  {{ with .Site.Params.founder }}
-  ,"founder": {
+  {{ end }}{{ with .Site.Params.social }}
+    {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
+    {{ if $urls }},
+  "sameAs": [{{ range $i, $url := $urls }}{{ if $i }}, {{ end }}"{{ $url }}"{{ end }}]
+    {{ end }}
+  {{ end }}{{ with .Site.Params.founder }},
+  "founder": {
     "@type": "Person",
     "name": "{{ . }}"
   }
-  {{ end }}
-  {{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }}
-  ,"areaServed": {
+  {{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }},
+  "areaServed": {
     "@type": "GeoCircle",
     "geoMidpoint": {
       "@type": "GeoCoordinates",
@@ -45,3 +47,4 @@
   {{ end }}
 }
 </script>
+{{ end }}
