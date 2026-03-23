@@ -7,8 +7,8 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@tailwindcss/cli": "^4.0.0",
-    "@tailwindcss/typography": "github:tailwindcss/typography",
-    "tailwindcss": "^4.0.0"
+    "@tailwindcss/cli": "^4.2.2",
+    "@tailwindcss/typography": "^0.5.19",
+    "tailwindcss": "^4.2.2"
   }
 }
