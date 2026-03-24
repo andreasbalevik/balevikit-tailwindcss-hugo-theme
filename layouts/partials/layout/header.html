@@ -1,14 +1,18 @@
 <header class="mb-[70px] bg-white text-gray-900">
     <nav class="z-100 bg-white fixed w-full top-0 start-0 border-b border-slate-200">
-        <div class="h-[70px] container flex items-center justify-between">
+        <div class="h-[70px] container p-0! flex items-center justify-between">
 
 
             <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center gap-3">
                 {{ if .Site.Params.logo }}
                     {{- $logo := resources.Get .Site.Params.logo -}}
                     {{- if $logo -}}
-                    {{- $logo = $logo.Resize "x48 webp" -}}
-                    <img src="{{ $logo.RelPermalink }}" width="{{ $logo.Width }}" height="{{ $logo.Height }}" alt="{{ .Site.Title }}" class="w-auto h-9 object-contain">
+                    {{- $logo1x := $logo.Resize "x50 webp" -}}
+                    {{- $logo2x := $logo.Resize "x100 webp" -}}
+                    <img src="{{ $logo1x.RelPermalink }}"
+                         srcset="{{ $logo1x.RelPermalink }} 1x, {{ $logo2x.RelPermalink }} 2x"
+                         alt="{{ .Site.Title }}"
+                         class="w-auto h-7 object-contain">
                     {{- end }}
                     {{ if .Site.Params.logo_title }}
                     <span class="hidden sm:block text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
@@ -23,8 +27,7 @@
 
             {{ if .Site.Menus.main }}
 
-            {{ partial "layout/mobile-menu-button.html" . }}
-            <div class="hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
+            <div class="hidden lg:flex lg:w-auto" id="navbar-sticky">
                 <div
                     class="top-[70px] fixed inset-0 flex flex-col bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
                     <ul class="lg:flex lg:items-center gap-8 md:justify-end text-xl lg:text-base">
@@ -48,6 +51,8 @@
                     </ul>
                 </div>
             </div>
+
+            {{ partial "layout/mobile-menu-button.html" . }}
 
             {{ else }}
                 {{ with .Translations }}
