@@ -13,43 +13,45 @@
       "src" .src 
       "alt" .alt 
       "sizes" (dict 
-        "desktop" (dict "width" 1250 "height" 625)
-        "tablet" (dict "width" 768 "height" 512)
-        "mobile" (dict "width" 640 "height" 480)
+        "desktop" (dict "width" 1250 "height" 625 "maxHeight" "600px")
+        "tablet" (dict "width" 768 "height" 512 "maxHeight" "500px")
+        "mobile" (dict "width" 640 "height" 480 "maxHeight" "400px")
       )
     ) }}
     
     Available presets:
-    - "hero"      : Full width banner/hero (16:9 desktop, 3:2 tablet, 1:1 mobile)
+    - "hero"      : Full width banner/hero (16:9 desktop, 3:2 tablet, 5:4 mobile)
     - "square"    : Square crop (1:1 all breakpoints)
-    - "card"      : Cards in grid (3:2 desktop, 1:1 mobile)
+    - "card"      : Cards in grid (4:3 desktop, mobile)
     - "thumbnail" : Small thumbnails (3:2 constant)
+    
+    All presets include automatic maxHeight constraints per breakpoint.
     
     Optional parameters:
     - "imgClass"  : Override CSS classes on the <img> element
-                    Default: "w-full h-auto object-cover"
+                    Default: "w-full h-auto object-cover {maxHeight}"
 */}}
 
 {{ $presets := dict 
   "hero" (dict 
-    "desktop" (dict "width" 1280 "height" 720)
-    "tablet" (dict "width" 768 "height" 512)
-    "mobile" (dict "width" 500 "height" 400)
+    "desktop" (dict "width" 1280 "height" 720 "maxHeight" "650px")
+    "tablet" (dict "width" 768 "height" 512 "maxHeight" "500px")
+    "mobile" (dict "width" 500 "height" 400 "maxHeight" "400px")
   )
   "square" (dict 
-    "desktop" (dict "width" 600 "height" 600)
-    "tablet" (dict "width" 600 "height" 600)
-    "mobile" (dict "width" 400 "height" 400)
+    "desktop" (dict "width" 600 "height" 600 "maxHeight" "650px")
+    "tablet" (dict "width" 600 "height" 600 "maxHeight" "600px")
+    "mobile" (dict "width" 400 "height" 400 "maxHeight" "400px")
   )
   "card" (dict 
-    "desktop" (dict "width" 720 "height" 540)
-    "tablet" (dict "width" 720 "height" 540)
-    "mobile" (dict "width" 480 "height" 360)
+    "desktop" (dict "width" 720 "height" 540 "maxHeight" "600px")
+    "tablet" (dict "width" 720 "height" 540 "maxHeight" "600px")
+    "mobile" (dict "width" 480 "height" 360 "maxHeight" "400px")
   )
   "thumbnail" (dict 
-    "desktop" (dict "width" 400 "height" 267)
-    "tablet" (dict "width" 400 "height" 267)
-    "mobile" (dict "width" 400 "height" 267)
+    "desktop" (dict "width" 400 "height" 267 "maxHeight" "300px")
+    "tablet" (dict "width" 400 "height" 267 "maxHeight" "300px")
+    "mobile" (dict "width" 400 "height" 267 "maxHeight" "300px")
   )
 }}
 
@@ -121,7 +123,20 @@
           height="{{ $mobileWebp.Height }}">
   
   <!-- Mobile JPEG fallback -->
-  {{ $imgClass := .imgClass | default "w-full h-auto object-cover" }}
+  {{ $baseClass := "w-full h-auto object-cover" }}
+  {{ $maxHeightClass := "" }}
+  {{ if and (not .imgClass) $sizes }}
+    {{ if .preset }}
+      {{ $preset := index $presets .preset }}
+      {{ if $preset }}
+        {{ $mobileData := index $preset "mobile" }}
+        {{ if $mobileData.maxHeight }}
+          {{ $maxHeightClass = printf "max-h-[%s]" $mobileData.maxHeight }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+  {{ $imgClass := .imgClass | default (printf "%s %s" $baseClass $maxHeightClass) }}
   {{ $fetchpriority := cond (eq .preset "hero") "high" "auto" }}
   <img class="{{ $imgClass }}" 
        loading="{{ cond (eq .preset "hero") "eager" "lazy" }}"
