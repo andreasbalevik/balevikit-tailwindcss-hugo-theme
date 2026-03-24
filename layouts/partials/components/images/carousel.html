@@ -42,7 +42,7 @@ images:
 <div id="{{ $id }}" class="relative w-full" data-carousel="static">
     
     <!-- Images Container -->
-    <div class="relative bg-gray-100 overflow-hidden rounded-lg {{ $containerClass }}">
+    <div class="relative bg-gray-100 {{ $containerClass }}">
         {{ range $index, $image := $images }}
             <div class="hidden duration-700 ease-in-out w-full h-full absolute inset-0" data-carousel-item>
                 {{ if $preset }}
