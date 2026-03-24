@@ -1,0 +1,13 @@
+{{/* Breakpoint Indicator — Development Only */}}
+{{ if eq hugo.Environment "development" }}
+<div class="fixed top-0 left-0 right-0 z-50 text-center font-mono text-sm font-semibold text-white py-1">
+  <!-- Mobile: hidden breakpoint indicator shows only on mobile -->
+  <div class="block sm:hidden bg-red-600">📱 Mobile</div>
+  
+  <!-- Tablet: hidden breakpoint indicator shows only on tablet (sm to md) -->
+  <div class="hidden sm:block md:hidden bg-amber-500">📱 Tablet</div>
+  
+  <!-- Desktop: hidden breakpoint indicator shows only on desktop (lg+) -->
+  <div class="hidden md:block bg-blue-600">🖥️ Desktop</div>
+</div>
+{{ end }}
