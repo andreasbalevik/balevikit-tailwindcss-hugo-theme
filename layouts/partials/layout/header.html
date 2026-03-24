@@ -1,9 +1,9 @@
 <header class="mb-[70px] bg-white text-gray-900">
     <nav class="z-100 bg-white fixed w-full top-0 start-0 border-b border-slate-200">
-        <div class="h-[70px] container p-0! flex items-center justify-between">
+        <div class="h-[70px] container py-0! flex items-center justify-between">
 
 
-            <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center gap-3">
+            <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center gap-3 min-w-0 shrink">
                 {{ if .Site.Params.logo }}
                     {{- $logo := resources.Get .Site.Params.logo -}}
                     {{- if $logo -}}
@@ -12,13 +12,13 @@
                     <img src="{{ $logo1x.RelPermalink }}"
                          srcset="{{ $logo1x.RelPermalink }} 1x, {{ $logo2x.RelPermalink }} 2x"
                          alt="{{ .Site.Title }}"
-                         class="w-auto h-7 object-contain">
+                         class="w-auto h-7 shrink-0 object-contain">
                     {{- end }}
                     {{ if .Site.Params.logo_title }}
-                    <span class="hidden sm:block text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
+                    <span class="hidden sm:block text-base md:text-xl font-semibold tracking-wide truncate">{{ .Site.Title }}</span>
                     {{ end }}
                 {{ else }}
-                    <span class="text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
+                    <span class="text-base md:text-xl font-semibold tracking-wide truncate">{{ .Site.Title }}</span>
                 {{ end }}
             </a>
 

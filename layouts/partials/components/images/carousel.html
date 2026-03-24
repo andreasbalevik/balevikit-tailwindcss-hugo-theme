@@ -75,7 +75,7 @@ images:
         <!-- Fullscreen Button -->
         <button type="button"
             data-open-modal="{{ $modalId }}"
-            class="absolute top-4 right-4 z-40 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all duration-300"
+            class="absolute top-4 right-4 z-40 inline-flex items-center justify-center w-10 h-10 rounded-full bg-white/80 hover:bg-white shadow-lg transition-all duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:outline"
             aria-label="View fullscreen">
             <i data-lucide="maximize" class="w-5 h-5 text-gray-800"></i>
         </button>
@@ -92,7 +92,7 @@ images:
 
     <button type="button"
         data-close-modal="{{ $modalId }}"
-        class="absolute top-4 right-4 z-[9999] inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300"
+        class="absolute top-4 right-4 z-[9999] inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 transition-colors duration-300 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:outline"
         aria-label="Close fullscreen">
         <i data-lucide="x" class="w-6 h-6 text-white"></i>
     </button>
@@ -121,13 +121,13 @@ images:
                 {{ end }}
             </div>
             
-            <button type="button" class="absolute top-1/2 -translate-y-1/2 start-4 z-30 flex items-center justify-center h-12 w-12 cursor-pointer group focus:outline-none" data-carousel-prev onclick="event.stopPropagation()">
+            <button type="button" class="absolute top-1/2 -translate-y-1/2 start-4 z-30 flex items-center justify-center h-12 w-12 cursor-pointer group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:outline" data-carousel-prev onclick="event.stopPropagation()">
                 <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors duration-300">
                     <i data-lucide="chevron-left" class="w-6 h-6 text-white rtl:rotate-180"></i>
                     <span class="sr-only">Previous</span>
                 </span>
             </button>
-            <button type="button" class="absolute top-1/2 -translate-y-1/2 end-4 z-30 flex items-center justify-center h-12 w-12 cursor-pointer group focus:outline-none" data-carousel-next onclick="event.stopPropagation()">
+            <button type="button" class="absolute top-1/2 -translate-y-1/2 end-4 z-30 flex items-center justify-center h-12 w-12 cursor-pointer group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:outline" data-carousel-next onclick="event.stopPropagation()">
                 <span class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-white/30 group-hover:bg-white/50 transition-colors duration-300">
                     <i data-lucide="chevron-right" class="w-6 h-6 text-white rtl:rotate-180"></i>
                     <span class="sr-only">Next</span>
