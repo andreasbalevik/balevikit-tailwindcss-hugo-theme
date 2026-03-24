@@ -1,6 +1,6 @@
 <header class="mb-[70px] bg-white text-gray-900">
     <nav class="z-100 bg-white fixed w-full top-0 start-0 border-b border-slate-200">
-        <div class="h-[70px] container flex flex-wrap items-center justify-between mx-auto py-3 bg-inherit">
+        <div class="h-[70px] container flex items-center justify-between">
 
 
             <a href="{{ .Site.Home.RelPermalink }}" class="flex items-center gap-3">
@@ -11,10 +11,10 @@
                     <img src="{{ $logo.RelPermalink }}" width="{{ $logo.Width }}" height="{{ $logo.Height }}" alt="{{ .Site.Title }}" class="w-auto h-9 object-contain">
                     {{- end }}
                     {{ if .Site.Params.logo_title }}
-                    <span class="hidden sm:block self-center text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
+                    <span class="hidden sm:block text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
                     {{ end }}
                 {{ else }}
-                    <span class="self-center text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
+                    <span class="text-xl font-semibold tracking-wide whitespace-nowrap">{{ .Site.Title }}</span>
                 {{ end }}
             </a>
 
@@ -27,7 +27,7 @@
             <div class="hidden w-full lg:flex lg:w-auto md:order-1" id="navbar-sticky">
                 <div
                     class="top-[70px] fixed inset-0 flex flex-col bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
-                    <ul class="lg:flex gap-8 md:justify-end text-xl lg:text-base">
+                    <ul class="lg:flex lg:items-center gap-8 md:justify-end text-xl lg:text-base">
                     
                         {{ range .Site.Menus.main.Sort }}
                         {{ $isActive := eq $section.RelPermalink .URL }}
