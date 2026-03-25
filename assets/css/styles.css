@@ -1,6 +1,7 @@
 @import "tailwindcss";
-@plugin "./themes/balevikit-tailwindcss-hugo-theme/node_modules/@tailwindcss/typography";
+@plugin "@tailwindcss/typography";
 
+/* overstyr i egen for prosjektet custom.css */
 @theme {
   --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
 
@@ -28,7 +29,7 @@
 
 @layer base {
   html {
-    font-size: 18px;
+    font-size: 16px;
     font-feature-settings: 'cv05' 1;
     scroll-behavior: smooth;
     scroll-padding-top: 80px;
