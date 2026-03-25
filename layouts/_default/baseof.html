@@ -13,11 +13,16 @@
 
 <body>
 
+  <a href="#main-content"
+     class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-1/2 focus:-translate-x-1/2 focus:z-[120] focus:px-4 focus:py-2 focus:bg-white focus:text-gray-900 focus:rounded-lg focus:shadow focus:outline-2 focus:outline-primary focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary focus-visible:outline focus-visible:outline-solid">
+    Hopp til hovedinnhold
+  </a>
+
   {{ partial "utils/breakpoint-indicator.html" . }}
 
   {{ partial "layout/header.html" . }}
 
-  <main>
+  <main id="main-content">
     {{ block "main" . }}{{ end }}
   </main>
 
