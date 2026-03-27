@@ -1,0 +1,41 @@
+{{/*
+    Mobile Hero Badge Row
+
+    Renders varde badge, page tags, and custom badge for hero mobile sections.
+    Used by components/hero/image.html — shared between "white" and "fjord" mobile variants.
+
+    Parameters:
+    - page           : Hugo page context (required)
+    - showVardeBadge : bool — render varde badge if present (default: false)
+    - showTags       : bool — render page.Params.tags (default: false)
+    - badge          : pre-rendered partial output for custom badge
+*/}}
+
+{{ $page := .page }}
+{{ $showVardeBadge := .showVardeBadge | default false }}
+{{ $showTags := .showTags | default false }}
+{{ $badge := .badge }}
+
+{{ if or $showVardeBadge $showTags $badge }}
+<div class="flex items-center gap-3 flex-wrap mb-4">
+    {{ if $showVardeBadge }}
+    {{ with $page.Params.information.options.varde_experience_quality }}
+    <span class="inline-block bg-white/15 rounded-lg px-3 py-1.5">
+        <img class="w-12 h-auto" alt="Varde Experience Quality Badge" src="/images/varde-experience-quality.png" loading="lazy" />
+    </span>
+    {{ end }}
+    {{ end }}
+    {{ if $showTags }}
+    {{ range $page.Params.tags }}
+    {{ with $page.Site.GetPage (printf "/tags/%s" .) }}
+    <a href="{{ .RelPermalink }}"
+       class="inline-block px-3 py-1.5 rounded-md text-xs font-semibold tracking-wide hover:opacity-90 transition-opacity duration-300"
+       style="background-color: {{ .Params.color | default "#1d3640" }};color: white;">
+        {{ .Title }}
+    </a>
+    {{ end }}
+    {{ end }}
+    {{ end }}
+    {{ with $badge }}{{ . }}{{ end }}
+</div>
+{{ end }}
