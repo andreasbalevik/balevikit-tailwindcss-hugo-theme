@@ -13,9 +13,14 @@
 
 <body>
 
+  <a href="#main-content"
+     class="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-3 focus:bg-white focus:text-gray-900 focus:rounded-lg focus:shadow-sm focus:outline-2 focus:outline-offset-2 focus:outline-primary">
+    Hopp til hovedinnhold
+  </a>
+
   {{ partial "layout/header.html" . }}
 
-  <main>
+  <main id="main-content">
     {{ block "main" . }}{{ end }}
   </main>
 

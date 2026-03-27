@@ -165,11 +165,13 @@ function setupMobileMenu() {
     if (open) {
       menu.classList.remove('hidden');
       button.setAttribute('aria-expanded', 'true');
+      button.setAttribute('aria-label', 'Lukk navigasjonsmeny');
       button.querySelector('.closed-icon')?.classList.add('hidden');
       button.querySelector('.open-icon')?.classList.remove('hidden');
     } else {
       menu.classList.add('hidden');
       button.setAttribute('aria-expanded', 'false');
+      button.setAttribute('aria-label', 'Åpne navigasjonsmeny');
       button.querySelector('.closed-icon')?.classList.remove('hidden');
       button.querySelector('.open-icon')?.classList.add('hidden');
     }

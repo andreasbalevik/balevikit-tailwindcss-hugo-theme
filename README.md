@@ -167,6 +167,8 @@ The theme imports this file automatically. No other CSS files are needed.
 
 The header is provided by the theme and configured entirely via `[params]` in `hugo.toml`.
 
+The theme also includes a built-in skip link to `#main-content` and an accessible mobile menu button with an explicit label and touch-friendly target size.
+
 ### Logo
 
 The logo must be placed in the `assets/` folder (not `static/`). The theme uses Hugo image processing to optimize it — this requires the file to be available as a Hugo resource.
@@ -268,7 +270,7 @@ Footer columns are only rendered when they have content. A footer with only cont
 
 ## Structured Data (JSON-LD)
 
-The theme automatically generates Schema.org structured data, but only when the page and its data actually make sense for the schema type.
+The theme automatically generates Schema.org structured data, but only when the page and its data actually make sense for the schema type. A central rule layer decides which schemas are eligible before any JSON-LD partial is rendered.
 
 
 ### Available schemas
@@ -282,7 +284,7 @@ The theme automatically generates Schema.org structured data, but only when the 
 | `WebPage` | Regular single pages outside `blog_section` and `product_section`, with `description` or `summary` | page front matter |
 | `Article` | Single pages where article schema is explicitly enabled and the page has `description` or `summary` | `article: true` or `schema.article: true` |
 | `BlogPosting` + Breadcrumb | Single pages in the section defined by `blog_section`, with `description` or `summary` | `blog_section` + description in front matter |
-| `Product` + Breadcrumb | Single pages in the section defined by `product_section`, with `description` or `summary` | `product_section`, optional `product_info` |
+| `Product` + Breadcrumb | Single pages in the section defined by `product_section`, when the page actually contains product data or explicitly opts in | `product_section` + `product_info`, `product: true`, or `schema.product: true` |
 | `ItemList` | Section and taxonomy pages that actually have child pages | no extra requirements |
 | `VideoObject` | Pages where `video.thumbnailUrl` and either `video.contentUrl` or `video.embedUrl` are set | `video` in front matter |
 
@@ -379,11 +381,32 @@ Blog posts get `BlogPosting` automatically when they are in the section defined 
 
 #### Product
 
-Product pages get `Product` automatically when they are in the section defined as `product_section` and have a `description` or `summary`.
+Product pages only get `Product` when they are in the section defined as `product_section` and the page actually contains product data or explicitly opts in.
 
 ```toml
 [params]
   product_section = "products"
+```
+
+Enable `Product` in one of these ways:
+
+```yaml
+---
+title: "Standard website"
+description: "2–5 pages with custom design."
+product: true
+---
+```
+
+or:
+
+```yaml
+---
+title: "Standard website"
+description: "2–5 pages with custom design."
+schema:
+  product: true
+---
 ```
 
 Optional product info:
