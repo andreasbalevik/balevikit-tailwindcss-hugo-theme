@@ -64,12 +64,20 @@
     {{- end -}}
   {{- end -}}
 {{- else -}}
+  {{- with .Site.Params.ogimage -}}
+    {{- $socialImage = . | absURL -}}
+  {{- else -}}
+    {{- with .Site.Params.brand_image -}}
+      {{- $socialImage = . | absURL -}}
+    {{- else -}}
   {{- with .Site.Params.logo -}}
     {{- with resources.Get . -}}
       {{- $socialImage = .Permalink -}}
       {{- $socialImageType = printf "%s" .MediaType -}}
       {{- $socialImageWidth = .Width -}}
       {{- $socialImageHeight = .Height -}}
+    {{- end -}}
+  {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}

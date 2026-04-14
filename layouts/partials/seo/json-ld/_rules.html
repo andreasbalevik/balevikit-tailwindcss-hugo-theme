@@ -1,0 +1,72 @@
+{{- $blogSection := .Site.Params.blog_section | default "blog" -}}
+{{- $productSection := .Site.Params.product_section | default "products" -}}
+{{- $description := .Page.Params.description | default (.Summary | plainify) -}}
+
+{{- $articleSchemaEnabled := false -}}
+{{- if .Params.article -}}
+  {{- $articleSchemaEnabled = true -}}
+{{- end -}}
+{{- with .Params.schema -}}
+  {{- if .article -}}
+    {{- $articleSchemaEnabled = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $productSchemaEnabled := false -}}
+{{- if .Params.product -}}
+  {{- $productSchemaEnabled = true -}}
+{{- end -}}
+{{- with .Params.schema -}}
+  {{- if .product -}}
+    {{- $productSchemaEnabled = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $faqItems := slice -}}
+{{- with .Params.faq -}}
+  {{- range . -}}
+    {{- if and .question .answer -}}
+      {{- $faqItems = $faqItems | append . -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $hasVideo := false -}}
+{{- with .Page.Params.video -}}
+  {{- if and .thumbnailUrl (or .contentUrl .embedUrl) -}}
+    {{- $hasVideo = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $localBusinessEnabled := false -}}
+{{- with .Site.Params.schema -}}
+  {{- if .localBusiness -}}
+    {{- $localBusinessEnabled = true -}}
+  {{- end -}}
+{{- end -}}
+
+{{- $hasBusinessSignals := or .Site.Params.email .Site.Params.phone .Site.Params.address (and .Site.Params.latitude .Site.Params.longitude) .Site.Params.priceRange .Site.Params.hasMap .Site.Params.logo -}}
+{{- $hasOrganizationSignals := or .Site.Params.logo .Site.Params.email .Site.Params.phone .Site.Params.address .Site.Params.social .Site.Params.founder -}}
+
+{{- $hasOrganization := and .IsHome .Site.BaseURL .Site.Title $hasOrganizationSignals -}}
+{{- $hasWebsite := and .IsHome .Site.BaseURL .Site.Title -}}
+{{- $hasLocalBusiness := and .IsHome $localBusinessEnabled $hasBusinessSignals -}}
+{{- $hasFaqPage := gt (len $faqItems) 0 -}}
+{{- $hasBlogPosting := and .IsPage (eq .Section $blogSection) $description -}}
+{{- $hasArticle := and .IsPage (not .IsHome) (ne .Section $blogSection) (ne .Section $productSection) $articleSchemaEnabled $description -}}
+{{- $hasProduct := and .IsPage (eq .Section $productSection) $description (or .Params.product_info $productSchemaEnabled) -}}
+{{- $hasWebPage := and .IsPage (not .IsHome) (not $hasBlogPosting) (not $hasProduct) (not $hasArticle) $description -}}
+{{- $hasItemList := and (or (eq .Kind "section") (eq .Kind "taxonomy")) (not .IsHome) (gt (len .Pages) 0) -}}
+
+{{- return (dict
+  "organization" $hasOrganization
+  "website" $hasWebsite
+  "localBusiness" $hasLocalBusiness
+  "faqPage" $hasFaqPage
+  "webPage" $hasWebPage
+  "product" $hasProduct
+  "blogPosting" $hasBlogPosting
+  "article" $hasArticle
+  "video" $hasVideo
+  "itemList" $hasItemList
+) -}}
