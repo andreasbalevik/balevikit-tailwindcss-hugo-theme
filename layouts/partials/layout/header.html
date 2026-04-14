@@ -30,7 +30,7 @@
             <div class="hidden lg:flex lg:w-auto" id="navbar-sticky">
                 <div
                     class="top-[70px] fixed inset-0 flex flex-col bg-white z-50 lg:relative lg:flex-row lg:p-0 lg:bg-inherit lg:z-auto lg:inset-auto lg:h-auto lg:w-auto lg:space-x-8 rtl:space-x-reverse">
-                    <ul class="lg:flex lg:items-center gap-8 md:justify-end text-xl lg:text-base">
+                    <ul class="lg:flex lg:items-center gap-8 md:justify-end text-lg">
                     
                         {{ range .Site.Menus.main.Sort }}
                         {{ $isActive := eq $section.RelPermalink .URL }}
