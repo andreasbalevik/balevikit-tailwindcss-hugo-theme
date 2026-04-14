@@ -7,12 +7,12 @@
                 {{ if .Site.Params.logo }}
                     {{- $logo := resources.Get .Site.Params.logo -}}
                     {{- if $logo -}}
-                    {{- $logo1x := $logo.Resize "x50 webp" -}}
-                    {{- $logo2x := $logo.Resize "x100 webp" -}}
+                    {{- $logo1x := $logo.Resize "x64 webp" -}}
+                    {{- $logo2x := $logo.Resize "x128 webp" -}}
                     <img src="{{ $logo1x.RelPermalink }}"
                          srcset="{{ $logo1x.RelPermalink }} 1x, {{ $logo2x.RelPermalink }} 2x"
                          alt="{{ .Site.Title }}"
-                         class="w-auto h-7 shrink-0 object-contain">
+                         class="w-auto h-9 md:h-10 shrink-0 object-contain">
                     {{- end }}
                     {{ if .Site.Params.logo_title }}
                     <span class="hidden sm:block text-base md:text-xl font-semibold tracking-wide truncate">{{ .Site.Title }}</span>
