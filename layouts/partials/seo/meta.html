@@ -140,8 +140,10 @@
 <!-- PAGE LINKS -->
 <link rel="canonical" href="{{ .Permalink }}" itemprop="url">
 {{ if .IsTranslated }}
-<link rel="alternate" href="{{ .Permalink }}" hreflang="x-default">
   {{ range .AllTranslations }}
+    {{ if eq .Lang "nb" }}
+<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
+    {{ end }}
 <link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
   {{ end }}
 {{ end }}
