@@ -50,34 +50,48 @@
 {{- $socialImageWidth := 0 -}}
 {{- $socialImageHeight := 0 -}}
 {{- $socialImageAlt := printf "%s logo" .Site.Title -}}
+
 {{- with .Page.Params.images -}}
   {{- range first 1 . -}}
-    {{- with $.Page.Resources.GetMatch .src -}}
-      {{- $socialImage = .Permalink -}}
-      {{- $socialImageType = printf "%s" .MediaType -}}
-      {{- $socialImageWidth = .Width -}}
-      {{- $socialImageHeight = .Height -}}
+    {{- $img := resources.GetMatch .src -}}
+    {{- if $img -}}
+      {{- $resized := $img.Fill "1200x630 q85 webp" -}}
+      {{- $socialImage = $resized.Permalink -}}
+      {{- $socialImageType = printf "%s" $resized.MediaType -}}
+      {{- $socialImageWidth = $resized.Width -}}
+      {{- $socialImageHeight = $resized.Height -}}
       {{- $socialImageAlt = $.Title -}}
     {{- end -}}
     {{- with .alt -}}
       {{- $socialImageAlt = . -}}
     {{- end -}}
   {{- end -}}
-{{- else -}}
+{{- end -}}
+
+{{- if not $socialImage -}}
   {{- with .Site.Params.ogimage -}}
-    {{- $socialImage = . | absURL -}}
+    {{- $img := resources.GetMatch . -}}
+    {{- if $img -}}
+      {{- $resized := $img.Fill "1200x630 q85 webp" -}}
+      {{- $socialImage = $resized.Permalink -}}
+      {{- $socialImageType = printf "%s" $resized.MediaType -}}
+      {{- $socialImageWidth = $resized.Width -}}
+      {{- $socialImageHeight = $resized.Height -}}
+    {{- else -}}
+      {{- $socialImage = . | absURL -}}
+    {{- end -}}
   {{- else -}}
     {{- with .Site.Params.brand_image -}}
       {{- $socialImage = . | absURL -}}
     {{- else -}}
-  {{- with .Site.Params.logo -}}
-    {{- with resources.Get . -}}
-      {{- $socialImage = .Permalink -}}
-      {{- $socialImageType = printf "%s" .MediaType -}}
-      {{- $socialImageWidth = .Width -}}
-      {{- $socialImageHeight = .Height -}}
-    {{- end -}}
-  {{- end -}}
+      {{- with .Site.Params.logo -}}
+        {{- with resources.Get . -}}
+          {{- $socialImage = .Permalink -}}
+          {{- $socialImageType = printf "%s" .MediaType -}}
+          {{- $socialImageWidth = .Width -}}
+          {{- $socialImageHeight = .Height -}}
+        {{- end -}}
+      {{- end -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
