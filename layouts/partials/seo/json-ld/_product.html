@@ -1,4 +1,4 @@
-{{ $productSection := .Site.Params.product_section | default "products" }}
+{{ $productSection := site.Params.product_section | default "products" }}
 {{ $description := .Page.Params.description | default (.Summary | plainify) }}
 {{ $productSchemaEnabled := false }}
 {{ if .Params.product }}
@@ -38,31 +38,31 @@
   ]{{ end }},
   "brand": {
     "@type": "Brand",
-    "name": "{{ .Site.Title }}"
+    "name": "{{ site.Title }}"
   },
   "provider": {
     "@type": "Organization",
-    "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.address }},
+    "name": "{{ site.Title }}",
+    "url": "{{ site.BaseURL }}"{{ with site.Params.address }},
     "address": {
       "@type": "PostalAddress",
-      "streetAddress": "{{ . }}"{{ with $.Site.Params.addressLocality }},
-      "addressLocality": "{{ . }}"{{ end }}{{ with $.Site.Params.addressRegion }},
-      "addressRegion": "{{ . }}"{{ end }}{{ with $.Site.Params.postalCode }},
+      "streetAddress": "{{ . }}"{{ with site.Params.addressLocality }},
+      "addressLocality": "{{ . }}"{{ end }}{{ with site.Params.addressRegion }},
+      "addressRegion": "{{ . }}"{{ end }}{{ with site.Params.postalCode }},
       "postalCode": "{{ . }}"{{ end }},
-      "addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
-    }{{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude }},
+      "addressCountry": "{{ site.Params.addressCountry | default "NO" }}"
+    }{{ end }}{{ if and site.Params.latitude site.Params.longitude }},
     "geo": {
       "@type": "GeoCoordinates",
-      "latitude": "{{ .Site.Params.latitude }}",
-      "longitude": "{{ .Site.Params.longitude }}"
-    }{{ end }}{{ with .Site.Params.phone }},
-    "telephone": "{{ . }}"{{ end }}{{ with .Site.Params.email }},
+      "latitude": "{{ site.Params.latitude }}",
+      "longitude": "{{ site.Params.longitude }}"
+    }{{ end }}{{ with site.Params.phone }},
+    "telephone": "{{ . }}"{{ end }}{{ with site.Params.email }},
     "email": "{{ . }}"{{ end }}
   }{{ with .Page.Params.product_info }},
   "offers": {
     "@type": "AggregateOffer",
-    "priceCurrency": "{{ $.Site.Params.currency | default "NOK" }}"{{ with .prices }}
+    "priceCurrency": "{{ site.Params.currency | default "NOK" }}"{{ with .prices }}
       {{ $firstPrice := index . 0 }}
       {{ $lastPrice := index . (sub (len .) 1) }},
     "lowPrice": "{{ $firstPrice.price }}",
@@ -94,13 +94,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
+      "item": "{{ site.BaseURL }}"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "{{ with .Site.GetPage $productSection }}{{ .Title }}{{ else }}{{ $productSection | title }}{{ end }}",
-      "item": "{{ .Site.BaseURL }}{{ $productSection }}/"
+      "name": "{{ with site.GetPage $productSection }}{{ .Title }}{{ else }}{{ $productSection | title }}{{ end }}",
+      "item": "{{ site.BaseURL }}{{ $productSection }}/"
     },
     {
       "@type": "ListItem",

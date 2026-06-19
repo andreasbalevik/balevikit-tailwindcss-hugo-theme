@@ -1,6 +1,6 @@
 {{ define "main" }}
 
-{{ $example := index .Site.Data.example.images 0}}
+{{ $example := index hugo.Data.example.images 0}}
 
 <div class="container">
     <div class="grid grid-cols-1 gap-8">
@@ -40,7 +40,7 @@
     <div class="grid grid-cols-2 gap-8">
 
 
-        {{ $example_carousel := .Site.Data.example.images }}
+        {{ $example_carousel := hugo.Data.example.images }}
 
         <div class="col-span-2">
             Carousel Banner

@@ -1,13 +1,13 @@
-{{ $description := .Page.Params.description | default .Site.Params.description }}
-{{ if and .IsHome .Site.BaseURL .Site.Title }}
+{{ $description := .Page.Params.description | default site.Params.description }}
+{{ if and .IsHome site.BaseURL site.Title }}
 <!-- WEBSITE -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebSite",
-  "url": "{{ .Site.BaseURL }}",
-  "name": "{{ .Site.Title }}",
-  "inLanguage": "{{ .Site.LanguageCode | default .Lang | default "en" }}"{{ with $description }},
+  "url": "{{ site.BaseURL }}",
+  "name": "{{ site.Title }}",
+  "inLanguage": "{{ site.Language.Locale | default .Lang | default "en" }}"{{ with $description }},
   "description": "{{ . }}"{{ end }}
 }
 </script>

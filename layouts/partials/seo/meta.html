@@ -1,6 +1,6 @@
-{{- $title := .Page.Title | default .Site.Title -}}
+{{- $title := .Page.Title | default site.Title -}}
 {{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
-{{- $languageCode := .Site.LanguageCode | default .Lang | default "en" -}}
+{{- $languageCode := site.Language.Locale | default .Lang | default "en" -}}
 {{- $ogLocale := replace $languageCode "-" "_" -}}
 {{- $description := "" -}}
 {{- with .Description -}}
@@ -9,18 +9,18 @@
   {{- if .IsPage -}}
     {{- $description = .Summary | plainify -}}
   {{- else -}}
-    {{- with .Site.Params.description -}}
+    {{- with site.Params.description -}}
       {{- $description = . | plainify -}}
     {{- end -}}
   {{- end -}}
 {{- end -}}
-{{- $author := .Site.Params.author | default .Site.Title -}}
-{{- $publisher := .Site.Title -}}
+{{- $author := site.Params.author | default site.Title -}}
+{{- $publisher := site.Title -}}
 {{- $keywords := slice -}}
 {{- with .Params.keywords -}}
   {{- $keywords = . -}}
 {{- else -}}
-  {{- with .Site.Params.keywords -}}
+  {{- with site.Params.keywords -}}
     {{- $keywords = . -}}
   {{- end -}}
 {{- end -}}
@@ -49,7 +49,7 @@
 {{- $socialImageType := "" -}}
 {{- $socialImageWidth := 0 -}}
 {{- $socialImageHeight := 0 -}}
-{{- $socialImageAlt := printf "%s logo" .Site.Title -}}
+{{- $socialImageAlt := printf "%s logo" site.Title -}}
 
 {{- with .Page.Params.images -}}
   {{- range first 1 . -}}
@@ -69,7 +69,7 @@
 {{- end -}}
 
 {{- if not $socialImage -}}
-  {{- with .Site.Params.ogimage -}}
+  {{- with site.Params.ogimage -}}
     {{- $img := resources.GetMatch . -}}
     {{- if $img -}}
       {{- $resized := $img.Fill "1200x630 q85 webp" -}}
@@ -81,10 +81,10 @@
       {{- $socialImage = . | absURL -}}
     {{- end -}}
   {{- else -}}
-    {{- with .Site.Params.brand_image -}}
+    {{- with site.Params.brand_image -}}
       {{- $socialImage = . | absURL -}}
     {{- else -}}
-      {{- with .Site.Params.logo -}}
+      {{- with site.Params.logo -}}
         {{- with resources.Get . -}}
           {{- $socialImage = .Permalink -}}
           {{- $socialImageType = printf "%s" .MediaType -}}
@@ -130,12 +130,12 @@
 <meta property="og:type" content="website">
 {{ end }}
 <meta property="og:url" content="{{ .Permalink }}">
-<meta property="og:site_name" content="{{ .Site.Title }}">
+<meta property="og:site_name" content="{{ site.Title }}">
 {{ if not $lastmod.IsZero }}<meta property="og:updated_time" content="{{ $lastmod.Format $ISO8601 | safeHTML }}">{{ end }}
 <meta property="og:locale" content="{{ $ogLocale }}">
 {{ if .IsTranslated }}
   {{ range .AllTranslations }}
-    {{ $translationLocale := .Site.LanguageCode | default .Lang | default "en" }}
+    {{ $translationLocale := site.Language.Locale | default .Lang | default "en" }}
 <meta property="og:locale:alternate" content="{{ replace $translationLocale "-" "_" }}">
   {{ end }}
 {{ end }}
@@ -150,8 +150,8 @@
 {{ end }}
 
 <!-- TWITTER CARD METADATA -->
-<meta name="twitter:card" content="{{ .Site.Params.twitter_card | default "summary_large_image" }}">
-{{ with .Site.Params.twitter_handle }}<meta name="twitter:site" content="{{ . }}">{{ end }}
+<meta name="twitter:card" content="{{ site.Params.twitter_card | default "summary_large_image" }}">
+{{ with site.Params.twitter_handle }}<meta name="twitter:site" content="{{ . }}">{{ end }}
 <meta name="twitter:title" content="{{ $title }}">
 <meta name="twitter:description" content="{{ $description | truncate 155 }}">
 {{ if $socialImage }}
@@ -166,7 +166,7 @@
     {{ if eq .Lang "nb" }}
 <link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
     {{ end }}
-<link rel="alternate" hreflang="{{ .Language.Lang }}" href="{{ .Permalink }}" title="{{ .Language.LanguageName }}">
+<link rel="alternate" hreflang="{{ .Language.Name }}" href="{{ .Permalink }}" title="{{ .Language.Label }}">
   {{ end }}
 {{ end }}
 
@@ -175,10 +175,10 @@
 <meta name="application-name" content="{{ $title }}">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="theme-color" content="{{ .Site.Params.theme_color | default "#0369a1" }}">
+<meta name="theme-color" content="{{ site.Params.theme_color | default "#0369a1" }}">
 
 <!-- FAVICONS -->
-{{- with .Site.Params.logo -}}
+{{- with site.Params.logo -}}
   {{- with resources.Get . -}}
     {{- $fav16 := resources.Copy "favicon/favicon-16x16.png" (.Fit "16x16") -}}
     {{- $fav32 := resources.Copy "favicon/favicon-32x32.png" (.Fit "32x32") -}}

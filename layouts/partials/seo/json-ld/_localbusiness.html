@@ -1,21 +1,21 @@
 {{ $localBusinessEnabled := false }}
-{{ with .Site.Params.schema }}
+{{ with site.Params.schema }}
   {{ if .localBusiness }}
     {{ $localBusinessEnabled = true }}
   {{ end }}
 {{ end }}
-{{ $hasBusinessSignals := or .Site.Params.email .Site.Params.phone .Site.Params.address (and .Site.Params.latitude .Site.Params.longitude) .Site.Params.priceRange .Site.Params.hasMap .Site.Params.logo }}
-{{ $description := .Page.Params.description | default .Site.Params.description }}
+{{ $hasBusinessSignals := or site.Params.email site.Params.phone site.Params.address (and site.Params.latitude site.Params.longitude) site.Params.priceRange site.Params.hasMap site.Params.logo }}
+{{ $description := .Page.Params.description | default site.Params.description }}
 {{ if and .IsHome $localBusinessEnabled $hasBusinessSignals }}
 <!-- LOCAL BUSINESS SCHEMA -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "LocalBusiness",
-  "@id": "{{ .Site.BaseURL }}#localbusiness",
-  "name": "{{ .Site.Title }}",
-  "url": "{{ .Site.BaseURL }}",
-  "inLanguage": "{{ .Site.LanguageCode | default .Lang | default "en" }}"{{ with $description }},
+  "@id": "{{ site.BaseURL }}#localbusiness",
+  "name": "{{ site.Title }}",
+  "url": "{{ site.BaseURL }}",
+  "inLanguage": "{{ site.Language.Locale | default .Lang | default "en" }}"{{ with $description }},
   "description": "{{ . }}"{{ end }}
   {{ with .Page.Params.images }}
     {{ range first 1 . }}
@@ -26,48 +26,48 @@
       {{ end }}
     {{ end }}
   {{ else }}
-    {{ with .Site.Params.logo }}
+    {{ with site.Params.logo }}
       {{ with resources.Get . }},
   "image": "{{ .Permalink }}"
       {{ end }}
     {{ end }}
-  {{ end }}{{ with .Site.Params.phone }},
-  "telephone": "{{ . }}"{{ end }}{{ with .Site.Params.email }},
-  "email": "{{ . }}"{{ end }}{{ with .Site.Params.address }},
+  {{ end }}{{ with site.Params.phone }},
+  "telephone": "{{ . }}"{{ end }}{{ with site.Params.email }},
+  "email": "{{ . }}"{{ end }}{{ with site.Params.address }},
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "{{ . }}"{{ with $.Site.Params.addressLocality }},
-    "addressLocality": "{{ . }}"{{ end }}{{ with $.Site.Params.addressRegion }},
-    "addressRegion": "{{ . }}"{{ end }}{{ with $.Site.Params.postalCode }},
+    "streetAddress": "{{ . }}"{{ with site.Params.addressLocality }},
+    "addressLocality": "{{ . }}"{{ end }}{{ with site.Params.addressRegion }},
+    "addressRegion": "{{ . }}"{{ end }}{{ with site.Params.postalCode }},
     "postalCode": "{{ . }}"{{ end }},
-    "addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
+    "addressCountry": "{{ site.Params.addressCountry | default "NO" }}"
   }
-  {{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude }},
+  {{ end }}{{ if and site.Params.latitude site.Params.longitude }},
   "geo": {
     "@type": "GeoCoordinates",
-    "latitude": "{{ .Site.Params.latitude }}",
-    "longitude": "{{ .Site.Params.longitude }}"
+    "latitude": "{{ site.Params.latitude }}",
+    "longitude": "{{ site.Params.longitude }}"
   }
-  {{ end }}{{ with .Site.Params.openingHours }},
+  {{ end }}{{ with site.Params.openingHours }},
   "openingHoursSpecification": {
     "@type": "OpeningHoursSpecification",
     "dayOfWeek": {{ .dayOfWeek | jsonify }},
     "opens": "{{ .opens }}",
     "closes": "{{ .closes }}"
   }
-  {{ end }}{{ with .Site.Params.priceRange }},
-  "priceRange": "{{ . }}"{{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }},
+  {{ end }}{{ with site.Params.priceRange }},
+  "priceRange": "{{ . }}"{{ end }}{{ if and site.Params.latitude site.Params.longitude site.Params.areaServedRadius }},
   "areaServed": {
     "@type": "GeoCircle",
     "geoMidpoint": {
       "@type": "GeoCoordinates",
-      "latitude": "{{ .Site.Params.latitude }}",
-      "longitude": "{{ .Site.Params.longitude }}"
+      "latitude": "{{ site.Params.latitude }}",
+      "longitude": "{{ site.Params.longitude }}"
     },
-    "geoRadius": "{{ .Site.Params.areaServedRadius }}"
+    "geoRadius": "{{ site.Params.areaServedRadius }}"
   }
-  {{ end }}{{ with .Site.Params.hasMap }},
-  "hasMap": "{{ . }}"{{ end }}{{ with .Site.Params.social }}
+  {{ end }}{{ with site.Params.hasMap }},
+  "hasMap": "{{ . }}"{{ end }}{{ with site.Params.social }}
     {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
     {{ if $urls }},
   "sameAs": [{{ range $i, $url := $urls }}{{ if $i }}, {{ end }}"{{ $url }}"{{ end }}]

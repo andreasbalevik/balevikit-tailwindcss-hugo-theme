@@ -1,6 +1,6 @@
 {{- $ISO8601 := "2006-01-02T15:04:05-07:00" -}}
 
-{{ $blogSection := .Site.Params.blog_section | default "blog" }}
+{{ $blogSection := site.Params.blog_section | default "blog" }}
 {{ $description := .Page.Params.description | default (.Summary | plainify) }}
 {{ if and .IsPage (eq .Section $blogSection) $description }}
 {{ $pubDate := .PublishDate }}
@@ -25,7 +25,7 @@
 {{ with .Page.Params.related_activities }}
   {{ range . }}
     {{ $activityPath := replace . "/index" "" }}
-    {{ with $.Site.GetPage $activityPath }}
+    {{ with site.GetPage $activityPath }}
       {{ $mentions = $mentions | append . }}
     {{ end }}
   {{ end }}
@@ -53,13 +53,13 @@
   {{ end }}
   "author": {
     "@type": "Person",
-    "name": "{{ .Site.Params.author | default .Site.Title }}"{{ with .Site.Params.author_url }},
+    "name": "{{ site.Params.author | default site.Title }}"{{ with site.Params.author_url }},
     "url": "{{ . }}"{{ end }}
   },
   "publisher": {
     "@type": "Organization",
-    "name": "{{ .Site.Title }}",
-    "url": "{{ .Site.BaseURL }}"{{ with .Site.Params.logo }}{{ with resources.Get . }},
+    "name": "{{ site.Title }}",
+    "url": "{{ site.BaseURL }}"{{ with site.Params.logo }}{{ with resources.Get . }},
     "logo": {
       "@type": "ImageObject",
       "url": "{{ .Permalink }}"
@@ -90,13 +90,13 @@
       "@type": "ListItem",
       "position": 1,
       "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
+      "item": "{{ site.BaseURL }}"
     },
     {
       "@type": "ListItem",
       "position": 2,
-      "name": "{{ with .Site.GetPage $blogSection }}{{ .Title }}{{ else }}{{ $blogSection | title }}{{ end }}",
-      "item": "{{ .Site.BaseURL }}{{ $blogSection }}/"
+      "name": "{{ with site.GetPage $blogSection }}{{ .Title }}{{ else }}{{ $blogSection | title }}{{ end }}",
+      "item": "{{ site.BaseURL }}{{ $blogSection }}/"
     },
     {
       "@type": "ListItem",
