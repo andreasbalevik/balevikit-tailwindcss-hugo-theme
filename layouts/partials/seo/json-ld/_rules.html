@@ -1,5 +1,5 @@
-{{- $blogSection := .Site.Params.blog_section | default "blog" -}}
-{{- $productSection := .Site.Params.product_section | default "products" -}}
+{{- $blogSection := site.Params.blog_section | default "blog" -}}
+{{- $productSection := site.Params.product_section | default "products" -}}
 {{- $description := .Page.Params.description | default (.Summary | plainify) -}}
 
 {{- $articleSchemaEnabled := false -}}
@@ -39,17 +39,17 @@
 {{- end -}}
 
 {{- $localBusinessEnabled := false -}}
-{{- with .Site.Params.schema -}}
+{{- with site.Params.schema -}}
   {{- if .localBusiness -}}
     {{- $localBusinessEnabled = true -}}
   {{- end -}}
 {{- end -}}
 
-{{- $hasBusinessSignals := or .Site.Params.email .Site.Params.phone .Site.Params.address (and .Site.Params.latitude .Site.Params.longitude) .Site.Params.priceRange .Site.Params.hasMap .Site.Params.logo -}}
-{{- $hasOrganizationSignals := or .Site.Params.logo .Site.Params.email .Site.Params.phone .Site.Params.address .Site.Params.social .Site.Params.founder -}}
+{{- $hasBusinessSignals := or site.Params.email site.Params.phone site.Params.address (and site.Params.latitude site.Params.longitude) site.Params.priceRange site.Params.hasMap site.Params.logo -}}
+{{- $hasOrganizationSignals := or site.Params.logo site.Params.email site.Params.phone site.Params.address site.Params.social site.Params.founder -}}
 
-{{- $hasOrganization := and .IsHome .Site.BaseURL .Site.Title $hasOrganizationSignals -}}
-{{- $hasWebsite := and .IsHome .Site.BaseURL .Site.Title -}}
+{{- $hasOrganization := and .IsHome site.BaseURL site.Title $hasOrganizationSignals -}}
+{{- $hasWebsite := and .IsHome site.BaseURL site.Title -}}
 {{- $hasLocalBusiness := and .IsHome $localBusinessEnabled $hasBusinessSignals -}}
 {{- $hasFaqPage := gt (len $faqItems) 0 -}}
 {{- $hasBlogPosting := and .IsPage (eq .Section $blogSection) $description -}}

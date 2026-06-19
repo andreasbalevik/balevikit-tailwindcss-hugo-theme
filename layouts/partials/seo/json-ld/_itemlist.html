@@ -1,5 +1,5 @@
-{{ $productSection := .Site.Params.product_section | default "products" }}
-{{ $blogSection := .Site.Params.blog_section | default "blog" }}
+{{ $productSection := site.Params.product_section | default "products" }}
+{{ $blogSection := site.Params.blog_section | default "blog" }}
 {{ if and (or (eq .Kind "section") (eq .Kind "taxonomy")) (not .IsHome) (gt (len .Pages) 0) }}
 <!-- ITEM LIST SCHEMA for List Pages -->
 <script type="application/ld+json">
@@ -7,7 +7,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "{{ .Title }}",
-  "description": "{{ .Page.Params.description | default .Site.Params.description }}",
+  "description": "{{ .Page.Params.description | default site.Params.description }}",
   "url": "{{ .Permalink }}",
   "numberOfItems": {{ len .Pages }},
   "itemListElement": [
@@ -34,7 +34,7 @@
           {{ $lastPrice := index . (sub (len .) 1) }},
         "offers": {
           "@type": "AggregateOffer",
-          "priceCurrency": "{{ $.Site.Params.currency | default "NOK" }}",
+          "priceCurrency": "{{ site.Params.currency | default "NOK" }}",
           "lowPrice": "{{ $firstPrice.price }}",
           "highPrice": "{{ $lastPrice.price }}"
         }{{ end }}{{ end }}

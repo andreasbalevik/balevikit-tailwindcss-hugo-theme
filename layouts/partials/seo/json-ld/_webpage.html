@@ -1,5 +1,5 @@
-{{ $blogSection := .Site.Params.blog_section | default "blog" }}
-{{ $productSection := .Site.Params.product_section | default "products" }}
+{{ $blogSection := site.Params.blog_section | default "blog" }}
+{{ $productSection := site.Params.product_section | default "products" }}
 {{ $articleSchemaEnabled := false }}
 {{ if .Params.article }}
   {{ $articleSchemaEnabled = true }}

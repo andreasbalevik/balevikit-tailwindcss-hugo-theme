@@ -20,7 +20,7 @@
             <li>
                 <a href="{{.Permalink}}" class="block px-4 py-2 text-base hover:bg-primary/20 hover:text-primary " role="menuitem">
                     <div class="inline-flex items-center">
-                        <label class="block pl-2 cursor-pointer">{{.Language.LanguageName }}</label>
+                        <label class="block pl-2 cursor-pointer">{{ .Language.Label }}</label>
                     </div>
                 </a>
             </li>
@@ -40,7 +40,7 @@
         <a href="{{.Permalink}}"
             class="block text-xl tracking-wide py-2 px-3 rounded text-gray-900
                 hover:bg-slate-50">
-            {{.Language.LanguageName}}
+            {{ .Language.Label }}
         </a>
         {{ end }}
     </div>

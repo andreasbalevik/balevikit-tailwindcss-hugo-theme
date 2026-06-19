@@ -11,7 +11,7 @@
   {{ end }}
 {{/* 3. Fallback to site brand image if home page */}}
 {{ else if .IsHome }}
-  {{ $lcpImage = .Site.Params.brand_image }}
+  {{ $lcpImage = site.Params.brand_image }}
 {{ end }}
 
 {{/* Output preload tag if image found */}}

@@ -1,48 +1,48 @@
-{{ $hasOrganizationSignals := or .Site.Params.logo .Site.Params.email .Site.Params.phone .Site.Params.address .Site.Params.social .Site.Params.founder }}
-{{ if and .IsHome .Site.BaseURL .Site.Title $hasOrganizationSignals }}
+{{ $hasOrganizationSignals := or site.Params.logo site.Params.email site.Params.phone site.Params.address site.Params.social site.Params.founder }}
+{{ if and .IsHome site.BaseURL site.Title $hasOrganizationSignals }}
 <!-- ORGANIZATION -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "Organization",
-  "url": "{{ .Site.BaseURL }}",
-  "name": "{{ .Site.Title }}"{{ with .Site.Params.logo }}{{ with resources.Get . }},
+  "url": "{{ site.BaseURL }}",
+  "name": "{{ site.Title }}"{{ with site.Params.logo }}{{ with resources.Get . }},
   "logo": "{{ .Permalink }}"{{ end }}{{ end }}
-  {{ if or .Site.Params.email .Site.Params.phone }},
+  {{ if or site.Params.email site.Params.phone }},
   "contactPoint": {
-    "@type": "ContactPoint"{{ with .Site.Params.email }},
-    "email": "{{ . }}"{{ end }}{{ with .Site.Params.phone }},
+    "@type": "ContactPoint"{{ with site.Params.email }},
+    "email": "{{ . }}"{{ end }}{{ with site.Params.phone }},
     "telephone": "{{ . }}"{{ end }},
     "contactType": "customer service"
   }
-  {{ end }}{{ with .Site.Params.address }},
+  {{ end }}{{ with site.Params.address }},
   "address": {
     "@type": "PostalAddress",
-    "streetAddress": "{{ . }}"{{ with $.Site.Params.addressLocality }},
-    "addressLocality": "{{ . }}"{{ end }}{{ with $.Site.Params.addressRegion }},
-    "addressRegion": "{{ . }}"{{ end }}{{ with $.Site.Params.postalCode }},
+    "streetAddress": "{{ . }}"{{ with site.Params.addressLocality }},
+    "addressLocality": "{{ . }}"{{ end }}{{ with site.Params.addressRegion }},
+    "addressRegion": "{{ . }}"{{ end }}{{ with site.Params.postalCode }},
     "postalCode": "{{ . }}"{{ end }},
-    "addressCountry": "{{ $.Site.Params.addressCountry | default "NO" }}"
+    "addressCountry": "{{ site.Params.addressCountry | default "NO" }}"
   }
-  {{ end }}{{ with .Site.Params.social }}
+  {{ end }}{{ with site.Params.social }}
     {{ $urls := slice }}{{ range . }}{{ $urls = $urls | append . }}{{ end }}
     {{ if $urls }},
   "sameAs": [{{ range $i, $url := $urls }}{{ if $i }}, {{ end }}"{{ $url }}"{{ end }}]
     {{ end }}
-  {{ end }}{{ with .Site.Params.founder }},
+  {{ end }}{{ with site.Params.founder }},
   "founder": {
     "@type": "Person",
     "name": "{{ . }}"
   }
-  {{ end }}{{ if and .Site.Params.latitude .Site.Params.longitude .Site.Params.areaServedRadius }},
+  {{ end }}{{ if and site.Params.latitude site.Params.longitude site.Params.areaServedRadius }},
   "areaServed": {
     "@type": "GeoCircle",
     "geoMidpoint": {
       "@type": "GeoCoordinates",
-      "latitude": "{{ .Site.Params.latitude }}",
-      "longitude": "{{ .Site.Params.longitude }}"
+      "latitude": "{{ site.Params.latitude }}",
+      "longitude": "{{ site.Params.longitude }}"
     },
-    "geoRadius": "{{ .Site.Params.areaServedRadius }}"
+    "geoRadius": "{{ site.Params.areaServedRadius }}"
   }
   {{ end }}
 }

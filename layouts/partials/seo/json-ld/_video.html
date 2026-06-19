@@ -20,8 +20,8 @@
   "duration": "{{ . }}"{{ end }},
   "publisher": {
     "@type": "Organization",
-    "name": "{{ $.Site.Title }}",
-    "url": "{{ $.Site.BaseURL }}"{{ with $.Site.Params.logo }}{{ with resources.Get . }},
+    "name": "{{ site.Title }}",
+    "url": "{{ site.BaseURL }}"{{ with site.Params.logo }}{{ with resources.Get . }},
     "logo": {
       "@type": "ImageObject",
       "url": "{{ .Permalink }}"
