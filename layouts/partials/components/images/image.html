@@ -47,9 +47,9 @@
     "mobile" (dict "width" 480 "height" 360)
   )
   "thumbnail" (dict 
-    "desktop" (dict "width" 400 "height" 267)
-    "tablet" (dict "width" 400 "height" 267)
-    "mobile" (dict "width" 400 "height" 267)
+    "desktop" (dict "width" 720 "height" 480)
+    "tablet" (dict "width" 720 "height" 480)
+    "mobile" (dict "width" 560 "height" 373)
   )
 }}
 
@@ -76,13 +76,20 @@
 {{ end }}
 
 {{/* Generate responsive images in WebP and JPEG */}}
-{{/* Mobile: q70 (faster load), Desktop: q85 (better quality) */}}
-{{ $desktopWebp := $image.Fill (printf "%dx%d q85 webp" $sizes.desktop.width $sizes.desktop.height) }}
-{{ $desktopJpeg := $image.Fill (printf "%dx%d q85 jpeg" $sizes.desktop.width $sizes.desktop.height) }}
-{{ $tabletWebp := $image.Fill (printf "%dx%d q80 webp" $sizes.tablet.width $sizes.tablet.height) }}
-{{ $tabletJpeg := $image.Fill (printf "%dx%d q80 jpeg" $sizes.tablet.width $sizes.tablet.height) }}
-{{ $mobileWebp := $image.Fill (printf "%dx%d q70 webp" $sizes.mobile.width $sizes.mobile.height) }}
-{{ $mobileJpeg := $image.Fill (printf "%dx%d q70 jpeg" $sizes.mobile.width $sizes.mobile.height) }}
+{{ $desktopQuality := 85 }}
+{{ $tabletQuality := 80 }}
+{{ $mobileQuality := 70 }}
+{{ if eq .preset "thumbnail" }}
+  {{ $desktopQuality = 88 }}
+  {{ $tabletQuality = 85 }}
+  {{ $mobileQuality = 82 }}
+{{ end }}
+{{ $desktopWebp := $image.Fill (printf "%dx%d q%d webp" $sizes.desktop.width $sizes.desktop.height $desktopQuality) }}
+{{ $desktopJpeg := $image.Fill (printf "%dx%d q%d jpeg" $sizes.desktop.width $sizes.desktop.height $desktopQuality) }}
+{{ $tabletWebp := $image.Fill (printf "%dx%d q%d webp" $sizes.tablet.width $sizes.tablet.height $tabletQuality) }}
+{{ $tabletJpeg := $image.Fill (printf "%dx%d q%d jpeg" $sizes.tablet.width $sizes.tablet.height $tabletQuality) }}
+{{ $mobileWebp := $image.Fill (printf "%dx%d q%d webp" $sizes.mobile.width $sizes.mobile.height $mobileQuality) }}
+{{ $mobileJpeg := $image.Fill (printf "%dx%d q%d jpeg" $sizes.mobile.width $sizes.mobile.height $mobileQuality) }}
 
 {{/* Determine if we need breakpoints (desktop/tablet/mobile are different) */}}
 {{ $needsBreakpoints := or (ne $sizes.desktop.width $sizes.tablet.width) (ne $sizes.tablet.width $sizes.mobile.width) }}
