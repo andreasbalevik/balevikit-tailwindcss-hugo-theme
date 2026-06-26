@@ -16,6 +16,20 @@
 {{- end -}}
 {{- $author := site.Params.author | default site.Title -}}
 {{- $publisher := site.Title -}}
+{{- $robots := .Params.robots | default "index, follow" -}}
+{{- $canonicalURL := .Permalink -}}
+{{- $xDefaultURL := $canonicalURL -}}
+{{- $defaultLang := "" -}}
+{{- with index hugo.Sites 0 -}}
+  {{- $defaultLang = .Language.Lang -}}
+{{- end -}}
+{{- if and .IsTranslated $defaultLang -}}
+  {{- range .AllTranslations -}}
+    {{- if eq .Language.Lang $defaultLang -}}
+      {{- $xDefaultURL = .Permalink -}}
+    {{- end -}}
+  {{- end -}}
+{{- end -}}
 {{- $keywords := slice -}}
 {{- with .Params.keywords -}}
   {{- $keywords = . -}}
@@ -105,7 +119,7 @@
 
 {{ partial "seo/preload.html" . }}
 
-<meta name="robots" content="follow, index">
+<meta name="robots" content="{{ $robots }}">
 <meta http-equiv="content-language" content="{{ $languageCode }}">
 <link rel="sitemap" type="application/xml" title="Sitemap" href="{{ "sitemap.xml" | absURL }}">
 
@@ -129,13 +143,14 @@
 {{ else }}
 <meta property="og:type" content="website">
 {{ end }}
-<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:url" content="{{ $canonicalURL }}">
 <meta property="og:site_name" content="{{ site.Title }}">
 {{ if not $lastmod.IsZero }}<meta property="og:updated_time" content="{{ $lastmod.Format $ISO8601 | safeHTML }}">{{ end }}
 <meta property="og:locale" content="{{ $ogLocale }}">
 {{ if .IsTranslated }}
+<link rel="alternate" hreflang="x-default" href="{{ $xDefaultURL }}">
   {{ range .AllTranslations }}
-    {{ $translationLocale := site.Language.Locale | default .Lang | default "en" }}
+    {{ $translationLocale := .Language.LanguageCode | default .Lang | default "en" }}
 <meta property="og:locale:alternate" content="{{ replace $translationLocale "-" "_" }}">
   {{ end }}
 {{ end }}
@@ -160,13 +175,11 @@
 {{ end }}
 
 <!-- PAGE LINKS -->
-<link rel="canonical" href="{{ .Permalink }}" itemprop="url">
+<link rel="canonical" href="{{ $canonicalURL }}" itemprop="url">
 {{ if .IsTranslated }}
   {{ range .AllTranslations }}
-    {{ if eq .Lang "nb" }}
-<link rel="alternate" hreflang="x-default" href="{{ .Permalink }}">
-    {{ end }}
-<link rel="alternate" hreflang="{{ .Language.Name }}" href="{{ .Permalink }}" title="{{ .Language.Label }}">
+    {{ $hrefLang := .Language.LanguageCode | default .Lang | default "en" }}
+<link rel="alternate" hreflang="{{ $hrefLang }}" href="{{ .Permalink }}">
   {{ end }}
 {{ end }}
 

@@ -1,0 +1,21 @@
+{{ if gt (len site.Menus.main) 0 }}
+<!-- SITE NAVIGATION -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Primary site navigation",
+  "itemListElement": [
+    {{ range $index, $item := site.Menus.main.Sort }}
+    {{ if $index }},{{ end }}
+    {
+      "@type": "SiteNavigationElement",
+      "position": {{ add $index 1 }},
+      "name": "{{ $item.Name }}",
+      "url": "{{ $item.URL | absURL }}"
+    }
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}

@@ -50,6 +50,7 @@
 
 {{- $hasOrganization := and .IsHome site.BaseURL site.Title $hasOrganizationSignals -}}
 {{- $hasWebsite := and .IsHome site.BaseURL site.Title -}}
+{{- $hasSiteNavigation := and .IsHome (gt (len site.Menus.main) 0) -}}
 {{- $hasLocalBusiness := and .IsHome $localBusinessEnabled $hasBusinessSignals -}}
 {{- $hasFaqPage := gt (len $faqItems) 0 -}}
 {{- $hasBlogPosting := and .IsPage (eq .Section $blogSection) $description -}}
@@ -61,6 +62,7 @@
 {{- return (dict
   "organization" $hasOrganization
   "website" $hasWebsite
+  "siteNavigation" $hasSiteNavigation
   "localBusiness" $hasLocalBusiness
   "faqPage" $hasFaqPage
   "webPage" $hasWebPage

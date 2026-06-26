@@ -1,6 +1,7 @@
 {{ $schemaRules := partial "seo/json-ld/_rules.html" . }}
 {{ if index $schemaRules "organization" }}{{ partial "seo/json-ld/_organization.html" . }}{{ end }}
 {{ if index $schemaRules "website" }}{{ partial "seo/json-ld/_website.html" . }}{{ end }}
+{{ if index $schemaRules "siteNavigation" }}{{ partial "seo/json-ld/_sitenavigation.html" . }}{{ end }}
 {{ if index $schemaRules "localBusiness" }}{{ partial "seo/json-ld/_localbusiness.html" . }}{{ end }}
 {{ if index $schemaRules "faqPage" }}{{ partial "seo/json-ld/_faqpage.html" . }}{{ end }}
 {{ if index $schemaRules "webPage" }}{{ partial "seo/json-ld/_webpage.html" . }}{{ end }}
@@ -9,5 +10,4 @@
 {{ if index $schemaRules "article" }}{{ partial "seo/json-ld/_article.html" . }}{{ end }}
 {{ if index $schemaRules "video" }}{{ partial "seo/json-ld/_video.html" . }}{{ end }}
 {{ if index $schemaRules "itemList" }}{{ partial "seo/json-ld/_itemlist.html" . }}{{ end }}
-
 
