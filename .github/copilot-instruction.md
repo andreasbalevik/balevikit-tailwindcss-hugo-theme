@@ -10,6 +10,81 @@ Les også:
 
 ---
 
+## Designfilosofi og prinsipper
+
+Dette er *hvorfor-et* bak reglene lenger ned. Når en konkret regel mangler, avgjør
+prinsippene her. Alt er skrevet for å gi et rolig, redaksjonelt og «gjennomført»
+inntrykk der innholdet — ikke grensesnittet — er helten.
+
+Inspirasjon (referanser for tone, seksjonsrytme og fargeoppdeling):
+- `https://www.havilavoyages.com/nb` — tydelige fargesoner, konsekvente eyebrow-labels,
+  mørkt statement-anker og rolig redaksjonell rytme.
+
+### 1. Enkelhet skaper følelser
+
+Utgangspunktet er å fjerne, ikke legge til. Bilder, historier og tydelige valg bærer
+opplevelsen; UI-et skal tre i bakgrunnen. Er du i tvil, forenkle. Én tydelig handling
+slår tre konkurrerende. Hvitrom er et virkemiddel, ikke tomrom.
+
+### 2. Rolig, skandinavisk uttrykk
+
+- Dempet primærfarge som gjennomgående aksent, aldri skrikende.
+- Sjenerøs luft, moderate skygger (`shadow-sm`/`shadow`), konsistente `rounded-lg`.
+- Rolige overganger (`transition-all duration-300`), aldri raske eller sprettende.
+- Farge og kontrast brukes bevisst, ikke dekorativt.
+
+### 3. Rytme gjennom fargesoner
+
+Siden skal lese som bevisste, vekslende soner — ikke en flate.
+- Alterner seksjonsbakgrunner; **to identiske bakgrunner skal aldri ligge inntil hverandre**.
+- Standardveksling er `bg-white` og en svak primærtint (`bg-primary/2-5`).
+- Bruk et sjeldent mørkt «statement»-anker (maks ett per side) som visuell pustepause.
+- Når to nære lyse toner møtes, marker grensen med en diskret hårlinje-border.
+
+### 4. Konsistens gir gjennomført inntrykk
+
+- Gjentatt eyebrow-label på hver seksjon: `text-primary`, `uppercase`, `tracking-widest`.
+- Samme heading-skala og spacing overalt; ikke la mønstre drive fra side til side.
+- Gjenbruk `components/section-heading` fremfor å hardkode overskriftsstruktur.
+
+### 5. Stabilt grensesnitt — ingen bevegelse på hover
+
+Hover og fokus gir tilbakemelding gjennom farge eller skygge, **aldri** gjennom
+`translate`, `scale` eller annen bevegelse. Grensesnittet skal ikke «hoppe» når det
+berøres. Dette er en hard regel.
+
+### 6. Innhold og tilgjengelighet først
+
+- Prose-first: løpende innhold gjennom `components/prose-content.html`.
+- Semantisk markup, synlig fokus-tilstand, kontrast på AA/AAA-nivå.
+- Dekorative ikoner er `aria-hidden`; labels er alltid synlige.
+
+### 7. Gjenbruk og komponerbarhet
+
+Små, sammensettbare partials som gjør én ting og tar data via parametere, slår
+engangskomponenter. Bygg for flere kontekster, ikke for én enkelt side.
+
+### 8. Redaksjonell tyngde: skala, kontrast, bilde, luft
+
+Uttrykket skal oppleves *tydelig og bold* — men tyngden kommer fra **skala,
+kontrast, bilder og luft**, aldri fra tung skriftvekt. (Referansen Havila setter selv
+hero-overskrifter i vekt 400; effekten ligger i størrelse og kontrast, ikke fett.)
+Fire bærebjelker:
+
+- **Skala foran vekt.** Store, luftige display-overskrifter i `font-medium`. Impact
+  skapes av størrelse og linjeføring, ikke av `font-bold`. Se display-tier i Typografi.
+- **Høy kontrast.** Nær-svart display-tekst på lys bakgrunn; `text-white` kun over
+  mørknet bilde-overlay. Unngå grå på grå i det som skal bære blikket.
+- **Kontrastrike, kant-til-kant bilder.** Full-bleed hero/anker med mørkt slør er
+  signaturen (se hero-mønster i Komponentmønstre). Bildet bærer dramaet; UI-et trer tilbake.
+- **Luft.** Få, tydelige elementer med sjenerøs spacing rundt. Tomrom er bevisst pust,
+  ikke noe som skal fylles.
+
+Dette utvider — motsier ikke — prinsipp 1–2: fortsatt rolig og dempet i farge, men
+kompromissløst tydelig i skala og kontrast.
+
+---
+
 ## Theme
 
 ### Grunnprinsipp
@@ -122,12 +197,18 @@ Bruk prose-first:
 
 Heading-regler:
 - bruk `font-medium`, `leading-[1.2]`, `tracking-[-0.015em]`, `text-balance`, `mt-0`, `mb-6`
+- Display/hero (rask orientering, full-bleed): `text-4xl md:text-6xl lg:text-7xl`
 - H1: `text-3xl md:text-4xl lg:text-5xl`
 - H2: `text-2xl md:text-3xl lg:text-4xl`
 - H3: `text-xl md:text-2xl`
 - H4: `text-lg md:text-xl`
 - ingress under heading på seksjonsnivå: `text-lg md:text-xl`
 - kortinnhold: `text-base md:text-lg`
+
+Kontrast (jf. prinsipp 8): display- og seksjonsoverskrifter skal ha høy kontrast —
+nær-svart på lys bakgrunn, `text-white` kun over mørknet bilde-overlay. Ikke demp
+det som skal bære blikket til grått. Display-tieren beholder `font-medium`; tyngden
+kommer fra skala, ikke vekt.
 
 Ikke hopp over et Tailwind-steg mellom breakpoints. Hold lang tekst innenfor `max-w-*`.
 
@@ -150,6 +231,12 @@ Hver seksjon skal ha én jobb:
 - single-side: H1 + metadata -> prose -> eventuell støtte
 
 Bruk hero bare når siden trenger rask orientering og tydelig retning.
+
+Full-bleed hero (signatur, jf. prinsipp 8):
+- kant-til-kant, kontrastrikt bilde som fyller bredden
+- mørkt slør over bildet så teksten får kontrast (f.eks. et mørkt overlay på ~25–45 %)
+- stor display-overskrift i `text-white`, `font-medium`, med sjenerøs luft rundt
+- få elementer: overskrift, kort ingress, maks én primærhandling
 
 ### Komponentmønstre
 
