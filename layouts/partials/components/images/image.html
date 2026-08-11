@@ -20,21 +20,33 @@
     ) }}
     
     Available presets:
-    - "hero"      : Full width banner/hero (16:9 desktop, 3:2 tablet, 1:1 mobile)
+    - "hero"      : Full width banner/hero (16:9 desktop @1920x1080, 3:2 tablet, 8:5 mobile @640x400)
     - "square"    : Square crop (1:1 all breakpoints)
-    - "card"      : Cards in grid (3:2 desktop, 1:1 mobile)
+    - "card"      : Cards in grid (~1.39:1 desktop, 3:2 mobile @480x320)
     - "thumbnail" : Small thumbnails (3:2 constant)
     
     Optional parameters:
     - "imgClass"  : Override CSS classes on the <img> element
                     Default: "w-full h-auto object-cover"
+
+    Retina/HiDPI:
+    Each breakpoint <source> emits a "1x, 2x" srcset (density descriptors),
+    generated with images.Fill at double the preset's width/height, so
+    HiDPI screens (DPR 2-3: most modern phones/laptops) get a sharp image
+    instead of an upscaled 1x asset. The 2x variant uses a slightly lower
+    quality than its 1x counterpart - at 2x pixel density the extra
+    resolution masks the added compression, keeping the visual result
+    sharp while limiting the extra bytes a 2x asset otherwise costs.
+    width/height attributes on <source>/<img> always describe the 1x
+    (CSS-pixel) dimensions, since browsers use those for layout/CLS
+    regardless of which density they end up fetching.
 */}}
 
 {{ $presets := dict 
   "hero" (dict 
-    "desktop" (dict "width" 1280 "height" 720)
+    "desktop" (dict "width" 1920 "height" 1080)
     "tablet" (dict "width" 768 "height" 512)
-    "mobile" (dict "width" 500 "height" 400)
+    "mobile" (dict "width" 640 "height" 400)
   )
   "square" (dict 
     "desktop" (dict "width" 600 "height" 600)
@@ -44,7 +56,7 @@
   "card" (dict 
     "desktop" (dict "width" 720 "height" 520)
     "tablet" (dict "width" 720 "height" 520)
-    "mobile" (dict "width" 480 "height" 380)
+    "mobile" (dict "width" 480 "height" 320)
   )
   "thumbnail" (dict 
     "desktop" (dict "width" 720 "height" 480)
@@ -75,14 +87,20 @@
   {{ return }}
 {{ end }}
 
-{{/* Generate responsive images in WebP and JPEG */}}
+{{/* Generate responsive images in WebP and JPEG, at 1x and 2x density */}}
 {{ $desktopQuality := 85 }}
 {{ $tabletQuality := 80 }}
-{{ $mobileQuality := 70 }}
+{{ $mobileQuality := 75 }}
+{{ $desktopQuality2x := 75 }}
+{{ $tabletQuality2x := 70 }}
+{{ $mobileQuality2x := 65 }}
 {{ if eq .preset "thumbnail" }}
   {{ $desktopQuality = 88 }}
   {{ $tabletQuality = 85 }}
   {{ $mobileQuality = 82 }}
+  {{ $desktopQuality2x = 78 }}
+  {{ $tabletQuality2x = 75 }}
+  {{ $mobileQuality2x = 72 }}
 {{ end }}
 {{ $desktopWebp := $image.Fill (printf "%dx%d q%d webp" $sizes.desktop.width $sizes.desktop.height $desktopQuality) }}
 {{ $desktopJpeg := $image.Fill (printf "%dx%d q%d jpeg" $sizes.desktop.width $sizes.desktop.height $desktopQuality) }}
@@ -91,6 +109,14 @@
 {{ $mobileWebp := $image.Fill (printf "%dx%d q%d webp" $sizes.mobile.width $sizes.mobile.height $mobileQuality) }}
 {{ $mobileJpeg := $image.Fill (printf "%dx%d q%d jpeg" $sizes.mobile.width $sizes.mobile.height $mobileQuality) }}
 
+{{/* 2x (retina) variants: double dimensions, slightly reduced quality to control file weight */}}
+{{ $desktopWebp2x := $image.Fill (printf "%dx%d q%d webp" (mul $sizes.desktop.width 2) (mul $sizes.desktop.height 2) $desktopQuality2x) }}
+{{ $desktopJpeg2x := $image.Fill (printf "%dx%d q%d jpeg" (mul $sizes.desktop.width 2) (mul $sizes.desktop.height 2) $desktopQuality2x) }}
+{{ $tabletWebp2x := $image.Fill (printf "%dx%d q%d webp" (mul $sizes.tablet.width 2) (mul $sizes.tablet.height 2) $tabletQuality2x) }}
+{{ $tabletJpeg2x := $image.Fill (printf "%dx%d q%d jpeg" (mul $sizes.tablet.width 2) (mul $sizes.tablet.height 2) $tabletQuality2x) }}
+{{ $mobileWebp2x := $image.Fill (printf "%dx%d q%d webp" (mul $sizes.mobile.width 2) (mul $sizes.mobile.height 2) $mobileQuality2x) }}
+{{ $mobileJpeg2x := $image.Fill (printf "%dx%d q%d jpeg" (mul $sizes.mobile.width 2) (mul $sizes.mobile.height 2) $mobileQuality2x) }}
+
 {{/* Determine if we need breakpoints (desktop/tablet/mobile are different) */}}
 {{ $needsBreakpoints := or (ne $sizes.desktop.width $sizes.tablet.width) (ne $sizes.tablet.width $sizes.mobile.width) }}
 
@@ -98,31 +124,31 @@
   {{ if $needsBreakpoints }}
     <!-- Desktop: lg breakpoint (1024px+) -->
     <source media="(min-width: 1024px)" 
-            srcset="{{ $desktopWebp.RelPermalink }}" 
+            srcset="{{ $desktopWebp.RelPermalink }} 1x, {{ $desktopWebp2x.RelPermalink }} 2x" 
             type="image/webp"
             width="{{ $desktopWebp.Width }}" 
             height="{{ $desktopWebp.Height }}">
     <source media="(min-width: 1024px)" 
-            srcset="{{ $desktopJpeg.RelPermalink }}" 
+            srcset="{{ $desktopJpeg.RelPermalink }} 1x, {{ $desktopJpeg2x.RelPermalink }} 2x" 
             type="image/jpeg"
             width="{{ $desktopJpeg.Width }}" 
             height="{{ $desktopJpeg.Height }}">
     
     <!-- Tablet: md breakpoint (768px+) -->
     <source media="(min-width: 768px)" 
-            srcset="{{ $tabletWebp.RelPermalink }}" 
+            srcset="{{ $tabletWebp.RelPermalink }} 1x, {{ $tabletWebp2x.RelPermalink }} 2x" 
             type="image/webp"
             width="{{ $tabletWebp.Width }}" 
             height="{{ $tabletWebp.Height }}">
     <source media="(min-width: 768px)" 
-            srcset="{{ $tabletJpeg.RelPermalink }}" 
+            srcset="{{ $tabletJpeg.RelPermalink }} 1x, {{ $tabletJpeg2x.RelPermalink }} 2x" 
             type="image/jpeg"
             width="{{ $tabletJpeg.Width }}" 
             height="{{ $tabletJpeg.Height }}">
   {{ end }}
   
   <!-- Mobile WebP -->
-  <source srcset="{{ $mobileWebp.RelPermalink }}" 
+  <source srcset="{{ $mobileWebp.RelPermalink }} 1x, {{ $mobileWebp2x.RelPermalink }} 2x" 
           type="image/webp"
           width="{{ $mobileWebp.Width }}" 
           height="{{ $mobileWebp.Height }}">
@@ -136,6 +162,7 @@
        fetchpriority="{{ $fetchpriority }}"
        {{ with .alt }}alt="{{ . }}"{{ end }} 
        src="{{ $mobileJpeg.RelPermalink }}" 
+       srcset="{{ $mobileJpeg.RelPermalink }} 1x, {{ $mobileJpeg2x.RelPermalink }} 2x"
        width="{{ $mobileJpeg.Width }}" 
        height="{{ $mobileJpeg.Height }}">
 </picture>
