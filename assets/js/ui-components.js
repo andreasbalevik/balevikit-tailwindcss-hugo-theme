@@ -182,6 +182,23 @@ function setupMobileMenu() {
   button.addEventListener('click', function() {
     if (locked) return;
     setMenu(menu.classList.contains('hidden'));
+    if (!menu.classList.contains('hidden')) {
+      const firstLink = menu.querySelector('a[href]');
+      if (firstLink) firstLink.focus();
+    }
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+      setMenu(false);
+      button.focus();
+    }
+  });
+
+  document.addEventListener('click', function(e) {
+    if (!menu.classList.contains('hidden') && !menu.contains(e.target) && !button.contains(e.target)) {
+      setMenu(false);
+    }
   });
 
   menu.querySelectorAll('a[href]').forEach(function(link) {
