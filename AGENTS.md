@@ -5,6 +5,14 @@ Kort bruksguide for AI-agenter som jobber med `balevikit-tailwindcss-hugo-theme`
 - Designprinsipper og praksis: `.github/copilot-instruction.md`
 - Full setup og dokumentasjon: `README.md`
 
+## Hovedprinsipp
+
+Theme er det som samler: header, footer, sidestruktur og gjenbrukbare partials (bilder, prose, SEO). Prosjektet henter strukturen fra theme og lager innholdet selv.
+
+- Gjenbruk theme sine partials og layouts før du bygger lokalt
+- Lokalt arbeid er innhold: content, prosjektspesifikke seksjoner og komponenter
+- Ikke kopier eller gjenoppfinn det theme allerede dekker
+
 ## Slik bruker et prosjekt theme
 
 Theme legges til som git-submodul i `themes/balevikit-tailwindcss-hugo-theme`.
