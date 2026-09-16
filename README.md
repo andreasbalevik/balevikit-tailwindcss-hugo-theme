@@ -43,7 +43,7 @@ git submodule add https://github.com/andreasbalevik/balevikit-tailwindcss-hugo-t
 
 ### 2. Add `package.json`
 
-The theme manages its own dependencies. A minimal `package.json` in the project root is enough:
+The project needs `tailwindcss` and `@tailwindcss/cli` so Hugo's `css.TailwindCSS` pipeline can find the Tailwind CLI, and `@tailwindcss/typography` for prose styling. The `install` script installs the theme's own dependencies:
 
 ```json
 {
@@ -53,6 +53,13 @@ The theme manages its own dependencies. A minimal `package.json` in the project 
     "dev": "hugo server --disableFastRender",
     "build": "hugo --minify",
     "install": "cd themes/balevikit-tailwindcss-hugo-theme && npm install"
+  },
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.2.2",
+    "tailwindcss": "^4.2.2"
+  },
+  "dependencies": {
+    "@tailwindcss/typography": "^0.5.19"
   }
 }
 ```
@@ -62,6 +69,8 @@ Then run:
 ```bash
 npm install
 ```
+
+This installs the project's dependencies and runs the `install` script, which installs the theme's dependencies.
 
 ### 3. Configure `hugo.toml`
 
@@ -77,20 +86,14 @@ theme = 'balevikit-tailwindcss-hugo-theme'
   [build.buildStats]
     enable = true
   [[build.cachebusters]]
-    source = 'assets/notwatching/hugo_stats\.json'
+    source = 'hugo_stats\.json'
     target = 'css'
   [[build.cachebusters]]
     source = '(postcss|tailwind)\.config\.js'
     target = 'css'
-
-[module]
-  [[module.mounts]]
-    source = 'assets'
-    target = 'assets'
-  [[module.mounts]]
-    disableWatch = true
-    source = 'hugo_stats.json'
-    target = 'assets/notwatching/hugo_stats.json'
+  [[build.cachebusters]]
+    source = 'layouts/.*'
+    target = 'css'
 
 [params]
   description = 'Short description of the business.'
@@ -118,7 +121,7 @@ theme = 'balevikit-tailwindcss-hugo-theme'
   weight = 10
 ```
 
-The `build` and `module` configuration above is required for the Tailwind/Hugo pipeline.
+The `build` configuration above is required for the Tailwind/Hugo pipeline.
 
 ### 4. Create homepage content
 
@@ -515,8 +518,8 @@ When setting up the project automatically, follow this order:
 
 1. Create a new Hugo project.
 2. Add the theme as a git submodule.
-3. Create `package.json` in the project root.
-4. Create `hugo.toml` with `theme`, `build`, and `module`.
+3. Create `package.json` in the project root with the Tailwind devDependencies and the `install` script.
+4. Create `hugo.toml` with `theme` and `build`.
 5. Create `content/_index.md`.
 6. Run `npm install`.
 7. Run `hugo --minify`.
